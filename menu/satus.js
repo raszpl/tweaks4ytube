@@ -2429,7 +2429,7 @@ satus.components.checkbox = function(component, skeleton) {
 --------------------------------------------------------------*/
 
 satus.components.switch = function(component, skeleton) {
-	var value = satus.isset(component.storage.value) ? component.storage.value : skeleton.value;
+	let value = component.storage.value;
 
 	if (satus.isFunction(value)) {
 		value = value();
@@ -2458,12 +2458,12 @@ satus.components.switch.flip = function(val) {
 			break;
 		case false:
 			this.dataset.value = 'false';
-			this.storage.value = false;
+			this.storage.value = 'satus_default';
 			break;
 		case undefined:
 			if (this.dataset.value === 'true') {
 				this.dataset.value = 'false';
-				this.storage.value = false;
+				this.storage.value = 'satus_default';
 			} else {
 				this.dataset.value = 'true';
 				this.storage.value = true;
