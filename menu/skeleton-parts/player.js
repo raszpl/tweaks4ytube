@@ -99,10 +99,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 			max: 405,
 			value: 100
 		},
-		player_loudness_normalization: {
+		player_loudness_normalization_disable: {
 			component: 'switch',
-			text: 'loudnessNormalization',
-			value: true
+			text: 'loudnessNormalization'
 		},
 		player_forced_playback_speed: {
 			component: 'switch',
@@ -126,16 +125,13 @@ extension.skeleton.main.layers.section.player.on.click = {
 			max: 3.17,
 			step: .01
 		},
-		autoplay: {
+		player_autoplay_disable: {
 			component: 'switch',
-			text: 'autoplay',
-			value: true,
-			storage: 'player_autoplay'
+			text: 'autoplay'
 		},
-		up_next_autoplay: {
+		up_next_autoplay_disable: {
 			component: 'switch',
-			text: 'upNextAutoplay',
-			value: true
+			text: 'upNextAutoplay'
 		},
 		forced_play_video_from_the_beginning: {
 			component: 'switch',
@@ -684,10 +680,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
-		player_crop_chapter_titles: {
+		player_crop_chapter_titles_prevent: {
 			component: 'switch',
-			text: 'cropChapterTitles',
-			value: true
+			text: 'cropChapterTitles'
 		},
 		mini_player: {
 			component: 'switch',
@@ -962,10 +957,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
-		player_60fps: {
+		player_30fps_limit: {
 			component: 'switch',
-			text: 'allow60fps',
-			value: true
+			text: 'allow60fps'
 		},
 		sdr: {
 			component: 'switch',
@@ -997,8 +991,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					},
 					embed_subtitle: {
 						component: 'switch',
-						text: 'Subtitle_Capture_including_the_current_words',
-						value: true
+						text: 'Subtitle_Capture_including_the_current_words'
 					},
 					player_screenshot_save_as: {
 						component: 'select',
@@ -1031,18 +1024,15 @@ extension.skeleton.main.layers.section.player.on.click = {
 
 							below_player_screenshot: {
 								component: 'switch',
-								text: 'screenshot',
-								value: true
+								text: 'screenshot'
 							},
 							below_player_pip: {
 								component: 'switch',
-								text: 'pictureInPicture',
-								value: true
+								text: 'pictureInPicture'
 							},
 							below_player_loop: {
 								component: 'switch',
-								text: 'loop',
-								value: true
+								text: 'loop'
 							}
 						},
 	}	
