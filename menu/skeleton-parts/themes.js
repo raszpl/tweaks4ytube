@@ -62,7 +62,6 @@ extension.skeleton.main.layers.section.themes.on.click.section = {
 			component: 'radio',
 			group: 'theme',
 			value: 'custom',
-			checked: true,
 			on: {
 				click: {
 					section: {
@@ -91,7 +90,7 @@ extension.skeleton.main.layers.section.themes.on.click.section = {
 		radio: {
 			component: 'radio',
 			group: 'theme',
-			value: 'default',
+			value: 'satus_default',
 			checked: true
 		}
 	},
