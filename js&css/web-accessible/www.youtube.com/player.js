@@ -1286,3 +1286,21 @@ ImprovedTube.miniPlayer = function () {
 		window.removeEventListener('mousemove', this.miniPlayer_cursorUpdate);
 	}
 };
+/*------------------------------------------------------------------------------
+PLAYER CODEC & FPS LIMITS
+------------------------------------------------------------------------------*/
+ImprovedTube.playerLimits = function () {
+	if (ImprovedTube.storage.block_vp9 || ImprovedTube.storage.block_av1 || ImprovedTube.storage.block_h264) {
+		let atlas = {block_vp9:'vp9|vp09', block_h264:'avc1', block_av1:'av01'}
+		localStorage['it-codec'] = Object.keys(atlas).reduce(function (all, key) {
+			return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all}, '');
+	} else {
+		localStorage.removeItem('it-codec');
+	}
+
+	if (ImprovedTube.storage.player_30fps_limit) {
+		localStorage['it-player30fps'] = true;
+	} else {
+		localStorage.removeItem('it-player30fps');
+	}
+};
