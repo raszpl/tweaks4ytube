@@ -170,12 +170,10 @@ ImprovedTube.deleteYoutubeCookies = function () {
 -----------------------------------------------------------------------------*/
 
 ImprovedTube.youtubeLanguage = function () {
-	let value = this.storage.youtube_language;
+	const option = this.storage.youtube_language;
 
-	if (value) {
-		if (value == 'disabled') {
-			// do nothing
-		} else if (value == 'default') {
+	if (option) {
+		if (value == 'reset') {
 			// Delete 'hl' PREF cookie, let YT pick default Browser language
 			this.setPrefCookieValueByName('hl', null);
 		} else {
