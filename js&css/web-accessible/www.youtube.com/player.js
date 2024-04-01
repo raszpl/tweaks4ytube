@@ -190,41 +190,30 @@ function getRandomInvidiousInstance() { return invidiousInstances[Math.floor(Mat
 /*------------------------------------------------------------------------------
 SUBTITLES
 ------------------------------------------------------------------------------*/
-ImprovedTube.subtitles = function () {
-	if (this.storage.player_subtitles === true) {
-		var player = this.elements.player;
+ImprovedTube.playerSubtitles = function () {
+	const option = this.storage.player_subtitles,
+		player = this.elements.player;
 
-		if (player && player.toggleSubtitlesOn) {
-			player.toggleSubtitlesOn();
-		}
+	if (option && player && player.toggleSubtitlesOn) {
+		player.toggleSubtitlesOn();
 	}
 };
 /*------------------------------------------------------------------------------
 SUBTITLES LANGUAGE
 ------------------------------------------------------------------------------*/
 ImprovedTube.subtitlesLanguage = function () {
-    var option = this.storage.subtitles_language;
-    if (this.isset(option) && option !== 'default') {
-        var player = this.elements.player,
-            button = this.elements.player_subtitles_button;
+	const option = this.storage.subtitles_language,
+		player = this.elements.player,
+		button = this.elements.player_subtitles_button;
 
-        if (player && player.getOption && button && button.getAttribute('aria-pressed') === 'true') {
-            var tracklist = this.elements.player.getOption('captions', 'tracklist', {
-                includeAsr: true
-            });
+	if (option && player && player.getOption && button && button.etAttribute('aria-pressed') === 'true') {
+		const tracklist = this.elements.player.getOption('captions', 'tracklist', {includeAsr: true}),
+			track = tracklist.find(track => track.languageCode.includes(option) && (!track.vss_id.includes("a.") || this.storage.auto_generate));
 
-            var matchTrack = false;
-            for (var i =0, l = tracklist.length; i<l; i++){
-                if (tracklist[i].languageCode.includes(option)) {
-                    if( false === tracklist[i].vss_id.includes("a.") || true === this.storage.auto_generate){
-                        this.elements.player.setOption('captions', 'track', tracklist[i]);
-                        matchTrack = true; break;
-                    }
-                }
-            }
-         //   if (!matchTrack){  player.toggleSubtitles();  }
-        }
-    }
+		if (track) {
+			player.setOption('captions', 'track', track);
+		}
+	}
 };
 /*------------------------------------------------------------------------------
 SUBTITLES FONT FAMILY
