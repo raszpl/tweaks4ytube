@@ -353,6 +353,10 @@ document.addEventListener('it-message-from-extension', function () {
 				case 'blocklistActivate':
 					if (ImprovedTube.storage.blocklist_activate === true) {document.querySelectorAll('.it-add-to-blocklist').forEach(e => e.remove());}
 					break
+
+				case 'autoGenerate':
+					subtitlesLanguage();
+					break
 			}
 
 			if (ImprovedTube[camelized_key]) {
