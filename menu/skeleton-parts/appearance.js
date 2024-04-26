@@ -15,7 +15,7 @@ extension.skeleton.main.layers.section.appearance = {
 	on: {
 		click: {
 			component: "section",
-			variant: "appearance"
+			variant: "card"
 		}
 	},
 
