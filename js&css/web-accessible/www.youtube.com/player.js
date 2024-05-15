@@ -4,14 +4,9 @@ AUTOPLAY DISABLE
 ImprovedTube.autoplayDisable = function (playerElement) { 
 if (ImprovedTube.storage.player_autoplay_disable 
 	|| ImprovedTube.storage.playlist_autoplay === false 
-	|| ImprovedTube.storage.channel_trailer_autoplay === false){
-	let player; let tries=0;
-		(function waitForPlayer(){if(player=ImprovedTube.elements.player||playerElement.closest('#movie_player')){return;}
-						else if(tries++<4){
-							console.log("autoplayOff is waiting for ImprovedTube.elements.player or #movie_player");
-							setTimeout(waitForPlayer,500);
-						}else if(tries===4){console.error("resigning autoplayOff after 1.5s")}
-		})()
+	|| ImprovedTube.storage.playlist_autoplay === false || ImprovedTube.storage.channel_trailer_autoplay === false){
+	const video = ImprovedTube.elements.player || videoElement.closest('#movie_player');
+	
 	if (ImprovedTube.video_url !== location.href) {	this.user_interacted = false; }
 
 	// if (no user clicks) and (no ads playing) and
