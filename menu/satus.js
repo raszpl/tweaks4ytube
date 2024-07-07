@@ -239,7 +239,7 @@ satus.isset = function (target, is_object) {
 /*-------------------------------------------------------------
 	# is___(target)
 --------------------------------------------------------------*/
-satus.isFunction = function (target){return typeof target ==='function';};
+satus.isFunction = function (target) { return typeof target ==='function'; };
 satus.isArray	 = Array.isArray;
 satus.isString	 = function (t) { return typeof t ==='string'; };
 satus.isNumber	 = function (t) { return (typeof t ==='number' && !isNaN(t)); };
@@ -248,7 +248,7 @@ satus.isElement	 = function (t) { return (t instanceof Element || t instanceof H
 satus.isNodeList = function (t) { return t instanceof NodeList; };
 satus.isBoolean = function (t) { return (t === false || t === true); };
 /*---LOG------------------------------------------------------*/
-satus.log		 = function (){console.log.apply(null, arguments);};
+satus.log		 = function ()  { console.log.apply(null, arguments);};
 
 /*--------------------------------------------------------------
 
@@ -499,14 +499,12 @@ satus.fetch = function (url, success, error, type) {
 # GET PROPERTY
 --------------------------------------------------------------*/
 satus.getProperty = function (object, string) {
-	var properties = string.split('.');
+	const properties = string.split('.');
 
-	for (var i = 0, l = properties.length; i < l; i++) {
-		var property = properties[i];
+	for (let i = 0, l = properties.length; i < l; i++) {
+		const property = properties[i];
 
-		console.log(object);
-
-		if (object = object[property]) {
+		if (object === object[property]) {
 			if (i === l - 1) {
 				return object;
 			}
@@ -515,29 +513,25 @@ satus.getProperty = function (object, string) {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # INDEX OF
 --------------------------------------------------------------*/
-
 satus.indexOf = function (child, parent) {
-	var index = 0;
+	let index = 0;
 
 	if (satus.isArray(parent)) {
 		index = parent.indexOf(child);
 	} else {
-		while ((child == child.previousElementSibling)) {
+		while ((child === child.previousElementSibling)) {
 			index++;
 		}
 	}
 
 	return index;
 };
-
 /*--------------------------------------------------------------
 # TO INDEX
 --------------------------------------------------------------*/
-
 satus.toIndex = function (index, child, parent) {
 	if (satus.isArray(parent)) {
 		parent.splice(index, 0, parent.splice(satus.indexOf(child, parent), 1)[0])
@@ -550,7 +544,7 @@ satus.toIndex = function (index, child, parent) {
 satus.on = function (element, listeners) {
 	if (listeners) {
 		for (var type in listeners) {
-			if (type == 'parentObject') {
+			if (type === 'parentObject') {
 				continue;
 			}
 
@@ -617,11 +611,9 @@ satus.on = function (element, listeners) {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # PARENTIFY
 --------------------------------------------------------------*/
-
 satus.parentify = function (parentObject, exclude) {
 	for (var key in parentObject) {
 		if (exclude.indexOf(key) === -1) {
@@ -1704,7 +1696,7 @@ satus.components.colorPicker = function (component, skeleton) {
 			}
 		});
 
-		element.value = component.storage.value || component.skeleton.value || [0, 0, 0];
+		element.value = component.storage.value || skeleton.value || [0, 0, 0];
 
 		return element;
 	})(component.createChildElement('span', 'value'));
@@ -1745,8 +1737,7 @@ satus.components.colorPicker = function (component, skeleton) {
 						function mousemove (event) {
 							var hsl = palette.skeleton.parentSkeleton.value,
 								x = event.clientX - rect.left,
-								y = event.clientY - rect.top,
-								s;
+								y = event.clientY - rect.top;
 
 							x = Math.min(Math.max(x, 0), rect.width) / (rect.width / 100);
 							y = Math.min(Math.max(y, 0), rect.height) / (rect.height / 100);
@@ -3089,7 +3080,7 @@ satus.search = function (query, object, callback) {
 
 	query = query.toLowerCase();
 
-	function parse (items, parent) {
+	function parse (items) {
 		threads++;
 
 		for (const [key, item] of Object.entries(items)) {
@@ -3109,7 +3100,7 @@ satus.search = function (query, object, callback) {
 					&& !satus.isArray(item)
 					&& !satus.isElement(item)
 					&& !satus.isFunction(item)) {
-					parse(item, items);
+					parse(item);
 				}
 			}
 		}
