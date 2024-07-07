@@ -70,12 +70,15 @@ components.grid
 components.textField
 			chart	chart.bar
 			select
-components.divider()	base(component)	section
+components.divider()
+			base(component)
+			section
 			time
 			layers
 			list
 			colorPicker
-			radio	slider
+			radio
+			slider
 			tabs
 			shortcut
 			checkbox
@@ -90,11 +93,14 @@ RGB2HSL	HUE2RGB	 HSL2RGB
 # HARDWARE and SOFTWARE values
 	# OS: Name	Bitness
 	# Browser:	Name	Version	Platform
-				Manifest	Languages
+				Manifest
+				Languages
 				Cookies
-				Flash	Java	Audio
-				Video WebGL
-	# Device:	 Screen
+				Java
+				Audio
+				Video
+				WebGL
+	# Device:	Screen
 				RAM	GPU	Cores
 				Touch	Connection
 ----------------------------------------------------------------
@@ -248,7 +254,7 @@ satus.isElement	 = function (t) { return (t instanceof Element || t instanceof H
 satus.isNodeList = function (t) { return t instanceof NodeList; };
 satus.isBoolean = function (t) { return (t === false || t === true); };
 /*---LOG------------------------------------------------------*/
-satus.log		 = function ()  { console.log.apply(null, arguments);};
+satus.log		 = function () { console.log.apply(null, arguments);};
 
 /*--------------------------------------------------------------
 
@@ -856,9 +862,9 @@ satus.storage.clear = function (callback) {
 /*--------------------------------------------------------------
 # GET
 --------------------------------------------------------------*/
-satus.storage.get = function (key, callback) {
+satus.storage.get = function (key) {
+	if (callback) callback(key);
 	return this.data[key];
-	if (callback) callback();
 };
 /*--------------------------------------------------------------
 # IMPORT
@@ -2710,7 +2716,6 @@ satus.color.hslToRgb = function (array) {
 		# Manifest
 		# Languages
 		# Cookies
-		# Flash
 		# Java
 		# Audio
 		# Video
@@ -2777,7 +2782,6 @@ satus.user.os.name = function () {
 /*--------------------------------------------------------------
 # BITNESS
 --------------------------------------------------------------*/
-
 satus.user.os.bitness = function () {
 	if (navigator.appVersion.match(/(Win64|x64|x86_64|WOW64)/)) {
 		return '64-bit';
@@ -2785,7 +2789,6 @@ satus.user.os.bitness = function () {
 		return '32-bit';
 	}
 };
-
 /*--------------------------------------------------------------
 # BROWSER
 --------------------------------------------------------------*/
@@ -2793,7 +2796,6 @@ satus.user.os.bitness = function () {
 /*--------------------------------------------------------------
 # NAME
 --------------------------------------------------------------*/
-
 satus.user.browser.name = function () {
 	var user_agent = navigator.userAgent;
 	if (navigator.brave) {
@@ -2816,46 +2818,36 @@ satus.user.browser.name = function () {
 		return 'IE';
 	}
 };
-
 /*--------------------------------------------------------------
 # VERSION
 --------------------------------------------------------------*/
-
 satus.user.browser.version = function () {
 	var browser_name = satus.user.browser.name(),
 		browser_version = navigator.userAgent.match(new RegExp(browser_name + '/([0-9.]+)'));
 
 	return browser_version[1];
 };
-
 /*--------------------------------------------------------------
 # PLATFORM
 --------------------------------------------------------------*/
-
 satus.user.browser.platform = function () {
 	return navigator.platform;
 };
-
 /*--------------------------------------------------------------
 # MANIFEST
 --------------------------------------------------------------*/
-
 satus.user.browser.manifest = function () {
 	return chrome.runtime.getManifest() || {};
 };
-
 /*--------------------------------------------------------------
 # LANGUAGES
 --------------------------------------------------------------*/
-
 satus.user.browser.languages = function () {
 	return navigator.languages;
 };
-
 /*--------------------------------------------------------------
 # COOKIES
 --------------------------------------------------------------*/
-
 satus.user.browser.cookies = function () {
 	if (document.cookie) {
 		var random_cookie = 'nX6cMXKWsc';
@@ -2869,29 +2861,9 @@ satus.user.browser.cookies = function () {
 
 	return false;
 };
-
-/*--------------------------------------------------------------
-# FLASH
---------------------------------------------------------------*/
-
-satus.user.browser.flash = function () {
-	try {
-		if (new ActiveXObject('ShockwaveFlash.ShockwaveFlash')) {
-			return true;
-		}
-	} catch (error) {
-		if (navigator.mimeTypes['application/x-shockwave-flash']) {
-			return true;
-		}
-	}
-
-	return false;
-};
-
 /*--------------------------------------------------------------
 # JAVA
 --------------------------------------------------------------*/
-
 satus.user.browser.java = function () {
 	if (satus.isFunction(navigator.javaEnabled) && navigator.javaEnabled()) {
 		return true;
@@ -2899,11 +2871,9 @@ satus.user.browser.java = function () {
 		return false;
 	}
 };
-
 /*--------------------------------------------------------------
 # AUDIO
 --------------------------------------------------------------*/
-
 satus.user.browser.audio = function () {
 	var audio = document.createElement('audio'),
 		types = {
