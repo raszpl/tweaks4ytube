@@ -23,56 +23,30 @@ ImprovedTube.channelDefaultTab = function (a) {
 /*------------------------------------------------------------------------------
 4.6.2 PLAY ALL BUTTON
 ------------------------------------------------------------------------------*/
-
 ImprovedTube.channelPlayAllButton = function () {
-	if (this.storage.channel_play_all_button === true) {
-		if (/\/@|((channel|user|c)\/)[^/]+\/videos/.test(location.href)) {
-			var container = document.querySelector('ytd-channel-sub-menu-renderer #primary-items');
+	if (ImprovedTube.regex.channel.test(location.pathname)) {
+		if (this.storage.channel_play_all_button) {
+			const container = document.querySelector('ytd-channel-sub-menu-renderer #primary-items')
+					|| document.querySelector('ytd-two-column-browse-results-renderer #chips-content'),
+				playlistUrl = document.querySelector('ytd-app')?.__data?.data?.response?.metadata?.channelMetadataRenderer?.externalId?.substring(2);
 
-			if (!this.elements.playAllButton) {
-				var button = document.createElement('a'),
-					svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-					path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-				button.className = 'it-play-all-button';
-
-				svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
-				path.setAttributeNS(null, 'd', 'M6,4l12,8L6,20V4z');
-
-				svg.appendChild(path);
-				button.appendChild(svg);
-				button.appendChild(document.createTextNode('Play all'));
-
-				this.elements.playAllButton = button;
-
-				if (container) {
-					container.appendChild(button);
-				}
-			} else if (container) {
-				container.appendChild(this.elements.playAllButton);
+			if (!container) return; // we only add button on /videos page
+			if (!playlistUrl) {
+				console.error('channelPlayAllButton: Cant fint Channel playlist');
+				return;
 			}
-		} else if (this.elements.playAllButton) {
-			this.elements.playAllButton.remove();
-		}
-
-		if (this.elements.playAllButton) {
-			var app = document.querySelector('ytd-app');
-
-			if (
-				app &&
-				app.__data &&
-				app.__data.data &&
-				app.__data.data.response &&
-				app.__data.data.response.metadata &&
-				app.__data.data.response.metadata.channelMetadataRenderer &&
-				app.__data.data.response.metadata.channelMetadataRenderer.externalId
-			) {
-				this.elements.playAllButton.href = '/playlist?list=UU' + app.__data.data.response.metadata.channelMetadataRenderer.externalId.substring(2);
-			}
+			const button = this.createIconButton({
+				type: 'playAll',
+				className: 'it-play-all-button',
+				text: 'Play all',
+				href: '/playlist?list=UU' + playlistUrl
+			});
+			container.appendChild(button);
+		} else {
+			document.querySelector('.it-play-all-button')?.remove();
 		}
 	}
 };
-
 /*------------------------------------------------------------------------------
 4.6.3 COMPACT THEME
 ------------------------------------------------------------------------------*/
@@ -81,19 +55,21 @@ var compact = compact || {}
 ImprovedTube.channelCompactTheme = function () {
 	compact.eventHandlerFns = compact.eventHandlerFns || []
 	compact.styles = compact.styles || []
-  if (this.storage.channel_compact_theme === true) {
+	if (this.storage.channel_compact_theme === true) {
 		compact.hasApplied = true
 		initialLoad();
 		document.querySelector("#sections #items") ? styleWithListeners() : styleWithInterval();
-  }
-	else if (compact.hasApplied) { //cleanup
-		try {clearInterval(compact.listener)} 
-		catch (err) {console.log("ERR: We couldn't clear listener. Reload page")}
-    if (compact.eventHandlerFns.length) removeListeners();
+	} else if (compact.hasApplied) { //cleanup
+		try {
+			clearInterval(compact.listener)
+		} catch (err) {
+			console.log("ERR: We couldn't clear listener. Reload page")
+		}
+		if (compact.eventHandlerFns.length) removeListeners();
 		if (compact.styles.length) removeStyles()
 		compact = {}
 	}
-	function styleWithInterval() {
+	function styleWithInterval () {
 		compact.listener = setInterval(() => {
 			let item = document.querySelector(`#sections ytd-guide-section-renderer:nth-child(4) #items`)
 			if (item) {
@@ -103,7 +79,7 @@ ImprovedTube.channelCompactTheme = function () {
 		}, 250)
 	}
 
-	function styleWithListeners() {
+	function styleWithListeners () {
 		compact.parents = []
 		compact.subs = []
 		for (let i = 0; i <= 2; i++) {
@@ -118,8 +94,7 @@ ImprovedTube.channelCompactTheme = function () {
 				if (!isCompact) {
 					sub.style.display = "none"
 					isCompact = true
-				}
-				else {
+				} else {
 					sub.style.display = ""
 					isCompact = false
 				}
@@ -131,8 +106,8 @@ ImprovedTube.channelCompactTheme = function () {
 		}
 		removeStyles();
 	}
-	
-	function removeListeners(){ // EventListeners 
+
+	function removeListeners () { // EventListeners
 		for (let i = 0; i <= 2; i++) {
 			const parent = compact.parents[i]
 			const sub = compact.subs[i]
@@ -142,27 +117,27 @@ ImprovedTube.channelCompactTheme = function () {
 		compact.eventHandlerFns = []
 	}
 
-	function initialLoad() {
-    for (let i = 0; i <= 2; i++) {
-      let isCompact = localStorage.getItem(`ImprovedTube-compact-${i + 2}`) === "true"
+	function initialLoad () {
+		for (let i = 0; i <= 2; i++) {
+			let isCompact = localStorage.getItem(`ImprovedTube-compact-${i + 2}`) === "true"
 			isCompact ? appendStyle(i) : (compact.styles[i] = null);
-    }
-  }
+		}
+	}
 
-  function appendStyle(index) { // adds style tag
-    const cssRules = `
+	function appendStyle (index) { // adds style tag
+		const cssRules = `
 			#sections > ytd-guide-section-renderer:nth-child(${index + 2}) > #items{
 				display:none;
 			};`;
-    const style = document.createElement("style");
-    style.appendChild(document.createTextNode(cssRules));
-    compact.styles[index] = style;
-    document.head.appendChild(compact.styles[index]);
-  }
+		const style = document.createElement("style");
+		style.appendChild(document.createTextNode(cssRules));
+		compact.styles[index] = style;
+		document.head.appendChild(compact.styles[index]);
+	}
 
-	function removeStyles(){ // styles tags
-		for (let i = 0; i <= compact.styles.length; i++){
-			if (compact.styles[i] && compact.styles[i].parentNode) { 
+	function removeStyles () { // styles tags
+		for (let i = 0; i <= compact.styles.length; i++) {
+			if (compact.styles[i] && compact.styles[i].parentNode) {
 				document.head.removeChild(compact.styles[i]);
 			}
 		}

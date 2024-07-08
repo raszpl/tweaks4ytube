@@ -157,7 +157,6 @@ extension.camelize = function (string) {
 	return result;
 };
 
-
 /*--------------------------------------------------------------
 # EVENTS
 --------------------------------------------------------------*/
@@ -187,7 +186,6 @@ extension.events.on = function (type, listener, options = {}) {
 		listeners[type].push(listener);
 	}
 };
-
 
 /*--------------------------------------------------------------
 # TRIGGER
@@ -275,7 +273,6 @@ extension.inject = function (paths, callback) {
 	}
 };*/
 
-
 /*--------------------------------------------------------------
 # MESSAGES
 ----------------------------------------------------------------
@@ -330,7 +327,6 @@ extension.messages.send = function (message) {
 		document.dispatchEvent(new CustomEvent('it-message-from-extension'));
 	}
 };
-
 
 /*--------------------------------------------------------------
 # STORAGE

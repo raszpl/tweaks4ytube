@@ -8,6 +8,12 @@
 # Footer
 # Sidebar
 --------------------------------------------------------------*/
+satus.storage.onchanged((key, value) => {
+	if (key === "related_videos" && value === "Titles") {
+		satus.storage.set('relatedVideosPrev', "Titles");
+		console.log(satus.storage.get("relatedVideosPrev"));
+	}
+});
 extension.skeleton.main.layers.section.appearance = {
 	component: "button",
 	variant: "appearance",
@@ -89,7 +95,7 @@ extension.skeleton.main.layers.section.appearance.on.click.header = {
 			},
 			header_improve_logo: {
 				component: "switch",
-				text: "monochrome",
+				text: "improveLogo",
 				tags: "youtube"
 			},
 			header_hide_right_buttons: {
@@ -100,6 +106,10 @@ extension.skeleton.main.layers.section.appearance.on.click.header = {
 			header_transparent: {
 				component: "switch",
 				text: "transparentBackground"
+			},
+			header_transparent_alternative: {
+				component: "switch",
+				text: "Transparent background alternative"
 			},
 			header_hide_country_code: {
 				component: "switch",
@@ -144,7 +154,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 				}, {
 					text: "Max. width within the page",
 					value: "max_width"
-				},  {
+				}, {
 					text: "fitToWindow",
 					value: "fit_to_window"
 				}, {
@@ -392,13 +402,13 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 				component: "switch",
 				text: "hideScrollForDetails",
 				tags: "remove,hide"
-			}			
+			}
 		}
 	}
 };
 
 /*--------------------------------------------------------------
-# DETAIL
+# DETAILS
 --------------------------------------------------------------*/
 
 extension.skeleton.main.layers.section.appearance.on.click.details = {
@@ -409,237 +419,6 @@ extension.skeleton.main.layers.section.appearance.on.click.details = {
 		click: {
 			component: "section",
 			variant: "card",
-			description: {
-				component: "select",
-				text: "description",
-
-				options: [{
-					text: "normal",
-					value: "normal"
-				}, {
-					text: "expanded",
-					value: "expanded"
-				}, {
-					text: "sidebar",
-					value: "sidebar"
-				}, {
-					text: "hidden",
-					value: "hidden"
-				}/*, {
-					text: "Classic",
-					value: "classic"
-				}, {
-					text: "Classic expanded",
-					value: "classic_expanded"
-				}, {
-					text: "Classic hidden",
-					value: "classic_hidden"
-				}*/],
-				tags: "hide,remove"
-			},
-			hide_detail_button: {
-				component: "Buttons",
-				text: "hideDetailButton",
-				on: {
-					click: {
-						component: 'section',
-						variant: 'card',
-						extraButtons: {
-							component: 'section',
-							variant: 'card',
-							title: 'ExtraButtons',
-
-							below_player_screenshot: {
-								component: 'switch',
-								text: 'screenshot',
-								value: true
-							},
-							below_player_pip: {
-								component: 'switch',
-								text: 'pictureInPicture',
-								value: true
-							},
-							below_player_loop: {
-								component: 'switch',
-								text: 'loop',
-								value: true
-							}
-						},
-						youtubeDetailButtons: {
-							component: "select",
-							text: "youTubeButtons",
-							options: [{
-								text: "normal",
-								value: "normal"
-							}, {
-								text: 'removeNames',
-								value: "remove_labels"
-							}, {
-								text: 'halfTransparent',
-								value: "half_transparent"
-							}, {
-								text: 'Remove',
-								value: "remove"
-							}, {
-								text: 'TransparentBackground',
-								value: "transparent_background"
-							}, {
-								text: "hide_Labels",
-								value: "hide_labels"
-							}, {
-								text: 'removeIcons',
-								value: "remove_icons"
-							}],
-							tags: "hide,remove"
-						},
-						detailButtons: {
-							component: 'section',
-							variant: 'card',
-							subscribe: {
-								component: "select",
-								text: "subscribe",
-								options: [{
-									text: "normal",
-									value: "normal"
-								}, {
-									text: "removeName",
-									value: "remove_label"
-								}, {
-									text: "grey",
-									value: "grey"
-								}, {
-									text: "transparentColor",
-									value: "transparent"
-								}, {
-									text: "hidden",
-									value: "hidden"
-								}],
-								tags: "hide,remove,subscribe-button"
-							},
-							likes: {
-								component: "select",
-								text: "like",
-								options: [{
-									text: "normal",
-									value: "normal"
-								}, {
-									text: "iconsOnly",
-									value: "icons_only"
-								}, {
-									text: "hidden",
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							hide_dislike_button: {
-								component: "select",
-								text: "dislike",
-								options: [{
-									text: 'normal',
-									value: "normal"
-								}, {
-									text: 'iconsOnly',
-									value: "icons_only"
-								}, {
-									text: 'hidden',
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							red_dislike_button: {
-								component: 'switch',
-								text: "redDislikeButton"
-							},
-							hide_share_button: {
-								component: "select",
-								text: "share",
-								options: [{
-									text: "normal",
-									value: "normal"
-								}, {
-									text: "iconsOnly",
-									value: "icons_only"
-								}, {
-									text: "hidden",
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							hide_download_button: {
-								component: "select",
-								text: 'Download',
-								options: [{
-									text: "normal",
-									value: "normal"
-								}, {
-									text: "iconsOnly",
-									value: "icons_only"
-								}, {
-									text: "hidden",
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							hide_thanks_button: {
-								component: "select",
-								text: 'thanks',
-								options: [{
-									text: 'normal',
-									value: "normal"
-								}, {
-									text: 'iconsOnly',
-									value: "icons_only"
-								}, {
-									text: "hidden",
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							hide_clip_button: {
-								component: "select",
-								text: 'clip',
-								options: [{
-									text: 'normal',
-									value: "normal"
-								}, {
-									text: 'iconsOnly',
-									value: "icons_only"
-								}, {
-									text: "hidden",
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							hide_save_button: {
-								component: "select",
-								text: 'save',
-								options: [{
-									text: 'normal',
-									value: "normal"
-								}, {
-									text: 'iconsOnly',
-									value: "icons_only"
-								}, {
-									text: 'hidden',
-									value: "hidden"
-								}],
-								tags: "hide,remove"
-							},
-							hide_report_button: {
-								component: "switch",
-								text: 'hideReport',
-								tags: "hide,remove"
-							},
-							hide_more_button: {
-								component: "switch",
-								text: 'hideMore',
-								tags: "hide,remove"
-							}
-						}
-					}
-				}
-			},
-
 			hide_views_count: {
 				component: "switch",
 				text: "hideViewsCount",
@@ -663,7 +442,7 @@ extension.skeleton.main.layers.section.appearance.on.click.details = {
 				component: 'section',
 				variant: 'card',
 				title: 'Currently_requiring_a_YouTube_API_key',
-    
+
 				how_long_ago_the_video_was_uploaded: {
 					component: "switch",
 					text: "howLongAgoTheVideoWasUploaded"
@@ -676,6 +455,268 @@ extension.skeleton.main.layers.section.appearance.on.click.details = {
 		}
 	}
 };
+extension.skeleton.main.layers.section.appearance.on.click.description = {
+	component: "select",
+	variant: "description",
+	text: "description",
+	options: [{
+		text: "normal",
+		value: "normal"
+	}, {
+		text: "expanded",
+		value: "expanded"
+	}, {
+		text: "sidebar",
+		value: "sidebar"
+	}, {
+		text: "hidden",
+		value: "hidden"
+	}/*, {
+					text: "Classic",
+					value: "classic"
+				}, {
+					text: "Classic expanded",
+					value: "classic_expanded"
+				}, {
+					text: "Classic hidden",
+					value: "classic_hidden"
+				}*/],
+	tags: "hide,remove"
+};
+
+extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = {
+	component: "button",
+	text: "Buttons",
+	variant: "detailButton",
+	on: {
+		click: {
+			component: 'section',
+			variant: 'card',
+			extraButtons: {
+				component: 'section',
+				variant: 'card',
+				title: 'ExtraButtons',
+
+				below_player_screenshot: {
+					component: 'switch',
+					text: 'screenshot',
+					value: true
+				},
+				below_player_pip: {
+					component: 'switch',
+					text: 'pictureInPicture',
+					value: true
+				},
+				below_player_loop: {
+					component: 'switch',
+					text: 'loop',
+					value: true
+				}
+			},
+			youtubeDetailButtons: {
+				component: "select",
+				text: "youTubeButtons",
+				options: [{
+					text: "normal",
+					value: "normal"
+				}, {
+					text: 'removeNames',
+					value: "remove_labels"
+				}, {
+					text: 'halfTransparent',
+					value: "half_transparent"
+				}, {
+					text: 'Remove',
+					value: "remove"
+				}, {
+					text: 'TransparentBackground',
+					value: "transparent_background"
+				}, {
+					text: "hide_labels",
+					value: "hide_labels"
+				}, {
+					text: 'removeIcons',
+					value: "remove_icons"
+				}],
+				tags: "hide,remove"
+			},
+			detailButtons: {
+				component: 'section',
+				variant: 'card',
+				purchase: {
+					component: "select",
+					text: "purchase",
+					options: [{
+						text: "normal",
+						value: "normal"
+					}, {
+						text: "removeName",
+						value: "remove_label"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove,purchase-button"
+				},
+				join: {
+					component: "select",
+					text: "join",
+					options: [{
+						text: "normal",
+						value: "normal"
+					}, {
+						text: "removeName",
+						value: "remove_label"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove,join-button"
+				},
+				subscribe: {
+					component: "select",
+					text: "subscribe",
+					options: [{
+						text: "normal",
+						value: "normal"
+					}, {
+						text: "removeName",
+						value: "remove_label"
+					}, {
+						text: "grey",
+						value: "grey"
+					}, {
+						text: "transparentColor",
+						value: "transparent"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove,subscribe-button"
+				},
+				likes: {
+					component: "select",
+					text: "like",
+					options: [{
+						text: "normal",
+						value: "normal"
+					}, {
+						text: "iconsOnly",
+						value: "icons_only"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				hide_dislike_button: {
+					component: "select",
+					text: "dislike",
+					options: [{
+						text: 'normal',
+						value: "normal"
+					}, {
+						text: 'iconsOnly',
+						value: "icons_only"
+					}, {
+						text: 'hidden',
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				red_dislike_button: {
+					component: 'switch',
+					text: "redDislikeButton"
+				},
+				hide_share_button: {
+					component: "select",
+					text: "share",
+					options: [{
+						text: "normal",
+						value: "normal"
+					}, {
+						text: "iconsOnly",
+						value: "icons_only"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				hide_download_button: {
+					component: "select",
+					text: 'Download',
+					options: [{
+						text: "normal",
+						value: "normal"
+					}, {
+						text: "iconsOnly",
+						value: "icons_only"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				hide_thanks_button: {
+					component: "select",
+					text: 'thanks',
+					options: [{
+						text: 'normal',
+						value: "normal"
+					}, {
+						text: 'iconsOnly',
+						value: "icons_only"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				hide_clip_button: {
+					component: "select",
+					text: 'clip',
+					options: [{
+						text: 'normal',
+						value: "normal"
+					}, {
+						text: 'iconsOnly',
+						value: "icons_only"
+					}, {
+						text: "hidden",
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				hide_save_button: {
+					component: "select",
+					text: 'save',
+					options: [{
+						text: 'normal',
+						value: "normal"
+					}, {
+						text: 'iconsOnly',
+						value: "icons_only"
+					}, {
+						text: 'hidden',
+						value: "hidden"
+					}],
+					tags: "hide,remove"
+				},
+				hide_report_button: {
+					component: "switch",
+					text: 'hideReport',
+					tags: "hide,remove"
+				},
+				hide_more_button: {
+					component: "switch",
+					text: 'hideMore',
+					tags: "hide,remove"
+				}
+			}
+		}
+	}
+}
 
 /*--------------------------------------------------------------
 # COMMENTS
@@ -723,7 +764,7 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 			columns: {
 				component: "switch",
 				text: "columns",
-				value: true				
+				value: true
 			},
 			squared_user_images: {
 				component: 'switch',
@@ -744,25 +785,14 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 };
 
 /*--------------------------------------------------------------
-# FOOTER
+# POPUP AD
 --------------------------------------------------------------*/
 
-extension.skeleton.main.layers.section.appearance.on.click.footer = {
-	component: "button",
-	variant: "footer",
-	text: "footer",
-	on: {
-		click: {
-			component: "section",
-			variant: "card",
-
-			hide_footer: {
-				component: "switch",
-				text: "hideFooter",
-				tags: "bottom"
-			}
-		}
-	}
+extension.skeleton.main.layers.section.appearance.on.click.popup_ad = {
+	component: "switch",
+	variant: "popupAd",
+	text: "popupAd",
+	tags: "bottom"
 };
 
 /*--------------------------------------------------------------
@@ -800,18 +830,23 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 					text: "collapsed",
 					value: "collapsed"
 				}, {
-                	text: 'Hide_the_tabs_only',
-		           			value: "hidetabs"
+                			text: 'Hide_the_tabs_only',
+		           		value: "hidetabs"
 				}],
 				tags: "right",
 				on: {
-					click: function () {  setTimeout(() => {
-						if (satus.storage.get('related_videos')==="Titles") {
-							if (!satus.storage.get('thumbnails_right')) {
-								this.nextSibling.nextSibling.click();
+					click: function () {
+						setTimeout(() => {
+							if (satus.storage.get('related_videos')==="Titles"
+							&& satus.storage.get("relatedVideosPrev") ==="Titles") {
+								if (!satus.storage.get('thumbnails_right')) {
+									this.nextSibling.nextSibling.click();
+									satus.storage.set('relatedVideosPrev', "notTitles")
+								}
 							}
-						}
-					}, 250); }
+						}, 650)
+
+					}
 				}
 			},
 			sidebar_left: {
@@ -832,13 +867,15 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 				value: false,
 				id: 'transcript',
 				on: {
-					click: function () {  setTimeout(() => {
-						if (satus.storage.get('transcript')) {
-							if (satus.storage.get('no_page_margin')) {
-								this.nextSibling.nextSibling.click();
+					click: function () {
+						setTimeout(() => {
+							if (satus.storage.get('transcript')) {
+								if (satus.storage.get('no_page_margin')) {
+									this.nextSibling.nextSibling.click();
+								}
 							}
-						}
-					}, 250); }
+						}, 250);
+					}
 				}
 			},
 			compact_spacing: {
@@ -849,16 +886,18 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 			no_page_margin: {
 				component: 'switch',
 				text: 'To_the_side_No_page_margin',
-				
+
 				value: false,
 				on: {
-					click: function () {  setTimeout(() => {
-						if (satus.storage.get('no_page_margin')) {
-							if (satus.storage.get('transcript')) {
-								this.previousSibling.previousSibling.click();
+					click: function () {
+						setTimeout(() => {
+							if (satus.storage.get('no_page_margin')) {
+								if (satus.storage.get('transcript')) {
+									this.previousSibling.previousSibling.click();
+								}
 							}
-						}
-					}, 250); }
+						}, 250);
+					}
 				}
 			},
 			chapters: {
@@ -868,7 +907,7 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 			hide_shorts_remixing: {
 				component: "switch",
 				text: 'Hide_Shorts_remixing_this_video'
-			},			
+			},
 			livechat: {
 				component: "select",
 				text: 'liveChat',

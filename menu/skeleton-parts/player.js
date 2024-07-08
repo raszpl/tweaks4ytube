@@ -45,7 +45,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 	section_1: {
 		component: 'section',
 		variant: 'card',
-
 		autopause_when_switching_tabs: {
 			component: 'switch',
 			text: 'autopauseWhenSwitchingTabs',
@@ -74,6 +73,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
+		pause_while_typing_on_youtube: {
+			component: 'switch',
+			text: 'pauseWhileIAmTypingOnYouTube',
+			storage: 'pause_while_typing_on_youtube',
+			id: 'pause_while_typing_on_youtube',
+		},
 		autoplay_disable: {
 			component: 'switch',
 			text: 'autoplayDisable',
@@ -93,11 +98,45 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'switch',
 			text: 'Auto_PiP_picture_in_picture',
 			id: 'player_autoPip',
+			custom: true,
 			on: {
 				click: function () {
-					if (this.dataset.value === 'true' && satus.storage.get('player_autopause_when_switching_tabs')) {
-						document.getElementById('only_one_player_instance_playing').flip(true);
-						document.getElementById('autopause_when_switching_tabs').flip(false);
+					if (!document.pictureInPictureEnabled) return;
+					if (this.dataset.value === 'false') {
+						let where = this;
+						satus.render({
+							component: 'modal',
+							variant: 'confirm',
+							content: 'PipRequiresUserInteraction',
+							ok: function () {
+								// manually turn switch ON
+								where.flip(true);
+								if (satus.storage.get('player_autopause_when_switching_tabs')) {
+									document.getElementById('only_one_player_instance_playing').flip(true);
+									document.getElementById('autopause_when_switching_tabs').flip(false);
+								}
+							},
+							cancel: function () {
+								// nothing happens when we cancel
+							}
+						}, extension.skeleton.rendered);
+					} else {
+						// manually turn switch OFF
+						this.flip(false);
+					}
+				}
+			}
+		},
+		player_autoPip_outside: {
+			component: 'switch',
+			text: 'playerAutoPipOutside',
+			id: 'player_autoPip_outside',
+			value: true,
+			on: {
+				render: function () {
+					if (!document.pictureInPictureEnabled) {
+						document.getElementById('player_autoPip').remove();
+						document.getElementById('player_autoPip_outside').remove();
 					}
 				}
 			}
@@ -155,8 +194,18 @@ extension.skeleton.main.layers.section.player.on.click = {
 					variant: 'card',
 
 					player_subtitles: {
-						component: 'switch',
-						text: 'subtitles'
+						component: 'select',
+						text: 'subtitles',
+						options: [{
+							value: 'auto',
+							text: 'auto'
+						}, {
+							value: 'enabled',
+							text: 'enabled'
+						}, {
+							value: 'disabled',
+							text: 'disabled'
+						}]
 					},
 					subtitles_language: {
 						component: 'select',
@@ -502,6 +551,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 						component: 'select',
 						text: 'fontFamily',
 						options: [{
+							text: 'Proportional Sans-Serif',
+							value: 4
+						}, {
 							text: 'Monospaced Serif',
 							value: 1
 						}, {
@@ -510,9 +562,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 						}, {
 							text: 'Monospaced Sans-Serif',
 							value: 3
-						}, {
-							text: 'Proportional Sans-Serif',
-							value: 4
 						}, {
 							text: 'Casual',
 							value: 5
@@ -557,14 +606,14 @@ extension.skeleton.main.layers.section.player.on.click = {
 						component: 'select',
 						text: 'fontSize',
 						options: [{
-							text: '50%',
-							value: -2
+							text: '100%',
+							value: 0
 						}, {
 							text: '75%',
 							value: -1
 						}, {
-							text: '100%',
-							value: 0
+							text: '50%',
+							value: -2
 						}, {
 							text: '150%',
 							value: 1
@@ -619,31 +668,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_window_color: {
 						component: 'select',
 						text: 'windowColor',
-						options: [{
-							text: 'white',
-							value: '#fff'
-						}, {
-							text: 'yellow',
-							value: '#ff0'
-						}, {
-							text: 'green',
-							value: '#0f0'
-						}, {
-							text: 'cyan',
-							value: '#0ff'
-						}, {
-							text: 'blue',
-							value: '#00f'
-						}, {
-							text: 'magenta',
-							value: '#f0f'
-						}, {
-							text: 'red',
-							value: '#f00'
-						}, {
-							text: 'black',
-							value: '#000'
-						}]
+						options: function () {
+							return extension.skeleton.main.layers.section.player.on.click.section_1.subtitles.on.click.subtitles_background_color.options;
+						}
 					},
 					subtitles_window_opacity: {
 						component: 'slider',
@@ -688,11 +715,27 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
+		mini_player: {
+			component: 'switch',
+			text: 'customMiniPlayer'
+		},
+		forced_play_video_from_the_beginning: {
+			component: 'switch',
+			text: 'forcedPlayVideoFromTheBeginning'
+		},
+		player_crop_chapter_titles: {
+			component: 'switch',
+			text: 'cropChapterTitles',
+			value: true
+		},
 		player_quality: {
 			component: 'select',
 			text: 'quality',
 			id: 'player_quality',
 			options: [{
+				text: 'disabled',
+				value: 'disabled'
+			}, {
 				text: 'auto',
 				value: 'auto'
 			}, {
@@ -717,7 +760,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 				text: '1440p',
 				value: 'hd1440'
 			}, {
-				text: '2160p',
+				text: '2160p (4K UHD)',
 				value: 'hd2160'
 			}, {
 				text: '2880p',
@@ -728,25 +771,31 @@ extension.skeleton.main.layers.section.player.on.click = {
 			}],
 			on: {
 				render: function () {
+					// (parseInt) relies on options.text following 'auto' always starting with a number to work
+					const options = this.childNodes[2].options,
+						index = this.childNodes[2].selectedIndex,
+						cutoff = 1080;
 					if (satus.storage.get('player_h264')) {
-						if (this.childNodes[2].selectedIndex >6) {
+						if (parseInt(options[index].text) > cutoff) {
 							this.childNodes[1].style = 'color: red!important; font-weight: bold;';
-							this.childNodes[1].textContent = '1080p';
+							this.childNodes[1].textContent = cutoff+'p';
 						} else {
-							this.childNodes[1].style = '';
-							this.childNodes[1].textContent = this.childNodes[2].options[this.childNodes[2].selectedIndex].text;
+							this.childNodes[1].removeAttribute('style');
+							this.childNodes[1].textContent = options[index].text;
 						}
-						for (let index =7; index <= 10; index++) {
-							this.childNodes[2].childNodes[index].style = 'color: red!important; font-weight: bold;';
+						for (const [i, node] of Array.from(options).entries()) {
+							if (parseInt(node.text) > cutoff) {
+								this.childNodes[2].childNodes[i].style = 'color: red!important; font-weight: bold;';
+							}
 						}
 					} else if (satus.storage.get('block_vp9') && satus.storage.get('block_h264')) {
 						this.childNodes[1].style = 'color: red!important; font-weight: bold;';
 						this.childNodes[1].textContent = 'Video disabled';
 					} else {
-						this.childNodes[1].style = '';
-						this.childNodes[1].textContent = this.childNodes[2].options[this.childNodes[2].selectedIndex].text;
-						for (let index =7; index <= 10; index++) {
-							this.childNodes[2].childNodes[index].style = '';
+						this.childNodes[1].removeAttribute('style');
+						this.childNodes[1].textContent = options[index].text;
+						for (const node of options) {
+							node.removeAttribute('style');
 						}
 					}
 				}
@@ -757,7 +806,20 @@ extension.skeleton.main.layers.section.player.on.click = {
 			text: 'qualityWithoutFocus',
 			id: 'player_quality_without_focus',
 			options: function () {
-				return [{value: 'auto', text: "Disabled"}].concat(extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.options.slice(1));
+				return extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.options;
+			},
+			on: {
+				render: function () {
+					extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.on.render.call(this);
+				}
+			}
+		},
+		/*
+		qualityWhenRunningOnBattery: {
+			component: 'select',
+			text: 'qualityWhenRunningOnBattery',
+			options: function () {
+				return extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.options;
 			},
 			on: {
 				render: function () {
@@ -765,19 +827,15 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
-		mini_player: {
+		whenBatteryIslowDecreaseQuality: {
 			component: 'switch',
-			text: 'customMiniPlayer'
+			text: 'whenBatteryIslowDecreaseQuality'
 		},
-		forced_play_video_from_the_beginning: {
+		pauseWhileIUnplugTheCharger: {
 			component: 'switch',
-			text: 'forcedPlayVideoFromTheBeginning'
+			text: 'pauseWhileIUnplugTheCharger'
 		},
-		player_crop_chapter_titles: {
-			component: 'switch',
-			text: 'cropChapterTitles',
-			value: true
-		},
+		*/
 		player_codecs: {
 			component: 'button',
 			text: 'codecs',
@@ -792,11 +850,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 						block_av1: {
 							component: 'switch',
 							text: 'blockAv1',
-							on: {
-								click: function () {
-									this.parentElement.skeleton.sanitize();
-								}
-							}
+							value: false
 						},
 						block_vp9: {
 							component: 'switch',
@@ -811,22 +865,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 											satus.render({
 												component: 'modal',
 												variant: 'confirm',
-												content: 'block_Codec_Alert_VP9',
-												ok: function () {
-													where.flip(true);
-													where.parentElement.skeleton.sanitize();
-												},
-												cancel: function () {
-												}
+												content: 'block_Codec_Alert_h264',
+												ok: function () { where.flip(true); },
+												cancel: function () {}
 											}, extension.skeleton.rendered);
-										} else {
-											this.flip(true);
-											this.parentElement.skeleton.sanitize();
-										}
-									} else {
-										this.flip(false);
-										this.parentElement.skeleton.sanitize();
-									}
+										} else this.flip(true);
+									} else this.flip(false);
 								}
 							}
 						},
@@ -844,32 +888,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 												component: 'modal',
 												variant: 'confirm',
 												content: 'block_Codec_Alert_h264',
-												ok: function () {
-													where.flip(true);
-													where.parentElement.skeleton.sanitize();
-												},
-												cancel: function () {
-												}
+												ok: function () { where.flip(true); },
+												cancel: function () {}
 											}, extension.skeleton.rendered);
-										} else {
-											this.flip(true);
-											this.parentElement.skeleton.sanitize();
-										}
-									} else {
-										this.flip(false);
-										this.parentElement.skeleton.sanitize();
-									}
+										} else this.flip(true);
+									} else this.flip(false);
 								}
-							}
-						},
-						sanitize: function () {
-							if (satus.storage.get('player_h264')) {
-								if ((!satus.storage.get('block_vp9') || !satus.storage.get('block_av1') && satus.storage.get('block_h264')) ||
-									(satus.storage.get('block_vp9') && satus.storage.get('block_av1') && satus.storage.get('block_h264'))) {
-									satus.storage.set('player_h264', false);
-								}
-							} else if (satus.storage.get('block_vp9') && satus.storage.get('block_av1') && !satus.storage.get('block_h264')) {
-								satus.storage.set('player_h264', true);
 							}
 						}
 					}
@@ -883,18 +907,27 @@ extension.skeleton.main.layers.section.player.on.click = {
 				},
 				on: {
 					render: function () {
-						var codecs = (satus.storage.get('block_h264') ? '' : 'h.264 ') + (satus.storage.get('block_vp9') ? '' : 'vp9 ') + (satus.storage.get('block_av1') ? '' : 'av1');
-
-						if (codecs.includes('h.264') || codecs.includes('vp9')) {
-							this.style = '';
-							this.textContent = codecs;
-						} else if (codecs) {
-							this.style = 'color: red!important; font-weight: bold;';
-							this.textContent = codecs;
+						if (satus.storage.get('block_vp9') && satus.storage.get('block_av1') && !satus.storage.get('block_h264')) {
+							satus.storage.set('player_h264', true);
 						} else {
+							satus.storage.remove('player_h264');
+						}
+
+						const codecs = (satus.storage.get('block_h264') ? '' : 'h.264 ')
+							+ (satus.storage.get('block_vp9') ? '' : 'vp9 ')
+							+ (satus.storage.get('block_av1') ? '' : 'av1');
+
+						this.style = '';
+						this.textContent = codecs;
+						if (codecs === 'av1') {
+							this.style = 'color: red!important; font-weight: bold;';
+						} else if (codecs ==='') {
 							this.style = 'color: red!important; font-weight: bold;';
 							this.textContent = 'none';
 						}
+						document.getElementById('player_quality').dispatchEvent(new CustomEvent('render'));
+						document.getElementById('player_quality_without_focus').dispatchEvent(new CustomEvent('render'));
+						//document.getElementById('quality_when_low_battery').dispatchEvent(new CustomEvent('render'));
 					}
 				}
 			}
@@ -907,14 +940,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 			custom: true,
 			on: {
 				click: function () {
-					let skeleton = this.parentNode.skeleton;
-					// refresh player_codecs/optimize_codec_for_hardware_acceleration elements when we change codecs
 					let refresh = function () {
-						document.getElementById('player_quality').dispatchEvent(new CustomEvent('render'));
+						// send signal for #player_codecs to refresh, will in turn redraw #player_quality/#player_quality_without_focus
+						//  when we change player_h264 directly
 						document.getElementById('player_codecs').dispatchEvent(new CustomEvent('render'));
-						document.getElementById('optimize_codec_for_hardware_acceleration').dispatchEvent(new CustomEvent('render'));
-						document.getElementById('player_quality_without_focus').dispatchEvent(new CustomEvent('render'));
-					}
+					};
+
 					if (this.dataset.value === 'false') {
 						let where = this;
 						satus.render({
@@ -926,7 +957,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 								where.flip(true);
 								satus.storage.set('block_vp9', true);
 								satus.storage.set('block_av1', true);
-								satus.storage.set('block_h264', false);
+								satus.storage.remove('block_h264');
 								refresh();
 							},
 							cancel: function () {
@@ -937,15 +968,15 @@ extension.skeleton.main.layers.section.player.on.click = {
 						// manually turn switch OFF
 						this.flip(false);
 						// reset all codecs to unlocked state
-						satus.storage.set('block_vp9', false);
-						satus.storage.set('block_av1', false);
-						satus.storage.set('block_h264', false);
+						satus.storage.remove('block_vp9');
+						satus.storage.remove('block_av1');
+						satus.storage.remove('block_h264');
 						refresh();
 					}
 				}
 			}
 		},
-		optimize_codec_for_hardware_acceleration: {
+		/*optimize_codec_for_hardware_acceleration: {
 			component: 'button',
 			text: 'Optimize Codec for hardware acceleration',
 			style: {
@@ -983,7 +1014,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					}
 				}
 			}
-		},
+		},*/
 		player_60fps: {
 			component: 'switch',
 			text: 'allow60fps',
@@ -1025,13 +1056,19 @@ extension.skeleton.main.layers.section.player.on.click = {
 		player_screenshot_save_as: {
 			component: 'select',
 			text: 'saveAs',
-			options: [{
-				text: 'file',
-				value: 'file'
-			}, {
-				text: 'clipboard',
-				value: 'clipboard'
-			}]
+			options: function () {
+				let options = [{
+					text: 'file',
+					value: 'file'
+				}];
+				if (typeof ClipboardItem == 'function') {
+					options.push({
+						text: 'clipboard',
+						value: 'clipboard'
+					});
+				}
+				return options;
+			}
 		},
 		player_fit_to_win_button: {
 			component: 'switch',
@@ -1063,28 +1100,28 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'section',
 			variant: 'card',
 			title: 'extraButtonsBelowThePlayer',
-							below_player_screenshot: {
-								component: 'switch',
-								text: 'screenshot',
-								value: true
-							},
-							below_player_pip: {
-								component: 'switch',
-								text: 'pictureInPicture',
-								value: true
-							},
-							below_player_loop: {
-								component: 'switch',
-								text: 'loop',
-								value: true
-							}
-						},
-						player_hide_controls_options: {
-							component: "button",
-							text: "hidePlayerControlsBarButtons",
-							on: {
-								click: 'main.layers.section.appearance.on.click.player.on.click.player_hide_controls_options.on.click'
-							}
-						},
-	}	
+			below_player_screenshot: {
+				component: 'switch',
+				text: 'screenshot',
+				value: true
+			},
+			below_player_pip: {
+				component: 'switch',
+				text: 'pictureInPicture',
+				value: true
+			},
+			below_player_loop: {
+				component: 'switch',
+				text: 'loop',
+				value: true
+			}
+		},
+		player_hide_controls_options: {
+			component: "button",
+			text: "hidePlayerControlsBarButtons",
+			on: {
+				click: 'main.layers.section.appearance.on.click.player.on.click.player_hide_controls_options.on.click'
+			}
+		},
+	}
 };

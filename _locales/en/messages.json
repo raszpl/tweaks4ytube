@@ -1,15 +1,45 @@
-{
+{   
+    "qualityWhenRunningOnBattery":{
+        "message": "Quality, when running on battery"
+    },
+    "pauseWhileIUnplugTheCharger":{
+        "message": "Pause when I unplug the charger" 
+    },
+    "whenBatteryIslowDecreaseQuality":{
+        "message": "Low battery: Decrease the quality"
+    },
+    "analytics": {
+        "message": "Analytics"
+    }, 
+    "purchase": {
+        "message": "Purchase"
+    },    
+    "join": {
+        "message": "Join"
+    },  
+    "improvedTubeSidePanel": {
+        "message": "ImprovedTube: Browser Sidepanel"
+    },
+    "cursorLighting": {
+        "message": "Dim Youtube's Pages, except what I mouse-over!"
+    },
+    "youtubesLight": {
+        "message": "YouTube's Light"
+    },
+	"popupAd": {
+        "message": "Pop-up ad: Hide"
+    },	
+	"hideWatchedVideos": {
+        "message": "Hide watched videos"
+    },
     "ambientLighting": {
-    "message": "Ambient lighting"
+        "message": "Ambient lighting"
     },
     "undoTheNewSidebar": {
         "message": "Undo the new sidebar!"
     },
     "hideLogo": {
-        "message": "Logo: Hide"
-    },
-    "2160p": {
-        "message": "2160p - 4K"
+        "message": "Logo: Hide!"
     },
     "about": {
         "message": "About"
@@ -120,7 +150,13 @@
         "message": "Auto"
     },
     "Auto_PiP_picture_in_picture": {
-        "message": "Auto-PiP (picture in picture)"
+        "message": "Auto-PiP (Picture in Picture)"
+    },
+    "playerAutoPipOutside": {
+        "message": "Auto-PiP only outside source Tab"
+    },
+    "PipRequiresUserInteraction": {
+        "message": "PiP requires recent User interaction with source page. This is Chrome Picture-in-Picture API limitations and we cant do anything to bypass it. Works best with Autoplay disabled and manual Play control or deliberately clicking somewhere on the page before switching Tabs."
     },
     "autoFullscreen": {
         "message": "Auto-fullscreen"
@@ -169,9 +205,6 @@
     },
     "block_Codec_Alert_h264": {
         "message": "You need either H.264 or VP9 enabled for Youtube to play videos."
-    },
-    "block_Codec_Alert_VP9": {
-        "message": "You need either VP9 or H.264 enabled for Youtube to play videos."
     },
     "blockAll": {
         "message": "Off (block or skip)"
@@ -612,7 +645,7 @@
         "message": "Hide Shorts on the home page"
     },
     "hideMore": {
-        "message": "hide 'more"
+        "message": "Hide '...'"
     },
     "hidePlayerControlsBar": {
         "message": "Hide player controls bar"
@@ -627,7 +660,7 @@
         "message": "Hide playlist"
     },
     "hideReport": {
-        "message": "Hide report"
+        "message": "Hide 'Report'"
     },
     "hideRightButtons": {
         "message": "Hide right buttons"
@@ -699,7 +732,7 @@
         "message": "ImprovedTube version"
     },
     "improveLogo": {
-        "message": "Logo: monochrome"
+        "message": "Logo: Monochrome!"
     },
     "increasePlaybackSpeed": {
         "message": "Increase playback speed"
@@ -744,7 +777,7 @@
         "message": "Light green"
     },
     "like": {
-        "message": "'Like'"
+        "message": "Like"
     },
     "liked": {
         "message": "Liked"
@@ -1092,13 +1125,16 @@
         "message": "Settings successfully imported"
     },
     "share": {
-        "message": "'Share'"
+        "message": "Share"
     },
     "shortcut_chapters": {
-        "message": "Show chapters Sidebar"
+        "message": "Chapter (Sidebar) On/Off"
     },
     "shortcut_screenshot": {
         "message": "Screenshot"
+    },
+    "shortcut_transcript": {
+        "message": "Transcript (Sidebar) On/Off"
     },
     "shortcuts": {
         "message": "Shortcuts"
@@ -1236,7 +1272,7 @@
         "message": "Toggle cards"
     },
     "toggleControls": {
-        "message": "Toggle player controls"
+        "message": "Toggle player controls Hiding"
     },
     "topChat": {
         "message": "Top chat"
@@ -1347,6 +1383,9 @@
         "message": "YouTube limits video quality to 1080p for h.264 codec"
     },
     "youtubesDark": {
-        "message": "YouTube's dark"
+        "message": "YouTube's Dark"
+    },
+    "pauseWhileIAmTypingOnYouTube": {
+        "message": "Pause when I'm typing on YouTube"
     }
 }

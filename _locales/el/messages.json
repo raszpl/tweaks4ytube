@@ -155,9 +155,6 @@
     "block_Codec_Alert_h264": {
       "message": "Χρειάζεστε είτε το H.264 είτε το VP9 ενεργοποιημένο για να αναπαραχθούν βίντεο στο Youtube."
     },
-    "block_Codec_Alert_VP9": {
-      "message": "Χρειάζεστε είτε το VP9 είτε το H.264 ενεργοποιημένο για να αναπαραχθούν βίντεο στο Youtube."
-    },
     "blockAll": {
       "message": "Απενεργοποίηση (Αποκλεισμός ή Παράβλεψη)"
     },
@@ -979,9 +976,6 @@
     "screen": {
       "message": "Οθόνη"
     },
-    "Screenshot": {
-      "message": "Στιγμιότυπο οθόνης"
-    },
     "screenshot": {
       "message": "Στιγμιότυπο οθόνης"
     },
@@ -1165,9 +1159,6 @@
     "trailerAutoplay": {
       "message": "Αυτόματη αναπαραγωγή τρέιλερ"
     },
-    "transcript": {
-      "message": "Αποσπάσματα"
-    },
     "Transcript": {
       "message": "Αποσπάσματα"
     },
@@ -1175,9 +1166,6 @@
       "message": "Μεταφράσεις"
     },
     "transparentBackground": {
-      "message": "Διαφανές φόντο"
-    },
-    "TransparentBackground": {
       "message": "Διαφανές φόντο"
     },
     "transparentColor": {

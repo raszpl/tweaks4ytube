@@ -24,7 +24,7 @@ extension.events.on('init', function (resolve) {
 	async: true
 });
 
-function bodyReady() {
+function bodyReady () {
 	if (extension.ready && extension.domReady) {
 		extension.features.addScrollToTop();
 		extension.features.font();
@@ -66,8 +66,7 @@ extension.inject([
 	'/js&css/web-accessible/www.youtube.com/shortcuts.js',
 	'/js&css/web-accessible/www.youtube.com/blocklist.js',
 	'/js&css/web-accessible/www.youtube.com/settings.js',
-	'/js&css/web-accessible/init.js',
-	'/js&css/web-accessible/mutations.js'
+	'/js&css/web-accessible/init.js'
 ], function () {
 	extension.ready = true;
 
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	bodyReady();
 });
-let prevRequestAction = "";
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	if (request.action === 'focus') {
 		extension.messages.send({
@@ -111,16 +110,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 		extension.messages.send({
 			deleteCookies: true
 		});
-	} else if (
-		request.action === "another-video-started-playing" &&
-		prevRequestAction === "new-tab-opened"
-	  ) {
-		console.log("Continue playing");
-	  } else if (request.action === "another-video-started-playing") {
+	} else if (request.action === "another-video-started-playing") {
 		extension.features.onlyOnePlayerInstancePlaying();
-	  }
-	
-	  prevRequestAction = request.action;
+	}
 });
 
 document.addEventListener('it-message-from-youtube', function () {
@@ -184,18 +176,19 @@ document.addEventListener('it-message-from-youtube', function () {
 			}
 		} else if (message.action === 'blocklist') {
 			if (!extension.storage.data.blocklist || typeof extension.storage.data.blocklist !== 'object') {
-				extension.storage.data.blocklist = {};
+				extension.storage.data.blocklist = {videos: {}, channels: {}};
 			}
 
-			switch(message.type) {
+			switch (message.type) {
 				case 'channel':
-					if (!extension.storage.data.blocklist.channels) {
+					if (!extension.storage.data.blocklist.channels || typeof extension.storage.data.blocklist.channels !== 'object') {
 						extension.storage.data.blocklist.channels = {};
 					}
 					if (message.added) {
 						extension.storage.data.blocklist.channels[message.id] = {
 							title: message.title,
-							preview: message.preview
+							preview: message.preview,
+							when: message.when
 						}
 					} else {
 						delete extension.storage.data.blocklist.channels[message.id];
@@ -203,12 +196,13 @@ document.addEventListener('it-message-from-youtube', function () {
 					break
 
 				case 'video':
-					if (!extension.storage.data.blocklist.videos) {
+					if (!extension.storage.data.blocklist.videos || typeof extension.storage.data.blocklist.videos !== 'object') {
 						extension.storage.data.blocklist.videos = {};
 					}
 					if (message.added) {
 						extension.storage.data.blocklist.videos[message.id] = {
-							title: message.title
+							title: message.title,
+							when: message.when
 						}
 					} else {
 						delete extension.storage.data.blocklist.videos[message.id];
@@ -249,6 +243,15 @@ document.addEventListener('it-message-from-youtube', function () {
 
 document.addEventListener('it-play', function (event) {
 	var videos = document.querySelectorAll('video');
-	 try {chrome.runtime.sendMessage({action: 'play'})} 
-       catch(error){console.log(error); setTimeout(function () { try { chrome.runtime.sendMessage({action: 'play'}, function (response) { console.log(response) } );  } catch { } }, 321) }
+	 try {
+		chrome.runtime.sendMessage({action: 'play'})
+	} catch (error) {
+		console.log(error); setTimeout(function () {
+			try {
+				chrome.runtime.sendMessage({action: 'play'}, function (response) {
+					console.log(response)
+				} );
+			} catch { }
+		}, 321)
+	}
 	   });
