@@ -41,7 +41,7 @@ var ImprovedTube = {
 		channel_link: /https:\/\/www.youtube.com\/@|((channel|user|c)\/)/
 	},
 	button_icons: {
-		blocklist:{
+		blocklist: {
 			svg: [['viewBox', '0 0 24 24']],
 			path: [['d', 'M12 2a10 10 0 100 20 10 10 0 000-20zm0 18A8 8 0 015.69 7.1L16.9 18.31A7.9 7.9 0 0112 20zm6.31-3.1L7.1 5.69A8 8 0 0118.31 16.9z']]
 		},
@@ -203,7 +203,7 @@ document.addEventListener('it-message-from-extension', function () {
 
 		// REACTION OR VISUAL FEEDBACK WHEN THE USER CHANGES A SETTING (already automated for our CSS features):
 		} else if (message.action === 'storage-changed') {
-			var camelized_key = message.camelizedKey;
+			let camelized_key = message.camelizedKey;
 
 			ImprovedTube.storage[message.key] = message.value;
 			if (['block_vp9', 'block_h264', 'block_av1'].includes(message.key)) {
@@ -286,7 +286,7 @@ document.addEventListener('it-message-from-extension', function () {
 
 				case 'forcedTheaterMode':
 					if (ImprovedTube.storage.forced_theater_mode === false && ImprovedTube.elements.ytd_watch && ImprovedTube.elements.player) {
-						var button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
+						const button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
 						if (button && ImprovedTube.elements.ytd_watch.theater === true) {
 							ImprovedTube.elements.ytd_watch.theater = false;
 							setTimeout(function () {

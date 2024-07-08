@@ -127,13 +127,12 @@ ImprovedTube.ytElementsHandler = function (node) {
 			this.howLongAgoTheVideoWasUploaded();
 			this.channelVideosCount();
 		}
-	}
-	 // else if (name === 'YTD-MENU-RENDERER' && node.classList.contains('ytd-video-primary-info-renderer')) {
+	//} else if (name === 'YTD-MENU-RENDERER' && node.classList.contains('ytd-video-primary-info-renderer')) {
 	// 	if (document.documentElement.dataset.pageType === 'video') {
 	// 		this.hideDetailButton(node.querySelector('#flexible-item-buttons').children);
 	// 	}
-	else if (name === 'YTD-PLAYLIST-HEADER-RENDERER' || (name === 'YTD-MENU-RENDERER' && node.classList.contains('ytd-playlist-panel-renderer'))) {
-		this.playlistPopup();
+	} else if (name === 'YTD-PLAYLIST-HEADER-RENDERER' || (name === 'YTD-MENU-RENDERER' && node.classList.contains('ytd-playlist-panel-renderer'))) {
+		this.playlistPopupUpdate();
 	} else if (name === 'YTD-SUBSCRIBE-BUTTON-RENDERER'
 		   || name === 'YT-SUBSCRIBE-BUTTON-VIEW-MODEL'
 		   || (name === 'YTD-BUTTON-RENDERER' && node.classList.contains('ytd-c4-tabbed-header-renderer'))) {
@@ -394,7 +393,6 @@ var timeUpdateInterval = null;
 var noTimeUpdate = null;
 
 ImprovedTube.playerOnTimeUpdate = function () {
-	var currentTime = Date.now();
 	if (!timeUpdateInterval) {
 		timeUpdateInterval = setInterval(function () {
 			if (ImprovedTube.video_src !== this.src) {
@@ -461,30 +459,13 @@ ImprovedTube.playerOnEnded = function (event) {
 ImprovedTube.onkeydown = function () {
 	ImprovedTube.pauseWhileTypingOnYoutube()
 	window.addEventListener('keydown', function () {
-		if (ImprovedTube.elements.player && ImprovedTube.elements.player.classList.contains('ad-showing') === false) {
-			ImprovedTube.user_interacted = true;
-		}
+		ImprovedTube.user_interacted = true;
 	}, true);
 };
 
-ImprovedTube.onmousedown = function () {
+ImprovedTube.onmousedown = function (event) {
 	window.addEventListener('mousedown', function (event) {
-		if (!ImprovedTube.user_interacted) {
-			setTimeout(function () {
-				ImprovedTube.user_interacted = true
-			}, 3000);
-			if (ImprovedTube.elements.player && ImprovedTube.elements.player.classList.contains('ad-showing') === false) {
-				var path = event.composedPath();
-				for (var i = 0, l = path.length; i < l; i++) {
-					if (path[i].className
-					// && path[i].className.indexOf
-                                        	&& (/html5-(main-video|video-container)|ytp-play-button/.test(path[i].className))
-					) {
-						ImprovedTube.user_interacted = true;
-					}
-				}
-			}
-		}
+		ImprovedTube.user_interacted = true;
 	}, true);
 };
 
