@@ -107,7 +107,6 @@ ImprovedTube.ytElementsHandler = function (node) {
 				this.playlistReverse();
 			}
 		}
-		this.playlistPopupUpdate();
 	} else if (name === 'YTD-GUIDE-SECTION-RENDERER') {
 		if (!this.elements.sidebar_section) {
 			this.elements.sidebar_section = node;
