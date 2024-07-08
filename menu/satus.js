@@ -518,11 +518,9 @@ satus.getProperty = function (object, string) {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # INDEX OF
 --------------------------------------------------------------*/
-
 satus.indexOf = function (child, parent) {
 	let index = 0;
 
@@ -536,11 +534,9 @@ satus.indexOf = function (child, parent) {
 
 	return index;
 };
-
 /*--------------------------------------------------------------
 # TO INDEX
 --------------------------------------------------------------*/
-
 satus.toIndex = function (index, child, parent) {
 	if (satus.isArray(parent)) {
 		parent.splice(index, 0, parent.splice(satus.indexOf(child, parent), 1)[0])
@@ -620,11 +616,9 @@ satus.on = function (element, listeners) {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # PARENTIFY
 --------------------------------------------------------------*/
-
 satus.parentify = function (parentObject, exclude) {
 	for (var key in parentObject) {
 		if (exclude.indexOf(key) === -1) {
@@ -800,6 +794,8 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 			this.components[camelizedTagName](element, skeleton);
 		}
 
+		// this needs work!!!
+		// make element name (property) the default text
 		this.text(element.childrenContainer, skeleton.text);
 		this.prepend(skeleton.before, element.childrenContainer);
 
@@ -845,7 +841,6 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 
 	return element;
 };
-
 /*--------------------------------------------------------------
 
 # STORAGE
@@ -854,7 +849,6 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 /*--------------------------------------------------------------
 # CLEAR
 --------------------------------------------------------------*/
-
 satus.storage.clear = function (callback) {
 	this.data = {};
 
@@ -864,37 +858,13 @@ satus.storage.clear = function (callback) {
 		if (callback) callback();
 	});
 };
-
 /*--------------------------------------------------------------
 # GET
 --------------------------------------------------------------*/
-
 satus.storage.get = function (key) {
-	var target = this.data;
-
-	if (typeof key !== 'string') {
-		return;
-	}
-
-	key = key.split('/').filter(function (value) {
-		return value != '';
-	});
-
-	for (var i = 0, l = key.length; i < l; i++) {
-		if (satus.isset(target[key[i]])) {
-			target = target[key[i]];
-		} else {
-			return undefined;
-		}
-	}
-
-	if (typeof target === 'function') {
-		return target();
-	} else {
-		return target;
-	}
+	if (callback) callback(key);
+	return this.data[key];
 };
-
 /*--------------------------------------------------------------
 # IMPORT
 --------------------------------------------------------------*/
@@ -918,69 +888,16 @@ satus.storage.import = function (keys, callback) {
 # REMOVE
 --------------------------------------------------------------*/
 satus.storage.remove = function (key, callback) {
-	var target = this.data;
-
-	if (typeof key !== 'string') {
-		return;
-	}
-
-	key = key.split('/').filter(function (value) {
-		return value != '';
+	delete this.data[key];
+	chrome.storage.local.remove(key, function () {
+		if (callback) callback();
 	});
-
-	for (var i = 0, l = key.length; i < l; i++) {
-		if (satus.isset(target[key[i]])) {
-			if (i === l - 1) {
-				delete target[key[i]];
-			} else {
-				target = target[key[i]];
-			}
-		} else {
-			return undefined;
-		}
-	}
-
-	if (key.length === 1) {
-		chrome.storage.local.remove(key[0]);
-	} else {
-		chrome.storage.local.set(this.data, function () {
-			satus.events.trigger('storage-remove');
-
-			if (callback) callback();
-		});
-	}
 };
-
 /*--------------------------------------------------------------
 # SET
 --------------------------------------------------------------*/
 satus.storage.set = function (key, value, callback) {
-	var target = this.data;
-
-	if (typeof key !== 'string') {
-		return;
-	}
-
-	key = key.split('/').filter(function (value) {
-		return value != '';
-	});
-
-	for (var i = 0, l = key.length; i < l; i++) {
-		var item = key[i];
-
-		if (i < l - 1) {
-
-			if (target[item]) {
-				target = target[item];
-			} else {
-				target[item] = {};
-
-				target = target[item];
-			}
-		} else {
-			target[item] = value;
-		}
-	}
+	this.data[key] = value;
 
 	chrome.storage.local.set({[key]: value}, function () {
 		satus.events.trigger('storage-set');
@@ -988,7 +905,6 @@ satus.storage.set = function (key, value, callback) {
 		if (callback) callback();
 	});
 };
-
 /*--------------------------------------------------------------
 # ON CHANGED
 --------------------------------------------------------------*/
@@ -999,17 +915,14 @@ satus.storage.onchanged = function (callback) {
 		}
 	});
 };
-
 /*--------------------------------------------------------------
 # LAST
 --------------------------------------------------------------*/
-
 satus.last = function (variable) {
 	if (this.isArray(variable) || this.isNodeList(variable) || variable instanceof HTMLCollection) {
 		return variable[variable.length - 1];
 	}
 };
-
 /*--------------------------------------------------------------
 
 # LOCALIZATION
@@ -1646,7 +1559,6 @@ satus.components.section = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> BASE
 --------------------------------------------------------------*/
-
 satus.components.base = function (component) {
 	component.baseProvider = component;
 	component.layers = [];
@@ -1756,7 +1668,6 @@ satus.components.layers = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> LIST
 --------------------------------------------------------------*/
-
 satus.components.list = function (component, skeleton) {
 	for (const item of skeleton.items) {
 		const li = component.createChildElement('div', 'item');
@@ -1775,7 +1686,6 @@ satus.components.list = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> COLOR PICKER
 --------------------------------------------------------------*/
-
 satus.components.colorPicker = function (component, skeleton) {
 	component.childrenContainer = component.createChildElement('div', 'content');
 
@@ -2873,7 +2783,6 @@ satus.user.os.name = function () {
 /*--------------------------------------------------------------
 # BITNESS
 --------------------------------------------------------------*/
-
 satus.user.os.bitness = function () {
 	if (navigator.appVersion.match(/(Win64|x64|x86_64|WOW64)/)) {
 		return '64-bit';
@@ -2881,7 +2790,6 @@ satus.user.os.bitness = function () {
 		return '32-bit';
 	}
 };
-
 /*--------------------------------------------------------------
 # BROWSER
 --------------------------------------------------------------*/
@@ -2889,7 +2797,6 @@ satus.user.os.bitness = function () {
 /*--------------------------------------------------------------
 # NAME
 --------------------------------------------------------------*/
-
 satus.user.browser.name = function () {
 	var user_agent = navigator.userAgent;
 	if (navigator.brave) {
@@ -2912,46 +2819,36 @@ satus.user.browser.name = function () {
 		return 'IE';
 	}
 };
-
 /*--------------------------------------------------------------
 # VERSION
 --------------------------------------------------------------*/
-
 satus.user.browser.version = function () {
 	var browser_name = satus.user.browser.name(),
 		browser_version = navigator.userAgent.match(new RegExp(browser_name + '/([0-9.]+)'));
 
 	return browser_version[1];
 };
-
 /*--------------------------------------------------------------
 # PLATFORM
 --------------------------------------------------------------*/
-
 satus.user.browser.platform = function () {
 	return navigator.platform;
 };
-
 /*--------------------------------------------------------------
 # MANIFEST
 --------------------------------------------------------------*/
-
 satus.user.browser.manifest = function () {
 	return chrome.runtime.getManifest() || {};
 };
-
 /*--------------------------------------------------------------
 # LANGUAGES
 --------------------------------------------------------------*/
-
 satus.user.browser.languages = function () {
 	return navigator.languages;
 };
-
 /*--------------------------------------------------------------
 # COOKIES
 --------------------------------------------------------------*/
-
 satus.user.browser.cookies = function () {
 	if (document.cookie) {
 		var random_cookie = 'nX6cMXKWsc';
@@ -2965,11 +2862,9 @@ satus.user.browser.cookies = function () {
 
 	return false;
 };
-
 /*--------------------------------------------------------------
 # JAVA
 --------------------------------------------------------------*/
-
 satus.user.browser.java = function () {
 	if (satus.isFunction(navigator.javaEnabled) && navigator.javaEnabled()) {
 		return true;
@@ -2977,11 +2872,9 @@ satus.user.browser.java = function () {
 		return false;
 	}
 };
-
 /*--------------------------------------------------------------
 # AUDIO
 --------------------------------------------------------------*/
-
 satus.user.browser.audio = function () {
 	var audio = document.createElement('audio'),
 		types = {

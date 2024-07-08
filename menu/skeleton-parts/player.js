@@ -778,7 +778,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					if (satus.storage.get('player_h264')) {
 						if (parseInt(options[index].text) > cutoff) {
 							this.childNodes[1].style = 'color: red!important; font-weight: bold;';
-							this.childNodes[1].textContent = '1080p';
+							this.childNodes[1].textContent = cutoff+'p';
 						} else {
 							this.childNodes[1].removeAttribute('style');
 							this.childNodes[1].textContent = options[index].text;
