@@ -27,34 +27,29 @@ ImprovedTube.autoplayDisable = function (videoElement) {
 				// channel homepage & !channel_trailer_autoplay
 				|| (this.storage.channel_trailer_autoplay === false && this.regex.channel.test(location.href)))) {
 
-			setTimeout(function () {
-				try {
-					player.pauseVideo();
-				} catch (error) {
-					console.log("autoplayDisable: Pausing"); videoElement.pause();
-				}
-			});
+			//setTimeout(function () { player.pauseVideo(); });
 		} else {
-			document.dispatchEvent(new CustomEvent('it-play'));
+			document.dispatchEvent(new CustomEvent('it-message-from-youtube', {'detail': {action: 'play'}}));
 		}
 	} else {
-		document.dispatchEvent(new CustomEvent('it-play'));
+		document.dispatchEvent(new CustomEvent('it-message-from-youtube', {'detail': {action: 'play'}}));
 	}
 };
 /*------------------------------------------------------------------------------
 FORCED PLAY VIDEO FROM THE BEGINNING
 ------------------------------------------------------------------------------*/
-ImprovedTube.forcedPlayVideoFromTheBeginning = function () {
+ImprovedTube.forcedPlayVideoFromTheBeginning = function (video) {
 	const player = this.elements.player,
-		video = this.elements.video,
+		//video = this.elements.video,
 		paused = video?.paused;
-
+	
 	if (player && video && this.storage.forced_play_video_from_the_beginning && location.pathname == '/watch') {
-		player.seekTo(0);
+		//console.log('trying to player.seekTo(0)');
+		//video.currentTime = 0;
+		//player.seekTo(0);
+		//video.currentTime = 0;
 		// restore previous paused state
-		if (paused) {
-			player.pauseVideo();
-		}
+		//if (paused) { player.pauseVideo(); }
 	}
 };
 /*------------------------------------------------------------------------------
@@ -88,7 +83,7 @@ ImprovedTube.enterPip = function (disable) {
 		video.requestPictureInPicture().then(() => {
 			if (video.paused) {
 				// manually send Play message to "Auto-pause while I'm not in the tab", paused PiP wont do it automatically.
-				document.dispatchEvent(new CustomEvent('it-play'));
+				document.dispatchEvent(new CustomEvent('it-message-from-youtube', {'detail': {action: 'play'}}));
 			}
 			return true;
 		}).catch((err) => console.error('playerAutoPip: Failed to enter Picture-in-Picture mode', err));
@@ -347,9 +342,7 @@ ImprovedTube.playerSubtitles = function () {
 				break
 
 			case 'disabled':
-				if (player.isSubtitlesOn()) {
-					player.toggleSubtitles();
-				}
+				if (player.isSubtitlesOn()) player.toggleSubtitles();
 				break
 		}
 	}
@@ -369,9 +362,7 @@ ImprovedTube.subtitlesLanguage = function () {
 			subtitlesState = player.isSubtitlesOn();
 			player.setOption('captions', 'track', matchedTrack);
 			// setOption forces Subtitles ON, restore state from before calling it.
-			if (!subtitlesState) {
-				player.toggleSubtitles();
-			}
+			if (!subtitlesState) player.toggleSubtitles();
 		}
 	}
 };
@@ -440,7 +431,7 @@ ImprovedTube.subtitlesUserSettings = function () {
 					break;
 			}
 
-			if (ytSettings?.hasOwnProperty(value)) {
+			if (Object.keys(ytSettings).includes(value)) {
 				ytSettings[value] = setting;
 			} else {
 				console.error('subtitlesUserSettings failed at: ', value, setting);
@@ -469,15 +460,21 @@ ImprovedTube.subtitlesDisableLyrics = function () {
 /*------------------------------------------------------------------------------
 UP NEXT AUTOPLAY
 ------------------------------------------------------------------------------*/
-ImprovedTube.upNextAutoplay = function () {
-	var option = this.storage.up_next_autoplay;
+ImprovedTube.upNextAutoplay = function (event) {
+	const option = this.storage.up_next_autoplay,
+		button = document.querySelector('.ytp-autonav-toggle-button');
+		
+	if (!button) return;
+	if ((option && button.getAttribute('aria-checked') === 'false')
+		|| (!option && button.getAttribute('aria-checked') === 'true')) {
 
-	if (this.isset(option)) {
-		var toggle = document.querySelector('.ytp-autonav-toggle-button');
-
-		if (toggle) {
-			if (option !== (toggle.getAttribute('aria-checked') === 'true')) {
-				toggle.click();
+		button.click();
+		// we only end up here when Video just Finished and up_next_autoplay
+		// had to make an adjustment. Only way to make that adjustment take effect is to revind a smidge and play() again.
+		if (event) {
+			if (event.target.duration === event.target.currentTime) {
+				event.target.currentTime -=0.1;
+				event.target.play();
 			}
 		}
 	}
@@ -486,7 +483,6 @@ ImprovedTube.upNextAutoplay = function () {
 ADS
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerAds = function (parent) {
-
 	let button = parent.querySelector('.ytp-ad-skip-button-modern.ytp-button,[class*="ytp-ad-skip-button"].ytp-button') || parent;
 	// TODO: Replace this with centralized video element pointer
 	let video = document.querySelector('.video-stream.html5-main-video') || false;
@@ -528,11 +524,12 @@ ImprovedTube.playerAutofullscreen = function () {
 QUALITY
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerQuality = function (quality = this.storage.player_quality) {
-	let player = this.elements.player;
+	const player = this.elements.player;
 	if (quality && quality !== 'disabled'
 		&& player && player.getAvailableQualityLevels
 		&& (!player.dataset.defaultQuality || player.dataset.defaultQuality != quality)) {
-		let available_quality_levels = player.getAvailableQualityLevels();
+
+		const available_quality_levels = player.getAvailableQualityLevels();
 		function closest (num, arr) {
 			let curr = arr[0];
 			let diff = Math.abs(num - curr);
@@ -547,9 +544,9 @@ ImprovedTube.playerQuality = function (quality = this.storage.player_quality) {
 		};
 
 		if (!available_quality_levels.includes(quality)) {
-			let label = ['tiny', 'small', 'medium', 'large', 'hd720', 'hd1080', 'hd1440', 'hd2160', 'hd2880', 'highres'];
-			let resolution = ['144', '240', '360', '480', '720', '1080', '1440', '2160', '2880', '4320'];
-			let availableresolutions = available_quality_levels.map(q => resolution[label.indexOf(q)]);
+			const label = ['tiny', 'small', 'medium', 'large', 'hd720', 'hd1080', 'hd1440', 'hd2160', 'hd2880', 'highres'],
+				resolution = ['144', '240', '360', '480', '720', '1080', '1440', '2160', '2880', '4320'],
+				availableresolutions = available_quality_levels.map(q => resolution[label.indexOf(q)]);
 			quality = label[resolution.indexOf(closest(resolution[label.indexOf(quality)], availableresolutions))];
 		}
 		player.setPlaybackQualityRange(quality);
@@ -580,7 +577,7 @@ ImprovedTube.playerQualityWithoutFocus = function () {
 	}
 };
 /*------------------------------------------------------------------------------
-BATTERY FEATURES;   PLAYER QUALITY BASED ON POWER STATUS
+BATTERY FEATURES; PLAYER QUALITY BASED ON POWER STATUS
 ------------------------------------------------------------------------------*/
 ImprovedTube.batteryFeatures = async function () {
 	if (ImprovedTube.storage.qualityWhenRunningOnBattery
@@ -626,7 +623,7 @@ FORCED VOLUME
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerVolume = function () {
 	if (this.storage.player_forced_volume === true) {
-		var volume = this.storage.player_volume;
+		let volume = this.storage.player_volume;
 
 		if (!this.isset(volume)) {
 			volume = 100;
@@ -663,14 +660,14 @@ LOUDNESS NORMALIZATION
 ------------------------------------------------------------------------------*/
 ImprovedTube.onvolumechange = function () {
 	if (document.querySelector('.ytp-volume-panel') && ImprovedTube.storage.player_loudness_normalization === false) {
-		var volume = Number(document.querySelector('.ytp-volume-panel').getAttribute('aria-valuenow'));
+		let volume = Number(document.querySelector('.ytp-volume-panel').getAttribute('aria-valuenow'));
 
 		this.volume = volume / 100;
 	}
 };
 
 ImprovedTube.playerLoudnessNormalization = function () {
-	var video = this.elements.video;
+	const video = this.elements.video;
 
 	if (video) {
 		video.removeEventListener('volumechange', this.onvolumechange);
@@ -679,7 +676,7 @@ ImprovedTube.playerLoudnessNormalization = function () {
 
 	if (this.storage.player_loudness_normalization === false) {
 		try {
-			var local_storage = localStorage['yt-player-volume'];
+			let local_storage = localStorage['yt-player-volume'];
 
 			if (this.isset(Number(this.storage.player_volume)) && this.storage.player_forced_volume === true) {
 				return;
@@ -711,9 +708,7 @@ ImprovedTube.screenshot = function () {
 
 	if (ImprovedTube.storage.embed_subtitle != false) {
 		let captionElements = document.querySelectorAll('.captions-text .ytp-caption-segment');
-		captionElements.forEach(function (caption) {
-			subText += caption.textContent.trim() + ' ';
-		});
+		captionElements.forEach(function (caption) { subText += caption.textContent.trim() + ' '; });
 
 		ImprovedTube.renderSubtitle(ctx, captionElements);
 	}
@@ -726,9 +721,7 @@ ImprovedTube.screenshot = function () {
 					'image/png': blob
 				})
 			])
-				.then(function () {
-					console.log("ImprovedTube: Screeeeeeenshot tada!");
-				})
+				.then(function () { console.log("ImprovedTube: Screeeeeeenshot tada!"); })
 				.catch(function (error) {
 					console.log('ImprovedTube screenshot: ', error);
 					alert('ImprovedTube Screenshot to Clipboard error. Details in Debug Console.');
@@ -744,34 +737,31 @@ ImprovedTube.screenshot = function () {
 };
 
 ImprovedTube.renderSubtitle = function (ctx, captionElements) {
-	if (ctx && captionElements) {
-		captionElements.forEach(function (captionElement, index) {
-			var captionText = captionElement.textContent.trim();
-			var captionStyles = window.getComputedStyle(captionElement);
+	if (!ctx || !captionElements) return;
+	captionElements.forEach(function (captionElement, index) {
+		const captionText = captionElement.textContent.trim(),
+			captionStyles = window.getComputedStyle(captionElement);
 
-			ctx.fillStyle = captionStyles.color;
-			ctx.font = captionStyles.font;
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'bottom';
-			var txtWidth = ctx.measureText(captionText).width;
-			var txtHeight = parseFloat(captionStyles.fontSize);
+		ctx.fillStyle = captionStyles.color;
+		ctx.font = captionStyles.font;
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'bottom';
+		const txtWidth = ctx.measureText(captionText).width,
+			txtHeight = parseFloat(captionStyles.fontSize),
+			xOfset = (ctx.canvas.width - txtWidth) / 2,
+			padding = 5, // Adjust the padding as needed
+			yofset = ctx.canvas.height - (captionElements.length - index) * (txtHeight + 2 * padding);
 
-			var xOfset = (ctx.canvas.width - txtWidth) / 2;
-
-			var padding = 5; // Adjust the padding as needed
-			var yofset = ctx.canvas.height - (captionElements.length - index) * (txtHeight + 2 * padding);
-
-			ctx.fillStyle = captionStyles.backgroundColor;
-			ctx.fillRect(xOfset - padding, yofset - txtHeight - padding, txtWidth + 2 * padding, txtHeight + 2 * padding);
-			ctx.fillStyle = captionStyles.color;
-			ctx.fillText(captionText, xOfset + txtWidth / 2, yofset);
-		});
-	}
+		ctx.fillStyle = captionStyles.backgroundColor;
+		ctx.fillRect(xOfset - padding, yofset - txtHeight - padding, txtWidth + 2 * padding, txtHeight + 2 * padding);
+		ctx.fillStyle = captionStyles.color;
+		ctx.fillText(captionText, xOfset + txtWidth / 2, yofset);
+	});
 };
 
 ImprovedTube.playerScreenshotButton = function () {
 	if (this.storage.player_screenshot_button === true) {
-		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
 			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
 		svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
@@ -796,41 +786,42 @@ ImprovedTube.playerRepeat = function () {
 		if (!/ad-showing/.test(ImprovedTube.elements.player.className)) {
 			ImprovedTube.elements.video.setAttribute('loop', '');
 		}
-	   //ImprovedTube.elements.buttons['it-repeat-styles'].style.opacity = '1';   //old class from version 3.x? that both repeat buttons could have
-		 	}, 200);
-}
+		//ImprovedTube.elements.buttons['it-repeat-styles'].style.opacity = '1';
+		//old class from version 3.x? that both repeat buttons could have
+	}, 200);
+};
 /*------------------------------------------------------------------------------
 REPEAT BUTTON
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerRepeatButton = function () {
-	if (this.storage.player_repeat_button === true) {
-		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+	if (this.storage.player_repeat_button) {
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
 			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 		svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
 		path.setAttributeNS(null, 'd', 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z');
 		svg.appendChild(path);
-		var transparentOrOn = 0.5; if (this.storage.player_always_repeat === true ) {
-			transparentOrOn = 1;
-		}
+		let transparentOrOn = 0.5;
+		if (this.storage.player_always_repeat === true ) transparentOrOn = 1;
 		this.createPlayerButton({
 			id: 'it-repeat-button',
 			child: svg,
 			opacity: transparentOrOn,
 			onclick: function () {
-				var video = ImprovedTube.elements.video;
+				const video = ImprovedTube.elements.video;
 				function matchLoopState (opacity) {
-					var thisButton = document.querySelector('#it-repeat-button');
+					const thisButton = document.querySelector('#it-repeat-button');
 					thisButton.style.opacity = opacity;
 					if (ImprovedTube.storage.below_player_loop !== false) {
-						var otherButton = document.querySelector('#it-below-player-loop');
+						const otherButton = document.querySelector('#it-below-player-loop');
 						otherButton.children[0].style.opacity = opacity;
 					}
-				}		if (video.hasAttribute('loop')) {
+				}
+				if (video.hasAttribute('loop')) {
 					video.removeAttribute('loop');
-					matchLoopState('.5')
+					matchLoopState('.5');
 				} else if (!/ad-showing/.test(ImprovedTube.elements.player.className)) {
 					video.setAttribute('loop', '');
-					matchLoopState('1')
+					matchLoopState('1');
 				}
 			},
 			title: 'Repeat',
@@ -841,8 +832,8 @@ ImprovedTube.playerRepeatButton = function () {
 ROTATE
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerRotateButton = function () {
-	if (this.storage.player_rotate_button === true) {
-		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+	if (this.storage.player_rotate_button) {
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
 			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
 		svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
@@ -855,9 +846,9 @@ ImprovedTube.playerRotateButton = function () {
 			child: svg,
 			opacity: 0.85,
 			onclick: function () {
-				var player = ImprovedTube.elements.player,
-					video = ImprovedTube.elements.video,
-					rotate = Number(document.body.dataset.itRotate) || 0,
+				const player = ImprovedTube.elements.player,
+					video = ImprovedTube.elements.video;
+				let rotate = Number(document.body.dataset.itRotate) || 0,
 					transform = '';
 
 				rotate += 90;
@@ -871,13 +862,13 @@ ImprovedTube.playerRotateButton = function () {
 				transform += 'rotate(' + rotate + 'deg)';
 
 				if (rotate == 90 || rotate == 270) {
-					var is_vertical_video = video.videoHeight > video.videoWidth;
+					const is_vertical_video = video.videoHeight > video.videoWidth;
 
 					transform += ' scale(' + (is_vertical_video ? player.clientWidth : player.clientHeight) / (is_vertical_video ? player.clientHeight : player.clientWidth) + ')';
 				}
 
 				if (!ImprovedTube.elements.buttons['it-rotate-styles']) {
-					var style = document.createElement('style');
+					const style = document.createElement('style');
 
 					ImprovedTube.elements.buttons['it-rotate-styles'] = style;
 
@@ -949,7 +940,7 @@ function createOverlay () {
 
 ImprovedTube.playerCinemaModeButton = function () {
 	if (this.storage.player_cinema_mode_button && (/watch\?/.test(location.href))) {
-		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
 			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
 		svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
@@ -964,7 +955,7 @@ ImprovedTube.playerCinemaModeButton = function () {
 			// position: "right", // using right only works when we also have fit to window button enabled for some reason
 			opacity: 0.64,
 			onclick: function () {
-				var player = xpath('//*[@id="movie_player"]/div[1]/video')[0].parentNode.parentNode
+				const player = xpath('//*[@id="movie_player"]/div[1]/video')[0].parentNode.parentNode
 				// console.log(player)
 				if (player.style.zIndex == 10000) {
 					player.style.zIndex = 1;
@@ -1029,18 +1020,14 @@ ImprovedTube.playerCinemaModeEnable = function () {
 HAMBURGER MENU
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerHamburgerButton = function () {
-	if (this.storage.player_hamburger_button === true) {
+	if (this.storage.player_hamburger_button) {
 		const videoPlayer = document.querySelector('.html5-video-player');
 
-		if (!videoPlayer) {
-			return;
-		}
+		if (!videoPlayer) return;
 
 		const controlsContainer = videoPlayer.querySelector('.ytp-right-controls');
 
-		if (!controlsContainer) {
-			return;
-		}
+		if (!controlsContainer) return;
 
 		let hamburgerMenu = document.querySelector('.custom-hamburger-menu');
 		if (!hamburgerMenu) {
@@ -1083,49 +1070,45 @@ ImprovedTube.playerHamburgerButton = function () {
 POPUP PLAYER
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerPopupButton = function () {
-	if (this.storage.player_popup_button === true && location.href.indexOf('youtube.com/embed') === -1 ) {
-		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	//if (this.storage.player_popup_button) {
+	if (this.storage.player_popup_button && location.href.indexOf('youtube.com/embed') === -1 ) {
+		const player = this.elements.player,
+			video = this.elements.video,
+			controls = this.elements.player_left_controls;
+		let button = controls.parentNode?.querySelector("#it-popup-player-button");
+		
+		if (!player || !video || !controls) {
+			console.error('playerPopupButton: need player with valid controls and video element');
+			return;
+		}
+		
+		if (button) return; // skip button creation if one already exists
 
-		svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
-		path.setAttributeNS(null, 'd', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z');
-
-		svg.appendChild(path);
-
-		this.createPlayerButton({
+		button = this.createIconButton({
+			type: 'playerPopup',
 			id: 'it-popup-player-button',
-			child: svg,
-			opacity: 0.8,
+			className: 'ytp-button it-player-button',
+			tooltip: 'Popup',
 			onclick: function () {
-				"use strict";
-				const ytPlayer = ImprovedTube.elements.player;
-				ytPlayer.pauseVideo();
-				const videoID = location.search.match(ImprovedTube.regex.video_id)[1],
-					listMatch = location.search.match(ImprovedTube.regex.playlist_id),
-					popup = window.open(
-						`${location.protocol}//www.youtube.com/embed/${videoID}?start=${parseInt(ytPlayer.getCurrentTime())}&autoplay=${ImprovedTube.storage.player_autoplay_disable ? '0' : '1'}${listMatch?`&list=${listMatch[1]}`:''}`,
-						'_blank',
-						`directories=no,toolbar=no,location=no,menubar=no,status=no,titlebar=no,scrollbars=no,resizable=no,width=${ytPlayer.offsetWidth / 3},height=${ytPlayer.offsetHeight / 3}`
-					);
-				if (popup && listMatch) {
-					//! If the video is not in the playlist or not within the first 200 entries, then it automatically selects the first video in the list.
-					popup.addEventListener('load', function () {
-						"use strict";
-						//~ check if the video ID in the link of the video title matches the original video ID in the URL and if not remove the playlist from the URL (reloads the page).
-						const videoLink = this.document.querySelector('div#player div.ytp-title-text>a[href]');
-						if (videoLink && videoLink.href.match(ImprovedTube.regex.video_id)[1] !== videoID) this.location.search = this.location.search.replace(/(\?)list=[^&]+&|&list=[^&]+/, '$1');
-					}, {passive: true, once: true});
-				}
-				//~ change focused tab to URL-less popup
+				const videoID = location.href.match(ImprovedTube.regex.video_id)?.[1],
+					playlistID = location.href.match(ImprovedTube.regex.playlist_id)?.[1],
+					url = location.protocol + '//www.youtube.com/embed/' + videoID
+						+ '?autoplay=' + (video.paused ? '0' : '1')
+						+ (video.currentTime > 5 ? '&start=' + parseInt(video.currentTime) : '')
+						+ (playlistID ? '&list=' + playlistID : '');
+
+				if (!videoID) return; // no clicking for you! run away
+
+				player.pauseVideo();
 				ImprovedTube.messages.send({
-					action: 'fixPopup',
-					width: ytPlayer.offsetWidth * 0.75,
-					height: ytPlayer.offsetHeight * 0.75,
-					title: document.title
+					action: 'popup',
+					url: url,
+					width: parseInt(player.offsetWidth * 0.75),
+					height: parseInt(player.offsetHeight * 0.75)
 				});
-			},
-			title: 'Popup'
+			}
 		});
+		controls.insertBefore(button, controls.childNodes[3]);
 	}
 };
 /*------------------------------------------------------------------------------
@@ -1181,9 +1164,9 @@ ImprovedTube.playerControls = function () {
 		player.onmousemove = null;
 	}
 };
-/*#  HIDE VIDEO TITLE IN FULLSCREEN	*/ // Easier with CSS only (see player.css)
+/*# HIDE VIDEO TITLE IN FULLSCREEN */ // Easier with CSS only (see player.css)
 //ImprovedTube.hideVideoTitleFullScreen = function (){ if (ImprovedTube.storage.hide_video_title_fullScreen === true) {
-//document.addEventListener('fullscreenchange', function (){ document.querySelector(".ytp-title-text > a")?.style.setProperty('display', 'none');   }) }};
+//document.addEventListener('fullscreenchange', function (){ document.querySelector(".ytp-title-text > a")?.style.setProperty('display', 'none'); }) }};
 
 /*------------------------------------------------------------------------------
 CUSTOM MINI-PLAYER
@@ -1531,7 +1514,7 @@ ImprovedTube.miniPlayer = function () {
 CUSTOM PAUSE FUNCTIONS
 ------------------------------------------------------------------------------*/
 ImprovedTube.pauseWhileTypingOnYoutube = function () {
-	if (ImprovedTube.storage.pause_while_typing_on_youtube === true) {
+	if (ImprovedTube.storage.pause_while_typing_on_youtube) {
 		var timeoutId; // Declare a variable to hold the timeout ID
 
 		// Add event listener to the whole document
@@ -1539,19 +1522,16 @@ ImprovedTube.pauseWhileTypingOnYoutube = function () {
 		// Check on the storage for pause_while_typing_on_youtube_storage is false
 
 			// If player is NOT in the viewport, return
-			if (!isPlayerInViewport()) {
-				return;
-			}
+			if (!isPlayerInViewport()) return;
 
 			var player = ImprovedTube.elements.player;
 
 			if (player) {
-				if (
-					(/^[a-z0-9]$/i.test(e.key) || e.key === "Backspace") &&
-				!(e.ctrlKey && (e.key === "c" || e.key === "x" || e.key === "a")) &&
-				( document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA" || document.activeElement.tagName === "DIV" )) {
-				// Pause the video
-				// Check if player is paused
+				if ((/^[a-z0-9]$/i.test(e.key) || e.key === "Backspace")
+					&& !(e.ctrlKey && (e.key === "c" || e.key === "x" || e.key === "a"))
+					&& (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA" || document.activeElement.tagName === "DIV" )) {
+					// Pause the video
+					// Check if player is paused
 					if (!player.paused) {
 						player.pauseVideo();
 					}
@@ -1586,6 +1566,5 @@ ImprovedTube.pauseWhileTypingOnYoutube = function () {
 			}
 			return false;
 		}
-
 	}
 };
