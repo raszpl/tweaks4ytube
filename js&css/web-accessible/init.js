@@ -1,11 +1,7 @@
 /*--------------------------------------------------------------
 >>> INITIALIZATION
 --------------------------------------------------------------*/
-ImprovedTube.messages.create();
-ImprovedTube.messages.listener();
-if (document.body) {
-	ImprovedTube.childHandler(document.body);
-}
+if (document.body) { ImprovedTube.childHandler(document.body); }
 
 ImprovedTube.observer = new MutationObserver(function (mutationList) {
 
