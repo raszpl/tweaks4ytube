@@ -1283,8 +1283,8 @@
     "trailerAutoplay": {
         "message": "Trailer autoplay"
     },
-    "Transcript": {
-        "message": "Transcript"
+    "transcript": {
+        "message": "Transcript (sidebar) On/Off"
     },
     "translations": {
         "message": "Translations"
