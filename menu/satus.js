@@ -255,7 +255,6 @@ satus.isNodeList = function (t) { return t instanceof NodeList; };
 satus.isBoolean = function (t) { return (t === false || t === true); };
 /*---LOG------------------------------------------------------*/
 satus.log		 = function () { console.log.apply(null, arguments);};
-
 /*--------------------------------------------------------------
 
 # DOM
@@ -899,6 +898,7 @@ satus.storage.remove = function (key, callback) {
 --------------------------------------------------------------*/
 satus.storage.set = function (key, value, callback) {
 	this.data[key] = value;
+
 	chrome.storage.local.set({[key]: value}, function () {
 		satus.events.trigger('storage-set');
 
@@ -1066,6 +1066,7 @@ satus.components.modal = function (component, skeleton) {
 	if (satus.isset(content)) {
 		component.surface.content = component.surface.createChildElement('p', 'content');
 
+		//modal 'content' can be a function
 		if (satus.isFunction(content)) content = content();
 		if (satus.isObject(content)) {
 			satus.render(content, component.surface.content);
@@ -3000,7 +3001,8 @@ satus.user.device.cores = function () {
 satus.user.device.touch = function () {
 	var result = {};
 
-	if (Object.keys(window).includes('ontouchstart') ||
+	if (
+		Object.keys(window).includes('ontouchstart') ||
 		window.DocumentTouch && document instanceof window.DocumentTouch ||
 		navigator.maxTouchPoints > 0 ||
 		window.navigator.msMaxTouchPoints > 0
