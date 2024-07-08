@@ -941,9 +941,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 			on: {
 				click: function () {
 					let refresh = function () {
-							// send signal for #player_codecs to refresh, will in turn redraw #player_quality/#player_quality_without_focus
-							//  when we change player_h264 directly
-							document.getElementById('player_codecs').dispatchEvent(new CustomEvent('render'));
+						// send signal for #player_codecs to refresh, will in turn redraw #player_quality/#player_quality_without_focus
+						//  when we change player_h264 directly
+						document.getElementById('player_codecs').dispatchEvent(new CustomEvent('render'));
 					};
 
 					if (this.dataset.value === 'false') {
