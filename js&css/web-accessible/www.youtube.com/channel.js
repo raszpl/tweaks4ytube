@@ -26,7 +26,7 @@ ImprovedTube.channelDefaultTab = function (a) {
 ImprovedTube.channelPlayAllButton = function () {
 	if (ImprovedTube.regex.channel.test(location.pathname)) {
 		if (this.storage.channel_play_all_button) {
-			const container = document.querySelector('ytd-channel-sub-menu-renderer #primary-items') 
+			const container = document.querySelector('ytd-channel-sub-menu-renderer #primary-items')
 					|| document.querySelector('ytd-two-column-browse-results-renderer #chips-content'),
 				playlistUrl = document.querySelector('ytd-app')?.__data?.data?.response?.metadata?.channelMetadataRenderer?.externalId?.substring(2);
 
@@ -36,11 +36,11 @@ ImprovedTube.channelPlayAllButton = function () {
 				return;
 			}
 			const button = this.createIconButton({
-					type: 'playAll',
-					className: 'it-play-all-button',
-					text: 'Play all',
-					href: '/playlist?list=UU' + playlistUrl
-					});
+				type: 'playAll',
+				className: 'it-play-all-button',
+				text: 'Play all',
+				href: '/playlist?list=UU' + playlistUrl
+			});
 			container.appendChild(button);
 		} else {
 			document.querySelector('.it-play-all-button')?.remove();
@@ -55,19 +55,21 @@ var compact = compact || {}
 ImprovedTube.channelCompactTheme = function () {
 	compact.eventHandlerFns = compact.eventHandlerFns || []
 	compact.styles = compact.styles || []
-  if (this.storage.channel_compact_theme === true) {
+	if (this.storage.channel_compact_theme === true) {
 		compact.hasApplied = true
 		initialLoad();
 		document.querySelector("#sections #items") ? styleWithListeners() : styleWithInterval();
-  }
-	else if (compact.hasApplied) { //cleanup
-		try {clearInterval(compact.listener)} 
-		catch (err) {console.log("ERR: We couldn't clear listener. Reload page")}
-    if (compact.eventHandlerFns.length) removeListeners();
+	} else if (compact.hasApplied) { //cleanup
+		try {
+			clearInterval(compact.listener)
+		} catch (err) {
+			console.log("ERR: We couldn't clear listener. Reload page")
+		}
+		if (compact.eventHandlerFns.length) removeListeners();
 		if (compact.styles.length) removeStyles()
 		compact = {}
 	}
-	function styleWithInterval() {
+	function styleWithInterval () {
 		compact.listener = setInterval(() => {
 			let item = document.querySelector(`#sections ytd-guide-section-renderer:nth-child(4) #items`)
 			if (item) {
@@ -77,7 +79,7 @@ ImprovedTube.channelCompactTheme = function () {
 		}, 250)
 	}
 
-	function styleWithListeners() {
+	function styleWithListeners () {
 		compact.parents = []
 		compact.subs = []
 		for (let i = 0; i <= 2; i++) {
@@ -92,8 +94,7 @@ ImprovedTube.channelCompactTheme = function () {
 				if (!isCompact) {
 					sub.style.display = "none"
 					isCompact = true
-				}
-				else {
+				} else {
 					sub.style.display = ""
 					isCompact = false
 				}
@@ -105,8 +106,8 @@ ImprovedTube.channelCompactTheme = function () {
 		}
 		removeStyles();
 	}
-	
-	function removeListeners(){ // EventListeners 
+
+	function removeListeners () { // EventListeners
 		for (let i = 0; i <= 2; i++) {
 			const parent = compact.parents[i]
 			const sub = compact.subs[i]
@@ -116,27 +117,27 @@ ImprovedTube.channelCompactTheme = function () {
 		compact.eventHandlerFns = []
 	}
 
-	function initialLoad() {
-    for (let i = 0; i <= 2; i++) {
-      let isCompact = localStorage.getItem(`ImprovedTube-compact-${i + 2}`) === "true"
+	function initialLoad () {
+		for (let i = 0; i <= 2; i++) {
+			let isCompact = localStorage.getItem(`ImprovedTube-compact-${i + 2}`) === "true"
 			isCompact ? appendStyle(i) : (compact.styles[i] = null);
-    }
-  }
+		}
+	}
 
-  function appendStyle(index) { // adds style tag
-    const cssRules = `
+	function appendStyle (index) { // adds style tag
+		const cssRules = `
 			#sections > ytd-guide-section-renderer:nth-child(${index + 2}) > #items{
 				display:none;
 			};`;
-    const style = document.createElement("style");
-    style.appendChild(document.createTextNode(cssRules));
-    compact.styles[index] = style;
-    document.head.appendChild(compact.styles[index]);
-  }
+		const style = document.createElement("style");
+		style.appendChild(document.createTextNode(cssRules));
+		compact.styles[index] = style;
+		document.head.appendChild(compact.styles[index]);
+	}
 
-	function removeStyles(){ // styles tags
-		for (let i = 0; i <= compact.styles.length; i++){
-			if (compact.styles[i] && compact.styles[i].parentNode) { 
+	function removeStyles () { // styles tags
+		for (let i = 0; i <= compact.styles.length; i++) {
+			if (compact.styles[i] && compact.styles[i].parentNode) {
 				document.head.removeChild(compact.styles[i]);
 			}
 		}

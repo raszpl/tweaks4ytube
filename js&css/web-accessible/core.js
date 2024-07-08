@@ -41,7 +41,7 @@ var ImprovedTube = {
 		channel_link: /https:\/\/www.youtube.com\/@|((channel|user|c)\/)/
 	},
 	button_icons: {
-		blocklist:{
+		blocklist: {
 			svg: [['viewBox', '0 0 24 24']],
 			path: [['d', 'M12 2a10 10 0 100 20 10 10 0 000-20zm0 18A8 8 0 015.69 7.1L16.9 18.31A7.9 7.9 0 0112 20zm6.31-3.1L7.1 5.69A8 8 0 0118.31 16.9z']]
 		},
@@ -99,7 +99,7 @@ CODEC || 30FPS
 	file to patch HTMLMediaElement before YT player uses it.
 --------------------------------------------------------------*/
 if (localStorage['it-codec'] || localStorage['it-player30fps']) {
-	function overwrite(self, callback, mime) {
+	function overwrite (self, callback, mime) {
 		if (localStorage['it-codec']) {
 			var re = new RegExp(localStorage['it-codec']);
 			// /webm|vp8|vp9|av01/
@@ -181,7 +181,8 @@ document.addEventListener('it-message-from-extension', function () {
 			if (ImprovedTube.storage.block_vp9 || ImprovedTube.storage.block_av1 || ImprovedTube.storage.block_h264) {
 				let atlas = {block_vp9:'vp9|vp09', block_h264:'avc1', block_av1:'av01'},
 					codec = Object.keys(atlas).reduce(function (all, key) {
-					return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all}, '');
+						return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all
+					}, '');
 				if (localStorage['it-codec'] != codec) {
 					localStorage['it-codec'] = codec;
 				}
@@ -201,13 +202,14 @@ document.addEventListener('it-message-from-extension', function () {
 
 		// REACTION OR VISUAL FEEDBACK WHEN THE USER CHANGES A SETTING (already automated for our CSS features):
 		} else if (message.action === 'storage-changed') {
-			var camelized_key = message.camelizedKey;
+			let camelized_key = message.camelizedKey;
 
 			ImprovedTube.storage[message.key] = message.value;
 			if (['block_vp9', 'block_h264', 'block_av1'].includes(message.key)) {
 				let atlas = {block_vp9:'vp9|vp09', block_h264:'avc1', block_av1:'av01'}
 				localStorage['it-codec'] = Object.keys(atlas).reduce(function (all, key) {
-					return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all}, '');
+					return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all
+				}, '');
 				if (!localStorage['it-codec']) {
 					localStorage.removeItem('it-codec');
 				}
@@ -220,7 +222,7 @@ document.addEventListener('it-message-from-extension', function () {
 				}
 			}
 
-			switch(camelized_key) {
+			switch (camelized_key) {
 				case 'blocklist':
 				case 'blocklistActivate':
 					ImprovedTube.blocklistInit();
@@ -246,9 +248,13 @@ document.addEventListener('it-message-from-extension', function () {
 
 				case 'description':
 					if (ImprovedTube.storage.description === "expanded" || ImprovedTube.storage.description === "classic_expanded") {
-						try{document.querySelector("#more").click() || document.querySelector("#expand").click();} catch{}
+						try {
+							document.querySelector("#more").click() || document.querySelector("#expand").click();
+						} catch {}
 					} else if (ImprovedTube.storage.description === "normal" || ImprovedTube.storage.description === "classic") {
-						try{document.querySelector("#less").click() || document.querySelector("#collapse").click();} catch{}
+						try {
+							document.querySelector("#less").click() || document.querySelector("#collapse").click();
+						} catch {}
 					}
 					break
 
@@ -279,10 +285,12 @@ document.addEventListener('it-message-from-extension', function () {
 
 				case 'forcedTheaterMode':
 					if (ImprovedTube.storage.forced_theater_mode === false && ImprovedTube.elements.ytd_watch && ImprovedTube.elements.player) {
-						var button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
+						const button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
 						if (button && ImprovedTube.elements.ytd_watch.theater === true) {
 							ImprovedTube.elements.ytd_watch.theater = false;
-							setTimeout(function () { button.click();}, 100);
+							setTimeout(function () {
+								button.click();
+							}, 100);
 						}
 					}
 					break
@@ -390,13 +398,16 @@ document.addEventListener('it-message-from-extension', function () {
 				case 'subtitlesBackgroundOpacity':
 					ImprovedTube.subtitlesUserSettings();
 					break
-				
+
 				case 'playerHideControls':
 					ImprovedTube.playerControls();
 					break
 				case 'playerlistUpNextAutoplay':
-					if (this.storage.playlist_up_next_autoplay !== false) { 
-						if (playlistData.currentIndex != playlistData.localCurrentIndex) { playlistData.currentIndex = playlistData.localCurrentIndex;} }
+					if (this.storage.playlist_up_next_autoplay !== false) {
+						if (playlistData.currentIndex != playlistData.localCurrentIndex) {
+							playlistData.currentIndex = playlistData.localCurrentIndex;
+						}
+					}
 					break
 			}
 
@@ -404,7 +415,9 @@ document.addEventListener('it-message-from-extension', function () {
 			if (message.key.startsWith('shortcut_')) camelized_key = 'shortcuts';
 
 			if (ImprovedTube[camelized_key]) {
-				try{ImprovedTube[camelized_key]()}catch{};
+				try {
+					ImprovedTube[camelized_key]()
+				} catch {};
 			}
 		} else if (message.focus === true && ImprovedTube.elements.player) {
 			ImprovedTube.focus = true;
@@ -421,18 +434,14 @@ document.addEventListener('it-message-from-extension', function () {
 				ImprovedTube.played_before_blur = ImprovedTube.elements.player.getPlayerState() === 1;
 				ImprovedTube.elements.player.pauseVideo();
 			}
-		} else if (message.hasOwnProperty('setVolume')) {
-			if (ImprovedTube.elements.player) {
-				ImprovedTube.elements.player.setVolume(message.setVolume);
-			}
-		} else if (message.hasOwnProperty('setPlaybackSpeed')) {
-			if (ImprovedTube.elements.player) {
-				ImprovedTube.elements.player.setPlaybackRate(message.setPlaybackSpeed);
-			}
+		} else if (message.setVolume) {
+			ImprovedTube.elements.player?.setVolume(message.setVolume);
+		} else if (message.setPlaybackSpeed) {
+			ImprovedTube.playbackSpeed(message.setPlaybackSpeed);
 		} else if (message.deleteCookies === true) {
 			ImprovedTube.deleteYoutubeCookies();
-		} else if (message.hasOwnProperty('responseOptionsUrl')) {
-			var iframe = document.querySelector('.it-button__iframe');
+		} else if (message.responseOptionsUrl) {
+			const iframe = document.querySelector('.it-button__iframe');
 
 			if (iframe) {
 				iframe.src = message.responseOptionsUrl;
