@@ -36,9 +36,19 @@ var ImprovedTube = {
 		channel_home_page_postfix: /\/(featured)?\/?$/,
 		thumbnail_quality: /(default\.jpg|mqdefault\.jpg|hqdefault\.jpg|hq720\.jpg|sddefault\.jpg|maxresdefault\.jpg)+/,
 		video_id: /(?:[?&]v=|embed\/|shorts\/)([^&?]{11})/,
-		video_time: /[?&](?:t|start)=([^&]+)/,
+		video_time: /[?&](?:t|start)=([^&]+)|#t=(\w+)/,
 		playlist_id: /[?&]list=([^&]+)/,
 		channel_link: /https:\/\/www.youtube.com\/@|((channel|user|c)\/)/
+	},
+	button_icons: {
+		blocklist: {
+			svg: [['viewBox', '0 0 24 24']],
+			path: [['d', 'M12 2a10 10 0 100 20 10 10 0 000-20zm0 18A8 8 0 015.69 7.1L16.9 18.31A7.9 7.9 0 0112 20zm6.31-3.1L7.1 5.69A8 8 0 0118.31 16.9z']]
+		},
+		playAll: {
+			svg: [['viewBox', '0 0 24 24']],
+			path: [['d', 'M6,4l12,8L6,20V4z']]
+		}
 	},
 	video_src: false,
 	initialVideoUpdateDone: false,
@@ -48,6 +58,20 @@ var ImprovedTube = {
 	played_before_blur: false,
 	played_time: 0,
 	user_interacted: false,
+	input: {
+		listening: {},
+		listeners: {},
+		pressed: {
+			keys: new Set(),
+			wheel: 0,
+			alt: false,
+			ctrl: false,
+			shift: false
+		},
+		cancelled: new Set(),
+		ignoreElements: ['EMBED', 'INPUT', 'OBJECT', 'TEXTAREA', 'IFRAME'],
+		modifierKeys: ['AltLeft', 'AltRight', 'ControlLeft', 'ControlRight', 'ShiftLeft', 'ShiftRight'],
+	},
 	mini_player__mode: false,
 	mini_player__move: false,
 	mini_player__cursor: '',
@@ -76,7 +100,7 @@ CODEC || 30FPS
 	file to patch HTMLMediaElement before YT player uses it.
 --------------------------------------------------------------*/
 if (localStorage['it-codec'] || localStorage['it-player30fps']) {
-	function overwrite(self, callback, mime) {
+	function overwrite (self, callback, mime) {
 		if (localStorage['it-codec']) {
 			var re = new RegExp(localStorage['it-codec']);
 			// /webm|vp8|vp9|av01/
@@ -134,7 +158,7 @@ document.addEventListener('it-message-from-extension', function (message) {
 
 		ImprovedTube.init();
 		// need to run blocklist once just after page load to catch initial nodes
-		ImprovedTube.blocklist();
+		ImprovedTube.blocklistInit();
 
 	// REACTION OR VISUAL FEEDBACK WHEN THE USER CHANGES A SETTING (already automated for our CSS features):
 	} else if (message.action === 'storage-changed') {
@@ -328,6 +352,10 @@ document.addEventListener('it-message-from-extension', function (message) {
 			case 'subtitlesFontOpacity':
 			case 'subtitlesBackgroundOpacity':
 				ImprovedTube.subtitlesUserSettings();
+				break
+
+			case 'playerHideControls':
+				ImprovedTube.playerControls();
 				break
 		}
 

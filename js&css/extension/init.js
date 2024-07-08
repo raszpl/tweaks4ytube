@@ -21,7 +21,7 @@ extension.events.on('init', function (resolve) {
 	async: true
 });
 
-function bodyReady() {
+function bodyReady () {
 	if (extension.ready && extension.domReady) {
 		extension.features.addScrollToTop();
 		extension.features.font();
