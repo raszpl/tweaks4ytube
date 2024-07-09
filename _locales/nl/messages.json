@@ -35,9 +35,6 @@
     "allow": {
         "message": "Toestaan"
     },
-    "allow60fps": {
-        "message": "60fps toestaan"
-    },
     "alwaysActive": {
         "message": "Altijd actief"
     },

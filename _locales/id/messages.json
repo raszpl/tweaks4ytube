@@ -35,9 +35,6 @@
     "allow": {
         "message": "Izinkan"
     },
-    "allow60fps": {
-        "message": "Izinkan 60fps"
-    },
     "alwaysActive": {
         "message": "Selalu aktif"
     },

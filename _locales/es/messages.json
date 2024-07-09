@@ -35,9 +35,6 @@
     "allow": {
         "message": "Permitir"
     },
-    "allow60fps": {
-        "message": "Permitir 60fps"
-    },
     "allYourShortcutsWillBeErasedAndCanTBeRecovered": {
         "message": "Todos tus atajos serán borrados y no podrán ser recuperados"
     },
@@ -119,7 +116,7 @@
     "black": {
         "message": "Negro"
     },
-    "block_Codec_Alert_VP9": {
+    "block_Codec_Alert_h264": {
         "message": "Necesita activar VP9 o H.264 para que Youtube reproduzca videos."
     },
     "blockAll": {

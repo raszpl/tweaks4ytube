@@ -35,9 +35,6 @@
     "allow": {
         "message": "අවසර දෙන්න"
     },
-    "allow60fps": {
-        "message": "60fps වීඩීයෝ සදහා අවසර දෙන්න"
-    },
     "alwaysActive": {
         "message": "සෑම විටම ක්‍රියාත්මක වෙන"
     },

@@ -1,8 +1,6 @@
 /*--------------------------------------------------------------
 >>> INITIALIZATION
 --------------------------------------------------------------*/
-ImprovedTube.messages.create();
-ImprovedTube.messages.listener();
 if (document.body) { ImprovedTube.childHandler(document.body); }
 
 ImprovedTube.observer = new MutationObserver(function (mutationList) {
@@ -13,10 +11,6 @@ ImprovedTube.observer = new MutationObserver(function (mutationList) {
 		if (mutation.type === 'childList') {
 			for (var j = 0, k = mutation.addedNodes.length; j < k; j++) {
 				ImprovedTube.childHandler(mutation.addedNodes[j]);
-			}
-
-			for (const node of mutation.removedNodes){
-				if(node.nodeName === 'BUTTON' && node.id === 'it-popup-playlist-button') ImprovedTube.playlistPopupUpdate();
 			}
 		}
 		if (mutation.target && mutation.target.id === 'owner-sub-count') {
@@ -39,7 +33,7 @@ ImprovedTube.observer = new MutationObserver(function (mutationList) {
 //console.log("p"+i+"c"+j+":"+node.id+",class:"+node.className+","+node+"("+node.nodeName+")");
 				j++;}
 				let r = 0; for (const node of mutated.removedNodes){ //might fix our other playlist buttons equally?
-				if(node.nodeName === 'BUTTON' && node.id === 'it-popup-playlist-button') ImprovedTube.playlistPopupUpdate();
+				if(node.nodeName === 'BUTTON' && node.id === 'it-popup-playlist-button') ImprovedTube.playlistPopup();
 //console.log("p"+i+"removed"+r+":"+node.id+",class:"+node.className+","+node+"("+node.nodeName+")"+"(from:"+mutated.target.id+",class:"+mutated.target.className+","+mutated.target+"("+mutated.target.nodeName+")");
 				r++;}
 						if(mutated.target.id === 'owner-sub-count')
@@ -53,7 +47,6 @@ ImprovedTube.observer = new MutationObserver(function (mutationList) {
 		}
 	i++;}
 	*/
-
 
 }).observe(document.documentElement, {
 	//	attributes: true,
@@ -84,25 +77,25 @@ if (ImprovedTube.storage.channel_default_tab && ImprovedTube.storage.channel_def
 ImprovedTube.init = function () {
 	window.addEventListener('yt-page-data-updated', function () {
 		ImprovedTube.pageType();
+		if (location.search.match(ImprovedTube.regex.playlist_id)) {
+			ImprovedTube.playlistRepeat();
+			ImprovedTube.playlistShuffle();
+			ImprovedTube.playlistReverse();
+			ImprovedTube.playlistPopup();
+		}
 	});
-	ImprovedTube.pageType();
-	var yt_player_updated = function () {
-		document.dispatchEvent(new CustomEvent('improvedtube-player-loaded'));
-
-		window.removeEventListener('yt-player-updated', yt_player_updated);
-	};
-
-	window.addEventListener('yt-player-updated', yt_player_updated);
+	this.pageType();
 	this.playerOnPlay();
 	this.playerSDR();
-	this.shortcuts();
+	this.shortcutsInit();
 	this.onkeydown();
 	this.onmousedown();
 	this.youtubeLanguage();
 	this.myColors();
+	if (this.storage.undo_the_new_sidebar) this.undoTheNewSidebar();
+	if (this.storage.description === "sidebar") this.descriptionSidebar();
 	this.channelCompactTheme();
-	this.livechat();
-	
+
 	if (ImprovedTube.elements.player && ImprovedTube.elements.player.setPlaybackRate) {
 		ImprovedTube.videoPageUpdate();
 		ImprovedTube.initPlayer();
@@ -114,7 +107,34 @@ ImprovedTube.init = function () {
 };
 
 document.addEventListener('yt-navigate-finish', function () {
+/* 			if (name === 'META') {			   //<META> infos are not updated when clicking related videos...
+			if(node.getAttribute('name')) {
+			//if(node.getAttribute('name') === 'title')		 {ImprovedTube.title = node.content;}		//duplicate
+			//if(node.getAttribute('name') === 'description')	   {ImprovedTube.description = node.content;}  //duplicate
+			//if node.getAttribute('name') === 'themeColor')			{ImprovedTube.themeColor = node.content;}   //might help our darkmode/themes
+//Do we need any of these here before the player starts?
+			//if(node.getAttribute('name') === 'keywords')		  {ImprovedTube.keywords = node.content;}
+			} else if (node.getAttribute('itemprop')) {
+			//if(node.getAttribute('itemprop') === 'name')		  {ImprovedTube.title = node.content;}
+			if(node.getAttribute('itemprop') === 'genre')		   {ImprovedTube.category  = node.content;}
+			//if(node.getAttribute('itemprop') === 'channelId')	 {ImprovedTube.channelId = node.content;}
+			//if(node.getAttribute('itemprop') === 'videoId')	   {ImprovedTube.videoId = node.content;}
+//The following infos will enable awesome, smart features.  Some of which everyone should use.
+			//if(node.getAttribute('itemprop') === 'description')   {ImprovedTube.description = node.content;}
+			//if(node.getAttribute('itemprop') === 'duration')	  {ImprovedTube.duration = node.content;}
+			//if(node.getAttribute('itemprop') === 'interactionCount'){ImprovedTube.views = node.content;}
+			//if(node.getAttribute('itemprop') === 'isFamilyFriendly'){ImprovedTube.isFamilyFriendly = node.content;}
+			//if(node.getAttribute('itemprop') === 'unlisted')	  {ImprovedTube.unlisted = node.content;}
+			//if(node.getAttribute('itemprop') === 'regionsAllowed'){ImprovedTube.regionsAllowed = node.content;}
+			//if(node.getAttribute('itemprop') === 'paid')		  {ImprovedTube.paid = node.content;}
+			// if(node.getAttribute('itemprop') === 'datePublished' ){ImprovedTube.datePublished = node.content;}
+					//to use in the "how long ago"-feature, not to fail without API key?  just like the "day-of-week"-feature above
+			// if(node.getAttribute('itemprop') === 'uploadDate')   {ImprovedTube.uploadDate = node.content;}
+*/
 	ImprovedTube.pageType();
+	if (ImprovedTube.storage.undo_the_new_sidebar) {
+		ImprovedTube.undoTheNewSidebar();
+	}
 	ImprovedTube.commentsSidebar();
 
 	if (ImprovedTube.elements.player && ImprovedTube.elements.player.setPlaybackRate) {
@@ -122,21 +142,13 @@ document.addEventListener('yt-navigate-finish', function () {
 		ImprovedTube.initPlayer();
 	}
 
-	ImprovedTube.channelPlayAllButton();
 	if (document.documentElement.dataset.pageType === 'home' &&	 ImprovedTube.storage.youtube_home_page === 'search' ) {
 		document.querySelector('body').style.setProperty('visibility', 'visible', 'important');
 		ImprovedTube.shortcutGoToSearchBox();
 		document.querySelector('#search').click();
+	} else if (document.documentElement.dataset.pageType === 'channel') {
+		ImprovedTube.channelPlayAllButton();
 	}
-});
-
-document.addEventListener('yt-page-data-updated', function (event) {
-	if (document.documentElement.dataset.pageType === 'video' && /[?&]list=([^&]+).*$/.test(location.href)) {
-		ImprovedTube.playlistRepeat();
-		ImprovedTube.playlistShuffle();
-		ImprovedTube.playlistReverse();
-	}
-	ImprovedTube.playlistPopupUpdate();
 });
 
 window.addEventListener('load', function () {
@@ -151,7 +163,9 @@ window.addEventListener('load', function () {
 		logo: document.querySelector('tp-yt-app-drawer a#logo')
 	}
 	ImprovedTube.improvedtubeYoutubeIcon();
-	if (document.documentElement.dataset.pageType === 'video') { ImprovedTube.expandDescription(); }
+	if (document.documentElement.dataset.pageType === 'video') {
+		ImprovedTube.expandDescription();
+	}
 	if (document.documentElement.dataset.pageType === 'home' && ImprovedTube.storage.youtube_home_page === 'search' ) {
 		document.querySelector('body').style.setProperty('visibility', 'visible', 'important');
 		ImprovedTube.shortcutGoToSearchBox();

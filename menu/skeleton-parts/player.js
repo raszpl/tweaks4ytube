@@ -4,13 +4,12 @@
 
 extension.skeleton.main.layers.section.player = {
 	component: 'button',
-	variant: 'player',
+	class: 'satus-button--player',
 	category: true,
 	on: {},
 
 	icon: {
 		component: 'span',
-
 		svg: {
 			component: 'svg',
 			attr: {
@@ -20,7 +19,6 @@ extension.skeleton.main.layers.section.player = {
 				'stroke-linecap': 'round',
 				'stroke-width': '1.75'
 			},
-
 			path: {
 				component: 'path',
 				attr: {
@@ -43,7 +41,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 	section_1: {
 		component: 'section',
 		variant: 'card',
-
 		autopause_when_switching_tabs: {
 			component: 'switch',
 			text: 'autopauseWhenSwitchingTabs',
@@ -72,15 +69,70 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
+		pause_while_typing_on_youtube: {
+			component: 'switch',
+			text: 'pauseWhileIAmTypingOnYouTube',
+			storage: 'pause_while_typing_on_youtube',
+			id: 'pause_while_typing_on_youtube',
+		},
+		autoplay_disable: {
+			component: 'switch',
+			text: 'autoplayDisable',
+			storage: 'player_autoplay_disable'
+		},
+		up_next_autoplay: {
+			component: 'switch',
+			text: 'upNextAutoplay',
+			value: true
+		},
+		ambient_lighting: {
+			component: 'switch',
+			text: 'ambientLighting',
+			value: true
+		},
 		player_autoPip: {
 			component: 'switch',
 			text: 'Auto_PiP_picture_in_picture',
 			id: 'player_autoPip',
+			custom: true,
 			on: {
 				click: function () {
-					if (this.dataset.value === 'true' && satus.storage.get('player_autopause_when_switching_tabs')) {
-						document.getElementById('only_one_player_instance_playing').flip(true);
-						document.getElementById('autopause_when_switching_tabs').flip(false);
+					if (!document.pictureInPictureEnabled) return;
+					if (this.dataset.value === 'false') {
+						let where = this;
+						satus.render({
+							component: 'modal',
+							variant: 'confirm',
+							content: 'PipRequiresUserInteraction',
+							ok: function () {
+								// manually turn switch ON
+								where.flip(true);
+								if (satus.storage.get('player_autopause_when_switching_tabs')) {
+									document.getElementById('only_one_player_instance_playing').flip(true);
+									document.getElementById('autopause_when_switching_tabs').flip(false);
+								}
+							},
+							cancel: function () {
+								// nothing happens when we cancel
+							}
+						}, extension.skeleton.rendered);
+					} else {
+						// manually turn switch OFF
+						this.flip(false);
+					}
+				}
+			}
+		},
+		player_autoPip_outside: {
+			component: 'switch',
+			text: 'playerAutoPipOutside',
+			id: 'player_autoPip_outside',
+			value: true,
+			on: {
+				render: function () {
+					if (!document.pictureInPictureEnabled) {
+						document.getElementById('player_autoPip').remove();
+						document.getElementById('player_autoPip_outside').remove();
 					}
 				}
 			}
@@ -124,20 +176,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 			max: 3.17,
 			step: .01
 		},
-		autoplay_disable: {
-			component: 'switch',
-			text: 'autoplayDisable',
-			storage: 'player_autoplay_disable'
-		},
-		up_next_autoplay: {
-			component: 'switch',
-			text: 'upNextAutoplay',
-			value: true
-		},
-		forced_play_video_from_the_beginning: {
-			component: 'switch',
-			text: 'forcedPlayVideoFromTheBeginning'
-		},
 		autofullscreen: {
 			component: 'switch',
 			text: 'autoFullscreen',
@@ -152,8 +190,18 @@ extension.skeleton.main.layers.section.player.on.click = {
 					variant: 'card',
 
 					player_subtitles: {
-						component: 'switch',
-						text: 'subtitles'
+						component: 'select',
+						text: 'subtitles',
+						options: [{
+							value: 'auto',
+							text: 'auto'
+						}, {
+							value: 'enabled',
+							text: 'enabled'
+						}, {
+							value: 'disabled',
+							text: 'disabled'
+						}]
 					},
 					subtitles_language: {
 						component: 'select',
@@ -498,7 +546,11 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_font_family: {
 						component: 'select',
 						text: 'fontFamily',
+						index: 3,
 						options: [{
+							text: 'Proportional Sans-Serif',
+							value: 4
+						}, {
 							text: 'Monospaced Serif',
 							value: 1
 						}, {
@@ -507,9 +559,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 						}, {
 							text: 'Monospaced Sans-Serif',
 							value: 3
-						}, {
-							text: 'Proportional Sans-Serif',
-							value: 'satus_remove'
 						}, {
 							text: 'Casual',
 							value: 5
@@ -553,6 +602,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_font_size: {
 						component: 'select',
 						text: 'fontSize',
+						index: 2,
 						options: [{
 							text: '50%',
 							value: -2
@@ -579,6 +629,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_background_color: {
 						component: 'select',
 						text: 'backgroundColor',
+						index: 7,
 						options: [{
 							text: 'white',
 							value: '#fff'
@@ -616,31 +667,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_window_color: {
 						component: 'select',
 						text: 'windowColor',
-						options: [{
-							text: 'white',
-							value: '#fff'
-						}, {
-							text: 'yellow',
-							value: '#ff0'
-						}, {
-							text: 'green',
-							value: '#0f0'
-						}, {
-							text: 'cyan',
-							value: '#0ff'
-						}, {
-							text: 'blue',
-							value: '#00f'
-						}, {
-							text: 'magenta',
-							value: '#f0f'
-						}, {
-							text: 'red',
-							value: '#f00'
-						}, {
-							text: 'black',
-							value: 'satus_remove'
-						}]
+						options: function () {
+							return extension.skeleton.main.layers.section.player.on.click.section_1.subtitles.on.click.subtitles_background_color.options;
+						}
 					},
 					subtitles_window_opacity: {
 						component: 'slider',
@@ -685,20 +714,32 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
-		player_crop_chapter_titles: {
-			component: 'switch',
-			text: 'cropChapterTitles',
-			value: true
-		},
 		mini_player: {
 			component: 'switch',
 			text: 'customMiniPlayer'
 		},
+		forced_play_video_from_the_beginning: {
+			component: 'switch',
+			text: 'forcedPlayVideoFromTheBeginning'
+		},
+		player_crop_chapter_titles: {
+			component: 'switch',
+			text: 'cropChapterTitles',
+			value: true
+		}
+	},
+	section_video: {
+		component: 'section',
+		variant: 'card',
+		title: 'videoParameters',
 		player_quality: {
 			component: 'select',
 			text: 'quality',
 			id: 'player_quality',
 			options: [{
+				text: 'disabled',
+				value: 'disabled'
+			}, {
 				text: 'auto',
 				value: 'satus_remove'
 			}, {
@@ -723,7 +764,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 				text: '1440p',
 				value: 'hd1440'
 			}, {
-				text: '2160p',
+				text: '2160p (4K UHD)',
 				value: 'hd2160'
 			}, {
 				text: '2880p',
@@ -734,25 +775,31 @@ extension.skeleton.main.layers.section.player.on.click = {
 			}],
 			on: {
 				render: function () {
+					// (parseInt) relies on options.text following 'auto' always starting with a number to work
+					const options = this.childNodes[2].options,
+						index = this.childNodes[2].selectedIndex,
+						cutoff = 1080;
 					if (satus.storage.get('player_h264')) {
-						if (this.childNodes[2].selectedIndex >6) {
+						if (parseInt(options[index].text) > cutoff) {
 							this.childNodes[1].style = 'color: red!important; font-weight: bold;';
-							this.childNodes[1].textContent = '1080p';
+							this.childNodes[1].textContent = cutoff+'p';
 						} else {
-							this.childNodes[1].style = '';
-							this.childNodes[1].textContent = this.childNodes[2].options[this.childNodes[2].selectedIndex].text;
+							this.childNodes[1].removeAttribute('style');
+							this.childNodes[1].textContent = options[index].text;
 						}
-						for (let index =7; index <= 10; index++) {
-							this.childNodes[2].childNodes[index].style = 'color: red!important; font-weight: bold;';
+						for (const [i, node] of Array.from(options).entries()) {
+							if (parseInt(node.text) > cutoff) {
+								this.childNodes[2].childNodes[i].style = 'color: red!important; font-weight: bold;';
+							}
 						}
 					} else if (satus.storage.get('block_vp9') && satus.storage.get('block_h264')) {
 						this.childNodes[1].style = 'color: red!important; font-weight: bold;';
 						this.childNodes[1].textContent = 'Video disabled';
 					} else {
-						this.childNodes[1].style = '';
-						this.childNodes[1].textContent = this.childNodes[2].options[this.childNodes[2].selectedIndex].text;
-						for (let index =7; index <= 10; index++) {
-							this.childNodes[2].childNodes[index].style = '';
+						this.childNodes[1].removeAttribute('style');
+						this.childNodes[1].textContent = options[index].text;
+						for (const node of options) {
+							node.removeAttribute('style');
 						}
 					}
 				}
@@ -762,63 +809,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'select',
 			text: 'qualityWithoutFocus',
 			id: 'player_quality_without_focus',
-			options: [{
-				text: 'disabled',
-				value: 'disabled'
-			}, {
-				text: '144p',
-				value: 'tiny'
-			}, {
-				text: '240p',
-				value: 'small'
-			}, {
-				text: '360p',
-				value: 'medium'
-			}, {
-				text: '480p',
-				value: 'large'
-			}, {
-				text: '720p',
-				value: 'hd720'
-			}, {
-				text: '1080p',
-				value: 'hd1080'
-			}, {
-				text: '1440p',
-				value: 'hd1440'
-			}, {
-				text: '2160p',
-				value: 'hd2160'
-			}, {
-				text: '2880p',
-				value: 'hd2880'
-			}, {
-				text: '4320p',
-				value: 'highres'
-			}],
+			options: function () {
+				return extension.skeleton.main.layers.section.player.on.click.section_video.player_quality.options;
+			},
 			on: {
 				render: function () {
-					if (satus.storage.get('player_h264')) {
-						if (this.childNodes[2].selectedIndex >6) {
-							this.childNodes[1].style = 'color: red!important; font-weight: bold;';
-							this.childNodes[1].textContent = '1080p';
-						} else {
-							this.childNodes[1].style = '';
-							this.childNodes[1].textContent = this.childNodes[2].options[this.childNodes[2].selectedIndex].text;
-						}
-						for (let index =7; index <= 10; index++) {
-							this.childNodes[2].childNodes[index].style = 'color: red!important; font-weight: bold;';
-						}
-					} else if (satus.storage.get('block_vp9') && satus.storage.get('block_h264')) {
-						this.childNodes[1].style = 'color: red!important; font-weight: bold;';
-						this.childNodes[1].textContent = 'Video disabled';
-					} else {
-						this.childNodes[1].style = '';
-						this.childNodes[1].textContent = this.childNodes[2].options[this.childNodes[2].selectedIndex].text;
-						for (let index =7; index <= 10; index++) {
-							this.childNodes[2].childNodes[index].style = '';
-						}
-					}
+					extension.skeleton.main.layers.section.player.on.click.section_video.player_quality.on.render.call(this);
 				}
 			}
 		},
@@ -836,11 +832,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 						block_av1: {
 							component: 'switch',
 							text: 'blockAv1',
-							on: {
-								click: function () {
-									this.parentElement.skeleton.sanitize();
-								}
-							}
+							value: false
 						},
 						block_vp9: {
 							component: 'switch',
@@ -854,20 +846,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 											satus.render({
 												component: 'modal',
 												variant: 'confirm',
-												content: 'block_Codec_Alert_VP9',
-												ok: function () {
-													where.flip(true);
-													where.parentElement.skeleton.sanitize();
-												}
+												content: 'block_Codec_Alert_h264',
+												ok: function () { where.flip(true); },
+												cancel: function () {}
 											}, extension.skeleton.rendered);
-										} else {
-											this.flip(true);
-											this.parentElement.skeleton.sanitize();
-										}
-									} else {
-										this.flip(false);
-										this.parentElement.skeleton.sanitize();
-									}
+										} else this.flip(true);
+									} else this.flip(false);
 								}
 							}
 						},
@@ -884,27 +868,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 												component: 'modal',
 												variant: 'confirm',
 												content: 'block_Codec_Alert_h264',
-												ok: function () {
-													where.flip(true);
-													where.parentElement.skeleton.sanitize();
-												}
+												ok: function () { where.flip(true); },
+												cancel: function () {}
 											}, extension.skeleton.rendered);
-										} else {
-											this.flip(true);
-											this.parentElement.skeleton.sanitize();
-										}
-									} else {
-										this.flip(false);
-										this.parentElement.skeleton.sanitize();
-									}
+										} else this.flip(true);
+									} else this.flip(false);
 								}
-							}
-						},
-						sanitize: function () {
-							if (satus.storage.get('block_vp9') && satus.storage.get('block_av1') && !satus.storage.get('block_h264')) {
-								satus.storage.set('player_h264', true);
-							} else {
-								satus.storage.remove('player_h264');
 							}
 						}
 					}
@@ -918,18 +887,27 @@ extension.skeleton.main.layers.section.player.on.click = {
 				},
 				on: {
 					render: function () {
-						let codecs = (satus.storage.get('block_h264') ? '' : 'h.264 ') + (satus.storage.get('block_vp9') ? '' : 'vp9 ') + (satus.storage.get('block_av1') ? '' : 'av1');
-
-						if (codecs.includes('h.264') || codecs.includes('vp9')) {
-							this.style = '';
-							this.textContent = codecs;
-						} else if (codecs) {
-							this.style = 'color: red!important; font-weight: bold;';
-							this.textContent = codecs;
+						if (satus.storage.get('block_vp9') && satus.storage.get('block_av1') && !satus.storage.get('block_h264')) {
+							satus.storage.set('player_h264', true);
 						} else {
+							satus.storage.remove('player_h264');
+						}
+
+						const codecs = (satus.storage.get('block_h264') ? '' : 'h.264 ')
+							+ (satus.storage.get('block_vp9') ? '' : 'vp9 ')
+							+ (satus.storage.get('block_av1') ? '' : 'av1');
+
+						this.style = '';
+						this.textContent = codecs;
+						if (codecs === 'av1') {
+							this.style = 'color: red!important; font-weight: bold;';
+						} else if (codecs ==='') {
 							this.style = 'color: red!important; font-weight: bold;';
 							this.textContent = 'none';
 						}
+						document.getElementById('player_quality').dispatchEvent(new CustomEvent('render'));
+						document.getElementById('player_quality_without_focus').dispatchEvent(new CustomEvent('render'));
+						//document.getElementById('quality_when_low_battery').dispatchEvent(new CustomEvent('render'));
 					}
 				}
 			}
@@ -941,12 +919,10 @@ extension.skeleton.main.layers.section.player.on.click = {
 			storage: 'player_h264',
 			on: {
 				click: function () {
-					// refresh player_codecs/optimize_codec_for_hardware_acceleration elements when we change codecs
-					function refresh() {
-						document.getElementById('player_quality').dispatchEvent(new CustomEvent('render'));
+					let refresh = function () {
+						// send signal for #player_codecs to refresh, will in turn redraw #player_quality/#player_quality_without_focus
+						//  when we change player_h264 directly
 						document.getElementById('player_codecs').dispatchEvent(new CustomEvent('render'));
-						document.getElementById('optimize_codec_for_hardware_acceleration').dispatchEvent(new CustomEvent('render'));
-						document.getElementById('player_quality_without_focus').dispatchEvent(new CustomEvent('render'));
 					};
 
 					if (this.dataset.value === 'false') {
@@ -956,7 +932,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 							variant: 'confirm',
 							content: 'youtubeLimitsVideoQualityTo1080pForH264Codec',
 							ok: function () {
-								// manually turn switch ON
+								// manually flip the switch ON
 								where.flip(true);
 								satus.storage.set('block_vp9', true);
 								satus.storage.set('block_av1', true);
@@ -965,7 +941,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 							}
 						}, extension.skeleton.rendered);
 					} else {
-						// manually turn switch OFF
+						// manually flip the switch OFF
 						this.flip(false);
 						// reset all codecs to unlocked state
 						satus.storage.remove('block_vp9');
@@ -976,49 +952,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
-		optimize_codec_for_hardware_acceleration: {
-			component: 'button',
-			text: 'Optimize Codec for hardware acceleration',
-			style: {
-				justifyContent: 'space-between'
-			},
-			on: {
-				click: function () {
-					//put some code here
-				}
-			},
-			list: {
-				component: 'span',
-				id: 'optimize_codec_for_hardware_acceleration',
-				style: {
-					opacity: .64
-				},
-				on: {
-					render: function () {
-						// put some code here looking up GPU  capabilities and comparing to currrent codec selection
-						var codecs = (satus.storage.get('block_h264') ? '' : 'h.264 ') + (satus.storage.get('block_vp9') ? '' : 'vp9 ') + (satus.storage.get('block_av1') ? '' : 'av1');
-
-						if (1) { // todo
-							this.style = '';
-							this.textContent = 'Feature not yet available';
-						} else if (2) { // todo
-							this.style = '';
-							this.textContent = 'GPU not in database';
-						} else if (codecs) {
-							this.style = 'color: green!important; font-weight: bold;';
-							this.textContent = 'Optimal';
-						} else {
-							this.style = 'color: red!important; font-weight: bold;';
-							this.textContent = 'Not optimal';
-						}
-					}
-				}
-			}
-		},
-		player_60fps: {
+		player_30fps_limit: {
 			component: 'switch',
-			text: 'allow60fps',
-			value: true
+			text: 'limit30fps',
 		},
 		sdr: {
 			component: 'switch',
@@ -1026,7 +962,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 			storage: 'player_SDR'
 		}
 	},
-	section_2: {
+	section_buttons: {
 		component: 'section',
 		variant: 'card',
 		title: 'buttons',
@@ -1056,13 +992,19 @@ extension.skeleton.main.layers.section.player.on.click = {
 		player_screenshot_save_as: {
 			component: 'select',
 			text: 'saveAs',
-			options: [{
-				text: 'file',
-				value: 'satus_remove'
-			}, {
-				text: 'clipboard',
-				value: 'clipboard'
-			}]
+			options: function () {
+				let options = [{
+					text: 'file',
+					value: 'file'
+				}];
+				if (typeof ClipboardItem == 'function') {
+					options.push({
+						text: 'clipboard',
+						value: 'clipboard'
+					});
+				}
+				return options;
+			}
 		},
 		player_fit_to_win_button: {
 			component: 'switch',
@@ -1086,7 +1028,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'switch',
 			text: 'rotate'
 		},
-
 		player_hamburger_button: {
 			component: 'switch',
 			text: 'Hamburger_Menu'

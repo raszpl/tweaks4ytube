@@ -35,9 +35,6 @@
     "allow": {
         "message": "허용"
     },
-    "allow60fps": {
-        "message": "60 fps 허용"
-    },
     "always": {
         "message": "항상"
     },

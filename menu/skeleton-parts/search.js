@@ -11,11 +11,13 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 	placeholder: 'search',
 	lineNumbers: false,
 	rows: 1,
+	search: false,
+	searchPosition: 0,
 	on: {
 		render: function () {
 			this.focus();
-			if (extension.search) {
-				this.value = extension.search;
+			if (this.skeleton.search) {
+				this.value = this.skeleton.search;
 				this.dispatchEvent(new CustomEvent('input'));
 			}
 		},
@@ -34,7 +36,7 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 			let self = this,
 				value = this.value.trim();
 
-			extension.search = value;
+			this.skeleton.search = value;
 
 			if (value.length > 0) {
 				satus.search(value, extension.skeleton, function (results) {
@@ -130,9 +132,9 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 							self.setAttribute('results', '');
 
 							search_results = satus.render(skeleton, self.baseProvider);
-							
+
 							// we need global listener here
-							function hidesearch(event) {
+							function hidesearch (event) {
 								// make sure to clean it after closing search results
 								if (!document.body.contains(search_results)) {
 									document.removeEventListener('click', hidesearch);
@@ -153,9 +155,9 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 							}
 
 							document.addEventListener('click', hidesearch);
-							
-							if (extension.searchPosition) {
-								search_results.childNodes[1].scrollTop = extension.searchPosition;
+
+							if (self.skeleton.searchPosition) {
+								search_results.childNodes[1].scrollTop = self.skeleton.searchPosition;
 							}
 
 							document.querySelector('.search-results .satus-modal__scrim').addEventListener('click', function () {
@@ -163,7 +165,7 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 								let search_results = document.querySelector('.search-results');
 
 								if (search_results) {
-									extension.searchPosition = search_results.childNodes[1].scrollTop;
+									self.skeleton.searchPosition = search_results.childNodes[1].scrollTop;
 									search_results.close();
 								}
 
@@ -171,7 +173,7 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 							});
 						}
 					}
-				}, true);
+				});
 			} else {
 				let search_results = document.querySelector('.search-results');
 
@@ -192,7 +194,7 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 				let search_results = document.querySelector('.search-results');
 
 				if (search_results) {
-					extension.searchPosition = search_results.childNodes[1].scrollTop;
+					this.parentNode.skeleton.searchPosition = search_results.childNodes[1].scrollTop;
 					search_results.close();
 				}
 
