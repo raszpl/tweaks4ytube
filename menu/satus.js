@@ -861,8 +861,8 @@ satus.storage.clear = function (callback) {
 /*--------------------------------------------------------------
 # GET
 --------------------------------------------------------------*/
-satus.storage.get = function (key) {
-	if (callback) callback(key);
+satus.storage.get = function (key, callback) {
+	if (callback) callback(this.data[key]);
 	return this.data[key];
 };
 /*--------------------------------------------------------------
@@ -898,7 +898,6 @@ satus.storage.remove = function (key, callback) {
 --------------------------------------------------------------*/
 satus.storage.set = function (key, value, callback) {
 	this.data[key] = value;
-
 	chrome.storage.local.set({[key]: value}, function () {
 		satus.events.trigger('storage-set');
 

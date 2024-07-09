@@ -220,7 +220,8 @@ extension.skeleton.main.layers.section.general = {
 					}],
 					tags: 'preview quality'
 				}
-			}, section_2: {
+			},
+			section_2: {
 				component: 'section',
 				variant: 'card',
 				title: 'watchedVideos',
