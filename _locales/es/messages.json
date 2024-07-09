@@ -35,9 +35,6 @@
     "allow": {
         "message": "Permitir"
     },
-    "allow60fps": {
-        "message": "Permitir 60fps"
-    },
     "allYourShortcutsWillBeErasedAndCanTBeRecovered": {
         "message": "Todos tus atajos serán borrados y no podrán ser recuperados"
     },

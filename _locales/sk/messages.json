@@ -35,9 +35,6 @@
     "allow": {
         "message": "Povoliť"
     },
-    "allow60fps": {
-        "message": "Povoliť 60fps"
-    },
     "alwaysActive": {
         "message": "Vždy aktívne"
     },

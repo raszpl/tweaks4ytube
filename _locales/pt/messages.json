@@ -38,9 +38,6 @@
     "Allow_auto_generate": {
         "message": "Permitir geração automática"
     },
-    "allow60fps": {
-        "message": "Permitir 60fps"
-    },
     "allYourSettingsWillBeErasedAndCanTBeRecovered": {
         "message": "Todas as suas configurações serão apagadas e não poderão ser recuperadas"
     },

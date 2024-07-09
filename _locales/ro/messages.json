@@ -35,9 +35,6 @@
     "allow": {
         "message": "Permite"
     },
-    "allow60fps": {
-        "message": "Permite 60fps"
-    },
     "alwaysActive": {
         "message": "Mereu activ"
     },

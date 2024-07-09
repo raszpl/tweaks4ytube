@@ -35,9 +35,6 @@
     "allow": {
         "message": "অনুমতি দিন"
     },
-    "allow60fps": {
-        "message": "60 ফ্রেম প্রতি সেকেন্ অনুমতি দিনড"
-    },
     "alwaysActive": {
         "message": "সর্বদা সক্রিয়"
     },

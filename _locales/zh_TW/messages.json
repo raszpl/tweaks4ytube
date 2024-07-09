@@ -29,9 +29,6 @@
     "allow": {
         "message": "允許"
     },
-    "allow60fps": {
-        "message": "允許 60fps"
-    },
     "alwaysActive": {
         "message": "始終有效"
     },

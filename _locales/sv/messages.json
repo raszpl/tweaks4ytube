@@ -35,9 +35,6 @@
     "allow": {
         "message": "Tillåt"
     },
-    "allow60fps": {
-        "message": "Tillåt 60fps"
-    },
     "always": {
         "message": "Alltid"
     },

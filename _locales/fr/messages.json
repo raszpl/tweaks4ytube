@@ -35,9 +35,6 @@
     "allow": {
         "message": "Permettre"
     },
-    "allow60fps": {
-        "message": "Jouer à 60 fps"
-    },
     "alwaysActive": {
         "message": "Toujours activé"
     },

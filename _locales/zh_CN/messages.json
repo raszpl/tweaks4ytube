@@ -29,9 +29,6 @@
     "allow": {
         "message": "允许"
     },
-    "allow60fps": {
-        "message": "允许60FPS"
-    },
     "alwaysActive": {
         "message": "始终启用"
     },

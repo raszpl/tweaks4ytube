@@ -38,9 +38,6 @@
     "Allow_auto_generate": {
         "message": "自動生成を許可"
     },
-    "allow60fps": {
-        "message": "60fpsを許可"
-    },
     "alwaysActive": {
         "message": "常に有効"
     },

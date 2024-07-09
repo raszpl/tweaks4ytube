@@ -80,9 +80,9 @@
     "Allow_auto_generate": {
         "message": "Allow auto generate"
     },
-    "allow60fps": {
-        "message": "Allow 60fps"
-    },
+    "limit30fps": {
+-        "message": "30fps limit"
+-    },
     "allYourSettingsWillBeErasedAndCanTBeRecovered": {
         "message": "All your settings will be erased and can't be recovered"
     },

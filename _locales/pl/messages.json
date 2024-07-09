@@ -35,9 +35,6 @@
     "allow": {
         "message": "Zezwól"
     },
-    "allow60fps": {
-        "message": "Zezwól na 60fps"
-    },
     "always": {
         "message": "Zawsze"
     },

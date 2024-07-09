@@ -727,7 +727,12 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'switch',
 			text: 'cropChapterTitles',
 			value: true
-		},
+		}
+	},
+	section_video: {
+		component: 'section',
+		variant: 'card',
+		title: 'videoParameters',
 		player_quality: {
 			component: 'select',
 			text: 'quality',
@@ -806,36 +811,14 @@ extension.skeleton.main.layers.section.player.on.click = {
 			text: 'qualityWithoutFocus',
 			id: 'player_quality_without_focus',
 			options: function () {
-				return extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.options;
+				return extension.skeleton.main.layers.section.player.on.click.section_video.player_quality.options;
 			},
 			on: {
 				render: function () {
-					extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.on.render.call(this);
+					extension.skeleton.main.layers.section.player.on.click.section_video.player_quality.on.render.call(this);
 				}
 			}
 		},
-		/*
-		qualityWhenRunningOnBattery: {
-			component: 'select',
-			text: 'qualityWhenRunningOnBattery',
-			options: function () {
-				return extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.options;
-			},
-			on: {
-				render: function () {
-						extension.skeleton.main.layers.section.player.on.click.section_1.player_quality.on.render.call(this);
-				}
-			}
-		},
-		whenBatteryIslowDecreaseQuality: {
-			component: 'switch',
-			text: 'whenBatteryIslowDecreaseQuality'
-		},
-		pauseWhileIUnplugTheCharger: {
-			component: 'switch',
-			text: 'pauseWhileIUnplugTheCharger'
-		},
-		*/
 		player_codecs: {
 			component: 'button',
 			text: 'codecs',
@@ -976,49 +959,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
-		/*optimize_codec_for_hardware_acceleration: {
-			component: 'button',
-			text: 'Optimize Codec for hardware acceleration',
-			style: {
-				justifyContent: 'space-between'
-			},
-			on: {
-				click: function () {
-					//put some code here
-				}
-			},
-			list: {
-				component: 'span',
-				id: 'optimize_codec_for_hardware_acceleration',
-				style: {
-					opacity: .64
-				},
-				on: {
-					render: function () {
-						// put some code here looking up GPU  capabilities and comparing to currrent codec selection
-						var codecs = (satus.storage.get('block_h264') ? '' : 'h.264 ') + (satus.storage.get('block_vp9') ? '' : 'vp9 ') + (satus.storage.get('block_av1') ? '' : 'av1');
-
-						if (1) { // todo
-							this.style = '';
-							this.textContent = 'Feature not yet available';
-						} else if (2) { // todo
-							this.style = '';
-							this.textContent = 'GPU not in database';
-						} else if (codecs) {
-							this.style = 'color: green!important; font-weight: bold;';
-							this.textContent = 'Optimal';
-						} else {
-							this.style = 'color: red!important; font-weight: bold;';
-							this.textContent = 'Not optimal';
-						}
-					}
-				}
-			}
-		},*/
-		player_60fps: {
+		player_30fps_limit: {
 			component: 'switch',
-			text: 'allow60fps',
-			value: true
+			text: 'limit30fps',
 		},
 		sdr: {
 			component: 'switch',
@@ -1026,7 +969,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 			storage: 'player_SDR'
 		}
 	},
-	section_2: {
+	section_buttons: {
 		component: 'section',
 		variant: 'card',
 		title: 'buttons',
