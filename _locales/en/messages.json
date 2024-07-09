@@ -81,8 +81,8 @@
 		"message": "Allow auto generate"
 	},
 	"limit30fps": {
--		 "message": "30fps limit"
--	 },
+		"message": "30fps limit"
+	},
 	"allYourSettingsWillBeErasedAndCanTBeRecovered": {
 		"message": "All your settings will be erased and can't be recovered"
 	},
