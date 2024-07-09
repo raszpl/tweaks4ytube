@@ -35,9 +35,6 @@
     "allow": {
         "message": "Cho phép"
     },
-    "allow60fps": {
-        "message": "Cho phép 60fps"
-    },
     "always": {
         "message": "Luôn luôn"
     },

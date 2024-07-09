@@ -35,9 +35,6 @@
     "allow": {
         "message": "Dopusti"
     },
-    "allow60fps": {
-        "message": "Dopusti 60fps"
-    },
     "alwaysActive": {
         "message": "Uvijek aktivan"
     },

@@ -35,9 +35,6 @@
     "allow": {
         "message": "अनुमति"
     },
-    "allow60fps": {
-        "message": "60fps की अनुमति दें"
-    },
     "alwaysActive": {
         "message": "हमेशा सक्रिय"
     },

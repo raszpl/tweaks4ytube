@@ -37,6 +37,103 @@ var extension = {
 	}
 };
 
+// list of settings we inject into HTML element as attributes, used by CSS.
+let htmlAttributes = [
+	"activated",
+	"ads",
+	"always_show_progress_bar",
+	"bluelight",
+	"channel_compact_theme",
+	"channel_hide_featured_content",
+	"collapse_of_subscription_sections",
+	"columns",
+	"comments",
+	"comments_sidebar",
+	"comments_sidebar_left",
+	"comments_sidebar_simple",
+	"compactSpacing",
+	"description",
+	"embeddedHidePauseOverlay",
+	"embeddedHideShare",
+	"embeddedHideYoutubeLogo",
+	"header_hide_country_code",
+	"header_hide_right_buttons",
+	"header_improve_logo",
+	"header_position",
+	"header_transparent",
+	"hide_animated_thumbnails",
+	"hide_author_avatars",
+	"hide_clip_button",
+	"hide_comments_count",
+	"hide_date",
+	"hide_details",
+	"hide_dislike_button",
+	"hide_download_button",
+	"hide_footer",
+	"hide_gradient_bottom",
+	"hide_more_button",
+	"hide_playlist",
+	"hide_report_button",
+	"hide_save_button",
+	"hide_scroll_for_details",
+	"hide_share_button",
+	"hide_shorts_remixing",
+	"hide_sidebar",
+	"hide_thanks_button",
+	"hide_thumbnail_overlay",
+	"hide_video_title_fullScreen",
+	"hide_views_count",
+	"hide_voice_search_button",
+	"improvedtube_search",
+	"likes",
+	"livechat",
+	"mini_player_cursor",
+	"no_page_margin",
+	"player_autoplay_button",
+	"player_color",
+	"player_crop_chapter_titles",
+	"player_fit_to_win_button",
+	"player_hide_annotations",
+	"player_hide_cards",
+	"player_hide_endscreen",
+	"player_hide_skip_overlay",
+	"player_miniplayer_button",
+	"player_next_button",
+	"player_play_button",
+	"player_previous_button",
+	"player_remote_button",
+	"player_screen_button",
+	"player_settings_button",
+	"player_show_cards_on_mouse_hover",
+	"player_size",
+	"player_size",
+	"player_subtitles_button",
+	"player_transparent_background",
+	"player_view_button",
+	"player_volume_button",
+	"red_dislike_button",
+	"related_videos",
+	"remove_black_bars",
+	"remove_history_shorts",
+	"remove_home_page_shorts",
+	"remove_related_search_results",
+	"remove_shorts_reel_search_results",
+	"remove_subscriptions_shorts",
+	"remove_trending_shorts",
+	"schedule",
+	"scroll_bar",
+	"scroll_to_top",
+	"search_focus",
+	"sidebar_left",
+	"squared_user_images",
+	"subscribe",
+	"theme",
+	"thumbnails_hide",
+	"thumbnails_right",
+	"transcript",
+	"youtube_home_page",
+	"youtubeDetailButtons"
+];
 
 /*--------------------------------------------------------------
 # CAMELIZE
@@ -59,7 +156,6 @@ extension.camelize = function (string) {
 
 	return result;
 };
-
 
 /*--------------------------------------------------------------
 # EVENTS
@@ -91,7 +187,6 @@ extension.events.on = function (type, listener, options = {}) {
 	}
 };
 
-
 /*--------------------------------------------------------------
 # TRIGGER
 --------------------------------------------------------------*/
@@ -117,7 +212,7 @@ extension.events.trigger = async function (type, data) {
 /*--------------------------------------------------------------
 # INJECT
 ----------------------------------------------------------------
-	
+
 --------------------------------------------------------------*/
 
 extension.inject = function (paths, callback) {
@@ -178,7 +273,6 @@ extension.inject = function (paths, callback) {
 	}
 };*/
 
-
 /*--------------------------------------------------------------
 # MESSAGES
 ----------------------------------------------------------------
@@ -187,53 +281,15 @@ extension.inject = function (paths, callback) {
 --------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
-# CREATE ELEMENT
---------------------------------------------------------------*/
-
-extension.messages.create = function () {
-	this.element = document.createElement('div');
-
-	this.element.id = 'it-messages-from-extension';
-
-	this.element.style.display = 'none';
-
-	document.documentElement.appendChild(this.element);
-};
-
-/*--------------------------------------------------------------
-# LISTENER
---------------------------------------------------------------*/
-
-extension.messages.listener = function () {
-	document.addEventListener('it-message-from-extension--readed', function () {
-		extension.messages.queue.pop();
-
-		if (extension.messages.queue.length > 0) {
-			extension.messages.element.textContent = message;
-
-			document.dispatchEvent(new CustomEvent('it-message-from-extension'));
-		}
-	});
-};
-
-/*--------------------------------------------------------------
 # SEND
 --------------------------------------------------------------*/
 
 extension.messages.send = function (message) {
-	if (typeof message === 'object') {
-		message = JSON.stringify(message);
+	if (typeof cloneInto == 'function') {
+		message = cloneInto(message, window);
 	}
-
-	this.queue.push(message);
-
-	if (this.queue.length === 1) {
-		this.element.textContent = message;
-
-		document.dispatchEvent(new CustomEvent('it-message-from-extension'));
-	}
+	document.dispatchEvent(new CustomEvent('it-message-from-extension', {'detail': message}));
 };
-
 
 /*--------------------------------------------------------------
 # STORAGE
@@ -270,13 +326,15 @@ extension.storage.get = function (key) {
 
 extension.storage.listener = function () {
 	chrome.storage.onChanged.addListener(function (changes) {
-		for (var key in changes) {
-			var value = changes[key].newValue,
+		for (const key in changes) {
+			let value = changes[key].newValue,
 				camelized_key = extension.camelize(key);
 
 			extension.storage.data[key] = value;
 
-			document.documentElement.setAttribute('it-' + key.replace(/_/g, '-'), value);
+			if (htmlAttributes.includes(key)) {
+				document.documentElement.setAttribute('it-' + key.replace(/_/g, '-'), value);
+			}
 
 			if (typeof extension.features[camelized_key] === 'function') {
 				extension.features[camelized_key](true);
@@ -312,7 +370,9 @@ extension.storage.load = function (callback) {
 		}
 
 		for (const key in items) {
-			document.documentElement.setAttribute('it-' + key.replace(/_/g, '-'), items[key]);
+			if (htmlAttributes.includes(key)) {
+				document.documentElement.setAttribute('it-' + key.replace(/_/g, '-'), items[key]);
+			}
 		}
 
 		extension.events.trigger('storage-loaded');

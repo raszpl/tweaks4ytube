@@ -35,9 +35,6 @@
     "allow": {
         "message": "İzin ver"
     },
-    "allow60fps": {
-        "message": "60fps'e izin ver"
-    },
     "allYourSettingsWillBeErasedAndCanTBeRecovered": {
         "message": "Tüm ayarlarınız silinir ve kurtarılamaz"
     },

@@ -35,9 +35,6 @@
     "allow": {
         "message": "Permetti"
     },
-    "allow60fps": {
-        "message": "Permetti 60 fps"
-    },
     "always": {
         "message": "Sempre"
     },

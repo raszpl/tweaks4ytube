@@ -35,9 +35,6 @@
     "allow": {
         "message": "Разрешить"
     },
-    "allow60fps": {
-        "message": "Разрешить 60fps"
-    },
     "always": {
         "message": "Всегда"
     },

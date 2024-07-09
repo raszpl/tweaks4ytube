@@ -35,9 +35,6 @@
     "allow": {
         "message": "اجازه دادن"
     },
-    "allow60fps": {
-        "message": "اجازه دادن ۶۰ فریم در ثانیه"
-    },
     "allYourSettingsWillBeErasedAndCanTBeRecovered": {
         "message": "تمام تنظیمات شما پاک می‌شوند و قابل بازیابی نیستند"
     },

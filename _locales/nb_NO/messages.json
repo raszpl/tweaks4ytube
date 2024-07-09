@@ -35,9 +35,6 @@
     "allow": {
         "message": "Tillat"
     },
-    "allow60fps": {
-        "message": "Tillat 60 bps"
-    },
     "alwaysActive": {
         "message": "Alltid aktiv"
     },

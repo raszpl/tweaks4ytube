@@ -35,9 +35,6 @@
     "allow": {
         "message": "سماح"
     },
-    "allow60fps": {
-        "message": "السماح لـ60إطار"
-    },
     "alwaysActive": {
         "message": "دائما نشط"
     },
