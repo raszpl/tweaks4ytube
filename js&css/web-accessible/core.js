@@ -138,51 +138,15 @@ document.addEventListener('it-message-from-extension', function (message) {
 	if (message.action === 'storage-loaded') {
 		ImprovedTube.storage = message.storage;
 
-		if (ImprovedTube.storage.block_vp9 || ImprovedTube.storage.block_av1 || ImprovedTube.storage.block_h264) {
-			let atlas = {block_vp9:'vp9|vp09', block_h264:'avc1', block_av1:'av01'},
-				codec = Object.keys(atlas).reduce(function (all, key) {
-				return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all}, '');
-			if (localStorage['it-codec'] != codec) {
-				localStorage['it-codec'] = codec;
-			}
-		} else if (localStorage['it-codec']) {
-			localStorage.removeItem('it-codec');
-		}
-		if (ImprovedTube.storage.player_60fps === false) {
-			if (!localStorage['it-player30fps']) {
-				localStorage['it-player30fps'] = true;
-			}
-		} else if (localStorage['it-player30fps']) {
-			localStorage.removeItem('it-player30fps');
-		}
-
 		ImprovedTube.init();
-		// need to run blocklist once just after page load to catch initial nodes
 		ImprovedTube.blocklistInit();
+		ImprovedTube.playerLimits();
 
 	// REACTION OR VISUAL FEEDBACK WHEN THE USER CHANGES A SETTING (already automated for our CSS features):
 	} else if (message.action === 'storage-changed') {
 		var camelized_key = message.camelizedKey;
 
 		ImprovedTube.storage[message.key] = message.value;
-		if (['block_vp9', 'block_h264', 'block_av1'].includes(message.key)) {
-			let atlas = {block_vp9:'vp9|vp09', block_h264:'avc1', block_av1:'av01'}
-			localStorage['it-codec'] = Object.keys(atlas).reduce(function (all, key) {
-				return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all}, '');
-			if (!localStorage['it-codec']) {
-				localStorage.removeItem('it-codec');
-			}
-		}
-		if (message.key==="player_60fps") {
-			if (ImprovedTube.storage.player_60fps === false) {
-				localStorage['it-player30fps'] = true;
-			} else {
-				localStorage.removeItem('it-player30fps');
-			}
-		}
-		if (ImprovedTube.storage[message.key]==="when_paused") {
-			ImprovedTube.whenPaused();
-		};
 
 		switch(camelized_key) {
 			case 'blocklistActivate':
@@ -356,6 +320,13 @@ document.addEventListener('it-message-from-extension', function (message) {
 
 			case 'playerHideControls':
 				ImprovedTube.playerControls();
+				break
+
+			case 'block_vp9':
+			case 'block_h264':
+			case 'block_av1':
+			case 'player_30fps_limit':					
+				ImprovedTube.playerLimits();
 				break
 		}
 
