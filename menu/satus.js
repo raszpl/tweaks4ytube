@@ -77,7 +77,6 @@ components.modal(component, skeleton)
 // components.select optional parameters
 // index: defines default select option by index (zero-indexed)
 // value: defines default select option by value. Takes precedence over index:
-			divider // not implemented
 			base(component)
 			section
 			time
@@ -117,7 +116,6 @@ RGB2HSL	HUE2RGB	 HSL2RGB
 >>> SEARCH
 // TO-DO or integrate with JS search libs
 --------------------------------------------------------------*/
-
 /*--------------------------------------------------------------
 # GLOBAL VARIABLE
 --------------------------------------------------------------*/
@@ -251,7 +249,6 @@ satus.isset = function (target, is_object) {
 
 	return true;
 };
-
 /*-------------------------------------------------------------
 	# is___(target)
 --------------------------------------------------------------*/
@@ -390,14 +387,12 @@ satus.empty = function (element, exclude = []) {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # ELEMENT INDEX
 --------------------------------------------------------------*/
 satus.elementIndex = function (element) {
 	return Array.prototype.slice.call(element.parentNode.children).indexOf(element);
 };
-
 /*--------------------------------------------------------------
 
 # CSS
@@ -430,7 +425,6 @@ satus.style = function (element, object) {
 satus.getAnimationDuration = function (element) {
 	return Number(window.getComputedStyle(element).getPropertyValue('animation-duration').replace(/[^0-9.]/g, '')) * 1000;
 };
-
 /*--------------------------------------------------------------
 
 # CRYPTION
@@ -501,7 +495,6 @@ satus.events.trigger = function (type, data) {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # FETCH
 --------------------------------------------------------------*/
@@ -1157,7 +1150,6 @@ satus.components.modal.confirm = function (component, skeleton) {
 satus.components.grid = function (component, skeleton) {
 	console.log(component, skeleton);
 };
-
 /*--------------------------------------------------------------
 >>> TEXT FIELD
 --------------------------------------------------------------*/
@@ -1422,7 +1414,6 @@ satus.components.textField = function (component, skeleton) {
 # Core
 	# Bar
 --------------------------------------------------------------*/
-
 /*--------------------------------------------------------------
 # CORE
 --------------------------------------------------------------*/
@@ -1435,7 +1426,6 @@ satus.components.chart = function (component, skeleton) {
 		this.chart[type](component, skeleton);
 	}
 };
-
 /*--------------------------------------------------------------
 # BAR
 --------------------------------------------------------------*/
@@ -1496,7 +1486,7 @@ satus.components.select = function (component, skeleton) {
 	component.appendChild(component.selectElement);
 
 	component.options = satus.isFunction(skeleton.options) ? skeleton.options() : skeleton.options || [];
-	
+
 	for (const options of component.options) {
 		const option = document.createElement('option');
 
@@ -1546,11 +1536,6 @@ satus.components.select = function (component, skeleton) {
 
 	component.render();
 };
-/*--------------------------------------------------------------
->>> DIVIDER
---------------------------------------------------------------*/
-satus.components.divider = function () {};
-
 /*--------------------------------------------------------------
 >>> SECTION
 --------------------------------------------------------------*/
@@ -1868,7 +1853,6 @@ satus.components.colorPicker = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> RADIO
 --------------------------------------------------------------*/
-
 satus.components.radio = function (component, skeleton) {
 	let value;
 
@@ -1930,7 +1914,6 @@ satus.components.radio = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> SLIDER
 --------------------------------------------------------------*/
-
 satus.components.slider = function (component, skeleton) {
 	const content = component.createChildElement('div', 'content'),
 		childrenContainer = content.createChildElement('div', 'children-container'),
@@ -2007,7 +1990,6 @@ satus.components.slider = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> TABS
 --------------------------------------------------------------*/
-
 satus.components.tabs = function (component, skeleton) {
 	let tabs = skeleton.items,
 		value = skeleton.value;
@@ -2041,7 +2023,6 @@ satus.components.tabs = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> SHORTCUT
 --------------------------------------------------------------*/
-
 satus.components.shortcut = function (component, skeleton) {
 	component.childrenContainer = component.createChildElement('div', 'content');
 	component.valueElement = component.createChildElement('div', 'value');
@@ -2363,7 +2344,6 @@ satus.components.shortcut = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> CHECKBOX
 --------------------------------------------------------------*/
-
 satus.components.checkbox = function (component, skeleton) {
 	component.input = component.createChildElement('input');
 	component.input.type = 'checkbox';
@@ -2400,7 +2380,6 @@ satus.components.checkbox = function (component, skeleton) {
 /*--------------------------------------------------------------
 >>> SWITCH
 --------------------------------------------------------------*/
-
 satus.components.switch = function (component, skeleton) {
 	let value = satus.isset(component.storage.value) ? component.storage.value : skeleton.value || false;
 
@@ -2483,7 +2462,6 @@ satus.events.on('render', function (component) {
 /*--------------------------------------------------------------
 >>> SORTABLE
 --------------------------------------------------------------*/
-
 satus.events.on('render', function (component) {
 	if (component.skeleton.sortable === true) {
 		component.addEventListener('mousedown', function (event) {
@@ -2576,7 +2554,6 @@ satus.events.on('render', function (component) {
 /*--------------------------------------------------------------
 >>> MANIFEST
 --------------------------------------------------------------*/
-
 satus.manifest = function () {
 	var object = {};
 
@@ -2594,13 +2571,10 @@ satus.manifest = function () {
 # HUE to RGB
 # HSL to RGB
 --------------------------------------------------------------*/
-
 satus.color = {};
-
 /*--------------------------------------------------------------
 # STRING TO ARRAY
 --------------------------------------------------------------*/
-
 satus.color.stringToArray = function (string) {
 	var match = string.match(/[0-9.]+/g);
 
@@ -2612,11 +2586,9 @@ satus.color.stringToArray = function (string) {
 
 	return match;
 };
-
 /*--------------------------------------------------------------
 # RGB TO HSL
 --------------------------------------------------------------*/
-
 satus.color.rgbToHsl = function (array) {
 	var r = array[0] / 255,
 		g = array[1] / 255,
@@ -2656,11 +2628,9 @@ satus.color.rgbToHsl = function (array) {
 		return [h, s, l, array[3]];
 	}
 };
-
 /*--------------------------------------------------------------
 # HUE TO RGB
 --------------------------------------------------------------*/
-
 satus.color.hueToRgb = function (array) {
 	var t1 = array[0],
 		t2 = array[1],
@@ -2684,11 +2654,9 @@ satus.color.hueToRgb = function (array) {
 		return t1;
 	}
 };
-
 /*--------------------------------------------------------------
 # HSL TO RGB
 --------------------------------------------------------------*/
-
 satus.color.hslToRgb = function (array) {
 	var h = array[0] / 360,
 		s = array[1] / 100,
@@ -2741,21 +2709,17 @@ satus.color.hslToRgb = function (array) {
 		# Touch
 		# Connection
 --------------------------------------------------------------*/
-
 satus.user = {
 	browser: {},
 	device: {},
 	os: {}
 };
-
 /*--------------------------------------------------------------
 # OS
 --------------------------------------------------------------*/
-
 /*--------------------------------------------------------------
 # NAME
 --------------------------------------------------------------*/
-
 satus.user.os.name = function () {
 	var app_version = navigator.appVersion;
 
@@ -2791,7 +2755,6 @@ satus.user.os.name = function () {
 		return 'UNIX';
 	}
 };
-
 /*--------------------------------------------------------------
 # BITNESS
 --------------------------------------------------------------*/
@@ -2805,7 +2768,6 @@ satus.user.os.bitness = function () {
 /*--------------------------------------------------------------
 # BROWSER
 --------------------------------------------------------------*/
-
 /*--------------------------------------------------------------
 # NAME
 --------------------------------------------------------------*/
@@ -2910,11 +2872,9 @@ satus.user.browser.audio = function () {
 
 	return result;
 };
-
 /*--------------------------------------------------------------
 # VIDEO
 --------------------------------------------------------------*/
-
 satus.user.browser.video = function () {
 	var video = document.createElement('video'),
 		types = {
@@ -2940,22 +2900,18 @@ satus.user.browser.video = function () {
 
 	return result;
 };
-
 /*--------------------------------------------------------------
 # WEBGL
 --------------------------------------------------------------*/
-
 satus.user.browser.webgl = function () {
 	var cvs = document.createElement('canvas'),
 		ctx = cvs.getContext('webgl');
 
 	return ctx && ctx instanceof WebGLRenderingContext;
 };
-
 /*--------------------------------------------------------------
 # HARDWARE
 --------------------------------------------------------------*/
-
 /*--------------------------------------------------------------
 # SCREEN
 --------------------------------------------------------------*/
@@ -2965,21 +2921,17 @@ satus.user.device.screen = function () {
 		return screen.width + 'x' + screen.height;
 	}
 };
-
 /*--------------------------------------------------------------
 # RAM
 --------------------------------------------------------------*/
-
 satus.user.device.ram = function () {
 	if ('deviceMemory' in navigator) {
 		return navigator.deviceMemory + ' GB';
 	}
 };
-
 /*--------------------------------------------------------------
 # GPU
 --------------------------------------------------------------*/
-
 satus.user.device.gpu = function () {
 	var cvs = document.createElement('canvas'),
 		ctx = cvs.getContext('webgl');
@@ -2997,19 +2949,15 @@ satus.user.device.gpu = function () {
 		}
 	}
 };
-
 /*--------------------------------------------------------------
 # CORES
 --------------------------------------------------------------*/
-
 satus.user.device.cores = function () {
 	return navigator.deviceConcurrency || navigator.hardwareConcurrency;
 };
-
 /*--------------------------------------------------------------
 # TOUCH
 --------------------------------------------------------------*/
-
 satus.user.device.touch = function () {
 	var result = {};
 
@@ -3025,11 +2973,9 @@ satus.user.device.touch = function () {
 
 	return result;
 };
-
 /*--------------------------------------------------------------
 # CONNECTION
 --------------------------------------------------------------*/
-
 satus.user.device.connection = function () {
 	var result = {};
 
@@ -3046,7 +2992,6 @@ satus.user.device.connection = function () {
 /*--------------------------------------------------------------
 # SEARCH
 --------------------------------------------------------------*/
-
 satus.search = function (query, object, callback) {
 	const included = ['switch', 'select', 'slider', 'shortcut', 'radio', 'color-picker', 'label', 'button'],
 		excluded = [
