@@ -4,15 +4,12 @@
 
 extension.skeleton.main.layers.section.player = {
 	component: 'button',
-	variant: 'player',
+	class: 'satus-button--player',
 	category: true,
-	on: {
-		click: {}
-	},
+	on: {},
 
 	icon: {
 		component: 'span',
-
 		svg: {
 			component: 'svg',
 			attr: {
@@ -22,7 +19,6 @@ extension.skeleton.main.layers.section.player = {
 				'stroke-linecap': 'round',
 				'stroke-width': '1.75'
 			},
-
 			path: {
 				component: 'path',
 				attr: {
@@ -550,6 +546,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_font_family: {
 						component: 'select',
 						text: 'fontFamily',
+						index: 3,
 						options: [{
 							text: 'Proportional Sans-Serif',
 							value: 4
@@ -605,15 +602,16 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_font_size: {
 						component: 'select',
 						text: 'fontSize',
+						index: 2,
 						options: [{
-							text: '100%',
-							value: 0
+							text: '50%',
+							value: -2
 						}, {
 							text: '75%',
 							value: -1
 						}, {
-							text: '50%',
-							value: -2
+							text: '100%',
+							value: 0
 						}, {
 							text: '150%',
 							value: 1
@@ -631,6 +629,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_background_color: {
 						component: 'select',
 						text: 'backgroundColor',
+						index: 7,
 						options: [{
 							text: 'white',
 							value: '#fff'
@@ -837,9 +836,8 @@ extension.skeleton.main.layers.section.player.on.click = {
 						},
 						block_vp9: {
 							component: 'switch',
+							variant: 'manual',
 							text: 'blockVp9',
-							value: false,
-							custom: true,
 							on: {
 								click: function () {
 									if (this.dataset.value === 'false') {
@@ -859,9 +857,8 @@ extension.skeleton.main.layers.section.player.on.click = {
 						},
 						block_h264: {
 							component: 'switch',
+							variant: 'manual',
 							text: 'blockH264',
-							value: false,
-							custom: true,
 							on: {
 								click: function () {
 									if (this.dataset.value === 'false') {
@@ -917,10 +914,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 		},
 		h264: {
 			component: 'switch',
+			variant: 'manual',
 			text: 'codecH264',
 			storage: 'player_h264',
-			value: false,
-			custom: true,
 			on: {
 				click: function () {
 					let refresh = function () {
@@ -936,19 +932,16 @@ extension.skeleton.main.layers.section.player.on.click = {
 							variant: 'confirm',
 							content: 'youtubeLimitsVideoQualityTo1080pForH264Codec',
 							ok: function () {
-								// manually turn switch ON
+								// manually flip the switch ON
 								where.flip(true);
 								satus.storage.set('block_vp9', true);
 								satus.storage.set('block_av1', true);
 								satus.storage.remove('block_h264');
 								refresh();
-							},
-							cancel: function () {
-								// nothing happens when we cancel
 							}
 						}, extension.skeleton.rendered);
 					} else {
-						// manually turn switch OFF
+						// manually flip the switch OFF
 						this.flip(false);
 						// reset all codecs to unlocked state
 						satus.storage.remove('block_vp9');
