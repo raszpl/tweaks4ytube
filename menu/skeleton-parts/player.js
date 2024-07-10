@@ -1020,10 +1020,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 			text: 'player_auto_cinema_mode',
 			id: 'player_auto_cinema_mode'
 		},
-		player_auto_hide_cinema_mode_when_paused: {
-			component: 'switch',
-			text: 'player_auto_hide_cinema_mode_when_paused'
-		},
 		player_rotate_button: {
 			component: 'switch',
 			text: 'rotate'
