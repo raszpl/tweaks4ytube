@@ -743,12 +743,12 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 
 		// dont add storage component to storage: false elements
 		if (skeleton.storage != false) {
-			element.storage = (function() {
+			element.storage = (function () {
 				let parent = element,
 					// default storage is same as element name (property)
-          key = skeleton.storage || property || false,
-          value;
-	
+					key = skeleton.storage || property || false,
+					value;
+
 				if (satus.isFunction(key)) key = key();
 
 				if (skeleton.storage !== false) {
@@ -760,7 +760,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 						value = skeleton.value;
 
 						// default value can also be function()
-            if (satus.isFunction(value)) value = value();
+						if (satus.isFunction(value)) value = value();
 					}
 				}
 
@@ -1157,11 +1157,11 @@ satus.components.textField = function (component, skeleton) {
 	const container = component.createChildElement('div', 'container'),
 		input = container.createChildElement(skeleton.rows === 1 ? 'input' : 'textarea'),
 		display = container.createChildElement('div', 'display'),
-		hiddenValue = container.createChildElement('pre', 'hidden-value'),
 		lineNumbers = display.createChildElement('div', 'line-numbers'),
 		pre = display.createChildElement('pre'),
 		selection = display.createChildElement('div', 'selection'),
-		cursor = display.createChildElement('div', 'cursor');
+		cursor = display.createChildElement('div', 'cursor'),
+		hiddenValue = container.createChildElement('pre', 'hidden-value');
 
 	if (skeleton.rows === 1) {
 		component.setAttribute('multiline', 'false');
@@ -1171,9 +1171,9 @@ satus.components.textField = function (component, skeleton) {
 	component.placeholder = skeleton.placeholder;
 	component.input = input;
 	component.display = display;
-	component.hiddenValue = hiddenValue;
 	component.lineNumbers = lineNumbers;
 	component.pre = pre;
+	component.hiddenValue = hiddenValue;
 	component.selection = selection;
 	component.cursor = cursor;
 	component.syntax = {
@@ -1181,8 +1181,8 @@ satus.components.textField = function (component, skeleton) {
 		handlers: {
 			regex: function (value, target) {
 				const regex_token = /\[\^?]?(?:[^\\\]]+|\\[\S\s]?)*]?|\\(?:0(?:[0-3][0-7]{0,2}|[4-7][0-7]?)?|[1-9][0-9]*|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|c[A-Za-z]|[\S\s]?)|\((?:\?[:=!]?)?|(?:[?*+]|\{[0-9]+(?:,[0-9]*)?\})\??|[^.?*+^${[()|\\]+|./g,
-					char_class_token = /[^\\-]+|-|\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|c[A-Za-z]|[\S\s]?)/g,
-					char_class_parts = /^(\[\^?)(]?(?:[^\\\]]+|\\[\S\s]?)*)(]?)$/,
+					//char_class_token = /[^\\-]+|-|\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|c[A-Za-z]|[\S\s]?)/g,
+					//char_class_parts = /^(\[\^?)(]?(?:[^\\\]]+|\\[\S\s]?)*)(]?)$/,
 					quantifier = /^(?:[?*+]|\{[0-9]+(?:,[0-9]*)?\})\??$/,
 					matches = value.match(regex_token);
 
@@ -1233,7 +1233,7 @@ satus.components.textField = function (component, skeleton) {
 		component.syntax.set(skeleton.syntax);
 	}
 
-	component.focus = function() {
+	component.focus = function () {
 		this.autofocus = true;
 		this.input.focus();
 	};
@@ -1241,11 +1241,11 @@ satus.components.textField = function (component, skeleton) {
 	if (skeleton.lineNumbers === false) {
 		component.setAttribute('line-numbers', 'false');
 
-		lineNumbers.setAttribute('hidden', '');
+		component.lineNumbers.setAttribute('hidden', '');
 	}
 
-	input.cols = skeleton.cols;
-	input.rows = skeleton.rows;
+	if (satus.isset(skeleton.cols)) input.cols = skeleton.cols;
+	if (satus.isset(skeleton.rows)) input.rows = skeleton.rows;
 
 	Object.defineProperty(component, 'value', {
 		get: function () {
@@ -1258,11 +1258,15 @@ satus.components.textField = function (component, skeleton) {
 		}
 	});
 
+	if (skeleton.syntax) {
+		component.syntax.set(skeleton.syntax);
+	}
+
 	component.value = component.storage?.value || '';
 
 	selection.setAttribute('disabled', '');
 
-	lineNumbers.update = function() {
+	lineNumbers.update = function () {
 		const component = this.parentNode.parentNode.parentNode,
 			count = component.input.value.split('\n').length;
 
@@ -1532,7 +1536,7 @@ satus.components.select = function (component, skeleton) {
 	});
 
 	// try in order: storage (this includes fallback to .value), .index, first options element
-	component.value = [component.storage?.value, component.options[skeleton.index]?.value, component.options[0]?.value].find(value => satus.isset(value));
+	component.value = satus.isset(component.storage?.value) ? component.storage.value : defValue;
 
 	component.render();
 };
@@ -1691,7 +1695,7 @@ satus.components.colorPicker = function (component, skeleton) {
 			}
 		});
 
-		element.value = component.storage.value || skeleton.value || [0, 0, 0];
+		element.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || [0, 0, 0];
 
 		return element;
 	})(component.createChildElement('span', 'value'));
@@ -1922,15 +1926,15 @@ satus.components.slider = function (component, skeleton) {
 		input = track_container.createChildElement('input', 'input');
 
 	component.childrenContainer = childrenContainer;
-	component.input = input;
 	component.textInput = textInput;
+	component.input = input;
 	component.track = track_container.createChildElement('div', 'track');
 
 	input.type = 'range';
 	input.min = skeleton.min || 0;
 	input.max = skeleton.max || 1;
 	input.step = skeleton.step || 1;
-	input.value = component.storage?.value || 0;
+	input.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || 0;
 
 	textInput.type = 'text';
 	textInput.value = input.value;
@@ -2331,7 +2335,7 @@ satus.components.shortcut = function (component, skeleton) {
 		window.addEventListener('wheel', this.mousewheel);
 	});
 
-	component.data = component.storage.value || {
+	component.data = component.storage?.value || {
 		alt: false,
 		ctrl: false,
 		shift: false,
@@ -2352,8 +2356,8 @@ satus.components.checkbox = function (component, skeleton) {
 
 	component.childrenContainer = component.createChildElement('div', 'content');
 
-	component.dataset.value = component.storage?.value || false;
-	component.input.checked = component.storage?.value || false;
+	component.dataset.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || false;
+	component.input.checked = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || false;
 
 	component.input.addEventListener('change', function () {
 		const component = this.parentNode;
@@ -2401,6 +2405,27 @@ satus.components.switch = function (component, skeleton) {
 };
 
 satus.components.switch.flip = function (val) {
+	let where = this;
+
+	function flipTrue() {
+		where.dataset.value = 'true';
+		if (where.skeleton.value == true) {
+			// skeleton.value: true makes this a default true flip switch where the only active state we save is false
+			where.storage.remove();
+		} else {
+			where.storage.value = true;
+		}
+	};
+	function flipFalse() {
+		where.dataset.value = 'false';
+		if (where.skeleton.value == true) {
+			// skeleton.value: true makes this a default true flip switch where the only active state we save is false
+			where.storage.value = false;
+		} else {
+			where.storage.remove();
+		}
+	};
+	
 	switch (val) {
 		case true:
 			flipTrue();
