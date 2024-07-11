@@ -36,7 +36,7 @@ var ImprovedTube = {
 		channel_home_page_postfix: /\/(featured)?\/?$/,
 		thumbnail_quality: /(default\.jpg|mqdefault\.jpg|hqdefault\.jpg|hq720\.jpg|sddefault\.jpg|maxresdefault\.jpg)+/,
 		video_id: /(?:[?&]v=|embed\/|shorts\/)([^&?]{11})/,
-		video_time: /[?&](?:t|start)=([^&]+)|#t=(\w+)/,
+		video_time: /[?&](?:t|start)=([^&]+)/,
 		playlist_id: /[?&]list=([^&]+)/,
 		channel_link: /https:\/\/www.youtube.com\/@|((channel|user|c)\/)/
 	},
@@ -112,7 +112,8 @@ var ImprovedTube = {
 	miniPlayer_resize_offset: 16,
 	playlistReversed: false,
 	status_timer: false,
-	defaultApiKey: 'AIzaSyCXRRCFwKAXOiF1JkUBmibzxJF1cPuKNwA'
+	defaultApiKey: 'AIzaSyCXRRCFwKAXOiF1JkUBmibzxJF1cPuKNwA',
+	DOM_filter: ['SCRIPT','iron-iconset-svg','svg','SPAN','#text','#comment','yt-icon-shape','DOM-IF','DOM-REPEAT']
 };
 
 /*--------------------------------------------------------------
@@ -146,14 +147,12 @@ if (localStorage['it-codec'] || localStorage['it-player30fps']) {
 		return overwrite(this, canPlayType, mime);
 	}
 };
-
 /*--------------------------------------------------------------
 # MESSAGES
 ----------------------------------------------------------------
 	Designed for messaging between contexts of extension and
 	website.
 --------------------------------------------------------------*/
-
 document.addEventListener('it-message-from-extension', function (message) {
 	message = message.detail;
 
@@ -166,13 +165,14 @@ document.addEventListener('it-message-from-extension', function (message) {
 
 	// REACTION OR VISUAL FEEDBACK WHEN THE USER CHANGES A SETTING (already automated for our CSS features):
 	} else if (message.action === 'storage-changed') {
-		var camelized_key = message.camelizedKey;
+		let camelized_key = message.camelizedKey;
 
 		ImprovedTube.storage[message.key] = message.value;
 
 		switch(camelized_key) {
+			case 'blocklist':
 			case 'blocklistActivate':
-				camelized_key = 'blocklist';
+				camelized_key = 'blocklistInit';
 				break
 
 			case 'playerPlaybackSpeed':
@@ -228,7 +228,7 @@ document.addEventListener('it-message-from-extension', function (message) {
 
 			case 'forcedTheaterMode':
 				if (ImprovedTube.storage.forced_theater_mode === false && ImprovedTube.elements.ytd_watch && ImprovedTube.elements.player) {
-					var button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
+					const button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
 					if (button && ImprovedTube.elements.ytd_watch.theater === true) {
 						ImprovedTube.elements.ytd_watch.theater = false;
 						setTimeout(function () { button.click();}, 100);
@@ -352,36 +352,32 @@ document.addEventListener('it-message-from-extension', function (message) {
 				break
 		}
 
+		// dont trigger shortcuts on config change, reinitialize handler instead
+		if (message.key.startsWith('shortcut_')) camelized_key = 'shortcutsInit';
+		
 		if (ImprovedTube[camelized_key]) {
 			try{ImprovedTube[camelized_key]()}catch{};
 		}
-	} else if (message.focus === true && ImprovedTube.elements.player) {
+	} else if (message.action === 'focus' && ImprovedTube.elements.player) {
 		ImprovedTube.focus = true;
-
 		ImprovedTube.pageOnFocus();
-	} else if (message.blur === true && ImprovedTube.elements.player) {
+	} else if (message.action === 'blur' && ImprovedTube.elements.player) {
 		ImprovedTube.focus = false;
-
 		ImprovedTube.pageOnFocus();
-
 		document.dispatchEvent(new CustomEvent('improvedtube-blur'));
 	} else if (message.pause === true) {
 		if (ImprovedTube.elements.player) {
 			ImprovedTube.played_before_blur = ImprovedTube.elements.player.getPlayerState() === 1;
 			ImprovedTube.elements.player.pauseVideo();
 		}
-	} else if (message.hasOwnProperty('setVolume')) {
-		if (ImprovedTube.elements.player) {
-			ImprovedTube.elements.player.setVolume(message.setVolume);
-		}
-	} else if (message.hasOwnProperty('setPlaybackSpeed')) {
-		if (ImprovedTube.elements.player) {
-			ImprovedTube.elements.player.setPlaybackRate(message.setPlaybackSpeed);
-		}
+	} else if (message.setVolume) {
+		ImprovedTube.elements.player?.setVolume(message.setVolume);
+	} else if (message.setPlaybackSpeed) {
+		ImprovedTube.playbackSpeed(message.setPlaybackSpeed);
 	} else if (message.deleteCookies === true) {
 		ImprovedTube.deleteYoutubeCookies();
-	} else if (message.hasOwnProperty('responseOptionsUrl')) {
-		var iframe = document.querySelector('.it-button__iframe');
+	} else if (message.responseOptionsUrl) {
+		const iframe = document.querySelector('.it-button__iframe');
 
 		if (iframe) {
 			iframe.src = message.responseOptionsUrl;
