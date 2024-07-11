@@ -344,7 +344,7 @@ ImprovedTube.playerOnPlay = function () {
 				this.addEventListener('ended', ImprovedTube.playerOnEnded, true);
 				ImprovedTube.autoplayDisable(this);
 				ImprovedTube.playerLoudnessNormalization();
-				ImprovedTube.playerCinemaModeEnable();
+				ImprovedTube.playerAutoCinemaMode();
 			}
 			return original.apply(this, arguments);
 		}
@@ -440,8 +440,7 @@ ImprovedTube.playerOnPause = function (event) {
 	}
 	ImprovedTube.played_time = 0;
 	ImprovedTube.playerControls();
-	ImprovedTube.playerCinemaModeDisable();
-
+	ImprovedTube.playerAutoCinemaMode(true);
 };
 
 ImprovedTube.playerOnEnded = function (event) {
