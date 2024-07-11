@@ -42,7 +42,7 @@ ImprovedTube.forcedPlayVideoFromTheBeginning = function (video) {
 	const player = this.elements.player,
 		//video = this.elements.video,
 		paused = video?.paused;
-	
+
 	if (player && video && this.storage.forced_play_video_from_the_beginning && location.pathname == '/watch') {
 		//console.log('trying to player.seekTo(0)');
 		//video.currentTime = 0;
@@ -463,7 +463,7 @@ UP NEXT AUTOPLAY
 ImprovedTube.upNextAutoplay = function (event) {
 	const option = this.storage.up_next_autoplay,
 		button = document.querySelector('.ytp-autonav-toggle-button');
-		
+
 	if (!button) return;
 	if ((option && button.getAttribute('aria-checked') === 'false')
 		|| (!option && button.getAttribute('aria-checked') === 'true')) {
@@ -914,108 +914,79 @@ ImprovedTube.playerFitToWinButton = function () {
 /*------------------------------------------------------------------------------
 CINEMA MODE BUTTON
 ------------------------------------------------------------------------------*/
-
-var xpath = function (xpathToExecute) {
-	var result = [];
-	var nodesSnapshot = document.evaluate(xpathToExecute, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-	for ( var i=0; i < nodesSnapshot.snapshotLength; i++ ) {
-	  result.push( nodesSnapshot.snapshotItem(i) );
-	}
-	return result;
-}
-
-function createOverlay () {
-	var overlay = document.createElement('div');
-	overlay.id = 'overlay_cinema';
-	overlay.style.position = 'fixed';
-	overlay.style.top = '0';
-	overlay.style.left = '0';
-	overlay.style.width = '100%';
-	overlay.style.height = '100%';
-	overlay.style.backgroundColor = 'rgba(0, 0, 0, 1)';
-	overlay.style.zIndex = '9999';
-	overlay.style.display = 'block';
-	document.body.appendChild(overlay);
-}
-
 ImprovedTube.playerCinemaModeButton = function () {
-	if (this.storage.player_cinema_mode_button && (/watch\?/.test(location.href))) {
-		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	if (location.pathname != '/watch') return;
+	if (!this.storage.player_cinema_mode_button) return;
+	const player = this.elements.player,
+		controls = this.elements.player_left_controls;
 
-		svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
-		// TODO: change path such that cinema mode has its own unique icon
-		path.setAttributeNS(null, 'd', 'm 2.1852 2.2 h 3.7188 h 5.2974 h 5.184 h 3.5478 c 0.6012 0 1.1484 0.2737 1.5444 0.7113 c 0.396 0.4396 0.6408 1.047 0.6408 1.7143 v 1.4246 v 11.4386 v 1.4166 c 0 0.6673 -0.2466 1.2747 -0.6408 1.7143 c -0.396 0.4396 -0.9432 0.7113 -1.5444 0.7113 h -3.456 c -0.0288 0.006 -0.0594 0.008 -0.0918 0.008 c -0.0306 0 -0.0612 -0.002 -0.0918 -0.008 h -5.0004 c -0.0288 0.006 -0.0594 0.008 -0.0918 0.008 c -0.0306 0 -0.0612 -0.002 -0.0918 -0.008 h -5.1138 c -0.0288 0.006 -0.0594 0.008 -0.0918 0.008 c -0.0306 0 -0.0612 -0.002 -0.0918 -0.008 h -3.627 c -0.6012 0 -1.1484 -0.2737 -1.5444 -0.7113 s -0.6408 -1.047 -0.6408 -1.7143 v -1.4166 v -11.4386 v -1.4246 c 0 -0.6673 0.2466 -1.2747 0.6408 -1.7143 c 0.396 -0.4376 0.9432 -0.7113 1.5444 -0.7113 l 0 0 z m 7.749 6.2418 l 3.6954 2.8611 c 0.0576 0.04 0.1098 0.0959 0.1512 0.1618 c 0.1656 0.2657 0.1044 0.6274 -0.1332 0.8112 l -3.681 2.8252 c -0.09 0.0819 -0.207 0.1319 -0.333 0.1319 c -0.2916 0 -0.5274 -0.2617 -0.5274 -0.5854 v -5.7283 h 0.0018 c 0 -0.1159 0.0306 -0.2318 0.0936 -0.3337 c 0.1674 -0.2637 0.495 -0.3277 0.7326 -0.1439 l 0 0 z m 6.9768 9.6324 v 2.0879 h 3.0204 c 0.3114 0 0.594 -0.1419 0.7992 -0.3696 c 0.2052 -0.2278 0.333 -0.5415 0.333 -0.8871 v -0.8312 h -4.1526 l 0 0 z m -1.053 2.0879 v -2.0879 h -4.1292 v 2.0879 h 4.1292 l 0 0 z m -5.1822 0 v -2.0879 h -4.2444 v 2.0879 h 4.2444 l 0 0 z m -5.2992 0 v -2.0879 h -4.3236 v 0.8312 c 0 0.3457 0.1278 0.6593 0.333 0.8871 c 0.2052 0.2278 0.4878 0.3696 0.7992 0.3696 h 3.1914 l 0 0 z m -4.3236 -3.2567 h 4.851 h 5.2974 h 5.184 h 4.68 v -10.2697 h -4.68 h -5.184 h -5.2974 h -4.851 v 10.2697 l 0 0 z m 14.805 -11.4386 v -2.0979 h -4.1292 v 2.0959 h 4.1292 l 0 0.002 z m 1.053 -2.0979 v 2.0959 h 4.1526 v -0.8392 c 0 -0.3457 -0.1278 -0.6593 -0.333 -0.8871 c -0.2052 -0.2278 -0.4878 -0.3696 -0.7992 -0.3696 h -3.0204 l 0 0 z m -6.2352 2.0979 v -2.0979 h -4.2444 v 2.0959 h 4.2444 l 0 0.002 z m -5.2992 0 v -2.0979 h -3.1914 c -0.3114 0 -0.594 0.1419 -0.7992 0.3696 c -0.2052 0.2278 -0.333 0.5415 -0.333 0.8871 v 0.8392 h 4.3236 l 0 0.002 z');
-
-		svg.appendChild(path);
-
-		this.createPlayerButton({
-			id: 'it-cinema-mode-button',
-			child: svg,
-			// position: "right", // using right only works when we also have fit to window button enabled for some reason
-			opacity: 0.64,
-			onclick: function () {
-				const player = xpath('//*[@id="movie_player"]/div[1]/video')[0].parentNode.parentNode
-				// console.log(player)
-				if (player.style.zIndex == 10000) {
-					player.style.zIndex = 1;
-					svg.parentNode.style.opacity = 0.64;
-					svg.parentNode.style.zIndex = 1;
-				} else {
-					player.style.zIndex = 10000;
-					svg.parentNode.style.opacity = 1;
-				}
-
-				var overlay = document.getElementById('overlay_cinema');
-				if (!overlay) {
-					createOverlay();
-				} else {
-					overlay.style.display = overlay.style.display === 'none' || overlay.style.display === '' ? 'block' : 'none';
-				}
-				//console.log(overlay)
-			},
-			title: 'Cinema Mode'
-		});
+	if (!player || !controls) {
+		console.error('playerCinemaModeButton: need player with valid controls element');
+		return;
 	}
-}
 
-ImprovedTube.playerCinemaModeDisable = function () {
-	if (this.storage.player_auto_hide_cinema_mode_when_paused) {
-		var overlay = document.getElementById('overlay_cinema');
-		if (overlay) {
-			overlay.style.display = 'none'
-			var player = xpath('//*[@id="movie_player"]/div[1]/video')[0].parentNode.parentNode
-			player.style.zIndex = 1;
-			var cinemaModeButton = xpath('//*[@id="it-cinema-mode-button"]')[0]
-			cinemaModeButton.style.opacity = 0.64
-		}
-	}
-}
+	let button = player.querySelector('#it-cinema-mode-button');
+	if (button) return; // skip button creation if one already exists
 
-ImprovedTube.playerCinemaModeEnable = function () {
-	if (this.storage.player_auto_cinema_mode || this.storage.player_auto_hide_cinema_mode_when_paused) {
-
-		if ((/watch\?/.test(location.href))) {
-			var overlay = document.getElementById('overlay_cinema');
-
-			if (this.storage.player_auto_cinema_mode === true && !overlay) {
-				createOverlay();
-				overlay = document.getElementById('overlay_cinema');
-			}
-
-			// console.log(overlay && this.storage.player_auto_hide_cinema_mode_when_paused === true || this.storage.player_auto_cinema_mode === true && overlay)
-			if (overlay) {
-				overlay.style.display = 'block'
-				var player = xpath('//*[@id="movie_player"]/div[1]/video')[0].parentNode.parentNode
-				player.style.zIndex = 10000;
-				// console.log(player)
-				var cinemaModeButton = xpath('//*[@id="it-cinema-mode-button"]')[0]
-				cinemaModeButton.style.opacity = 1
+	button = this.createIconButton({
+		type: 'playerCinemaMode',
+		id: 'it-cinema-mode-button',
+		className: 'ytp-button it-player-button',
+		tooltip: 'Cinema Mode',
+		onclick: function () {
+			if (this.style.opacity === '1') {
+				this.style.opacity = .64;
+				delete ImprovedTube.storage.player_auto_cinema_mode;
+				ImprovedTube.playerAutoCinemaMode();
+			} else {
+				this.style.opacity = 1;
+				ImprovedTube.storage.player_auto_cinema_mode = true;
+				ImprovedTube.playerAutoCinemaMode();
 			}
 		}
-	}
-}
+	});
+	controls.insertBefore(button, controls.childNodes[3]);
+	if (this.storage.player_auto_cinema_mode) button?.style.setProperty('opacity', 1);
+};
 
+ImprovedTube.playerAutoCinemaMode = function (disable) {
+	if (location.pathname != '/watch') return;
+	const player = this.elements.player,
+			video = this.elements.video;
+
+	if (!player || !video) return; // need player and video
+
+	let overlay = document.getElementById('overlay_cinema');
+
+	if (this.storage.player_auto_cinema_mode && !disable) {
+		player.style.zIndex = 'calc(var(--ytd-z-index-toggle-button-tooltip) + 2)';
+
+		if (!overlay) {
+			overlay = document.createElement('div');
+			overlay.id = 'overlay_cinema';
+			overlay.style.position = 'fixed';
+			overlay.style.top = '0';
+			overlay.style.left = '0';
+			overlay.style.width = '100%';
+			overlay.style.height = '100%';
+			overlay.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+			overlay.style.zIndex = 'calc(var(--ytd-z-index-toggle-button-tooltip) + 1)';
+			overlay.style.display = 'none';
+			document.body.appendChild(overlay);
+		}
+		setTimeout(function () {
+			if (video.paused || !ImprovedTube.storage.player_auto_cinema_mode) return;
+			overlay.style.display = 'block';
+		}, 200);
+
+	} else if (overlay && (!this.storage.player_auto_cinema_mode || disable)) {
+		setTimeout(function () {
+			if (!video.paused && ImprovedTube.storage.player_auto_cinema_mode) return;
+			player.style.removeProperty('z-index');
+			overlay?.style.setProperty('display', 'none');
+		}, 200);
+	}
+};
 /*------------------------------------------------------------------------------
 HAMBURGER MENU
 ------------------------------------------------------------------------------*/
@@ -1070,18 +1041,18 @@ ImprovedTube.playerHamburgerButton = function () {
 POPUP PLAYER
 ------------------------------------------------------------------------------*/
 ImprovedTube.playerPopupButton = function () {
-	//if (this.storage.player_popup_button) {
-	if (this.storage.player_popup_button && location.href.indexOf('youtube.com/embed') === -1 ) {
+	if (location.pathname === '/embed') return;
+	if (this.storage.player_popup_button) {
 		const player = this.elements.player,
 			video = this.elements.video,
 			controls = this.elements.player_left_controls;
-		let button = controls.parentNode?.querySelector("#it-popup-player-button");
-		
+
 		if (!player || !video || !controls) {
 			console.error('playerPopupButton: need player with valid controls and video element');
 			return;
 		}
-		
+
+		let button = player.querySelector("#it-popup-player-button");
 		if (button) return; // skip button creation if one already exists
 
 		button = this.createIconButton({
