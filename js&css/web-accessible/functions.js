@@ -2,35 +2,15 @@
 >>> FUNCTIONS
 --------------------------------------------------------------*/
 ImprovedTube.childHandler = function (node) {
-	//console.log(node.nodeName);
-	if (node.nodeName === 'SCRIPT' || node.nodeName === 'iron-iconset-svg' || node.nodeName === 'svg' || node.nodeName === 'SPAN' || node.nodeName === '#text' || node.nodeName === '#comment' || node.nodeName === 'yt-icon-shape' || node.nodeName === 'DOM-IF' || node.nodeName === 'DOM-REPEAT') {
-		return
-	}
-	var children = node.children;
+	if (this.DOM_filter.includes(node.nodeName)) return;
 	this.ytElementsHandler(node);
 
-	if (children) {
-		for (var i = 0, l = children.length; i < l; i++) {
-			ImprovedTube.childHandler(children[i]);
+	if (node.children) {
+		for (let i = 0, l = node.children.length; i < l; i++) {
+			ImprovedTube.childHandler(node.children[i]);
 		}
 	}
-}
-
-/*
-const DOM_filter = /^(SCRIPT|DOM-IF|DOM-REPEAT|svg|SPAN|#text|#comment|yt-icon-shape|iron-iconset-svg)$/;
-ImprovedTube.childHandler = function (node) { //console.log(node.nodeName);
-	if (DOM_filter.test(node.nodeName)) { return; }
-	var children = node.children;
-	ImprovedTube.ytElementsHandler(node);
-	if (children) {
-		let i = 0;
-		for (const child of children) {
-			ImprovedTube.childHandler(children[i]);
-			//console.log("node.nodeName:CHILD-"+i+":"+children[i].id+",class:"+children[i].className+","+children[i]+"("+children[i].nodeName+")");
-			i++;
-		}
-	}
-};  */
+};
 
 ImprovedTube.ytElementsHandler = function (node) {
 	const name = node.nodeName,
@@ -267,17 +247,16 @@ ImprovedTube.ytElementsHandler = function (node) {
 			}, 750);
 		}} */
 	}
-
 };
 
 ImprovedTube.pageType = function () {
-	if (/\/watch\?/.test(location.href)) {
+	if (location.pathname === '/watch') {
 		document.documentElement.dataset.pageType = 'video';
 	} else if (location.pathname === '/') {
 		document.documentElement.dataset.pageType = 'home';
-	} else if (/\/subscriptions\?/.test(location.href)) {
+	} else if (location.pathname === '/subscriptions') {
 		document.documentElement.dataset.pageType = 'subscriptions';
-	} else if (/\/@|(\/(channel|user|c)\/)[^/]+(?!\/videos)/.test(location.href)) {
+	} else if (ImprovedTube.regex.channel.test(location.pathname)) {
 		document.documentElement.dataset.pageType = 'channel';
 	} else {
 		document.documentElement.dataset.pageType = 'other';
@@ -310,9 +289,7 @@ ImprovedTube.videoPageUpdate = function () {
 		ImprovedTube.upNextAutoplay();
 		ImprovedTube.playerAutofullscreen();
 		ImprovedTube.playerSize();
-		if (this.storage.player_always_repeat === true) {
-			ImprovedTube.playerRepeat();
-		};
+		if (this.storage.player_always_repeat === true) ImprovedTube.playerRepeat();
 		ImprovedTube.playerScreenshotButton();
 		ImprovedTube.playerRepeatButton();
 		ImprovedTube.playerRotateButton();
@@ -353,7 +330,6 @@ ImprovedTube.playerOnPlay = function () {
 
 ImprovedTube.initPlayer = function () {
 	if (ImprovedTube.elements.player && ImprovedTube.video_url !== location.href) {
-
 		ImprovedTube.video_url = location.href;
 		ImprovedTube.user_interacted = false;
 		ImprovedTube.played_before_blur = false;
@@ -369,9 +345,7 @@ ImprovedTube.initPlayer = function () {
 		ImprovedTube.playerQuality();
 		ImprovedTube.batteryFeatures();
 		ImprovedTube.playerVolume();
-		if (this.storage.player_always_repeat === true) {
-			ImprovedTube.playerRepeat();
-		}
+		if (this.storage.player_always_repeat === true) ImprovedTube.playerRepeat();
 		ImprovedTube.playerScreenshotButton();
 		ImprovedTube.playerRepeatButton();
 		ImprovedTube.playerRotateButton();
@@ -407,12 +381,8 @@ ImprovedTube.playerOnTimeUpdate = function () {
 				ImprovedTube.playerQuality();
 			}
 
-			if (ImprovedTube.storage.always_show_progress_bar === true) {
-				ImprovedTube.showProgressBar();
-			}
-			if (ImprovedTube.storage.player_remaining_duration === true) {
-				ImprovedTube.playerRemainingDuration();
-			}
+			if (ImprovedTube.storage.always_show_progress_bar === true) ImprovedTube.showProgressBar();
+			if (ImprovedTube.storage.player_remaining_duration === true) ImprovedTube.playerRemainingDuration();
 			ImprovedTube.played_time += .5;
 		}, 500);
 	}
@@ -424,19 +394,18 @@ ImprovedTube.playerOnTimeUpdate = function () {
 };
 
 ImprovedTube.playerOnLoadedMetadata = function () {
-	setTimeout(function () {
-		ImprovedTube.playerSize();
-	}, 100);
+	setTimeout(function () {ImprovedTube.playerSize();}, 100);
 };
 
-ImprovedTube.playerOnPause = function (event) {
-	ImprovedTube.playlistUpNextAutoplay(event);
+ImprovedTube.playerOnPause = function () {
+	ImprovedTube.playlistUpNextAutoplay();
 
 	if (ImprovedTube.elements.yt_channel_name) {
-		ImprovedTube.messages.send({action: 'analyzer',
+		ImprovedTube.messages.send({
+			action: 'analyzer',
 			name: ImprovedTube.elements.yt_channel_name.__data.tooltipText,
 			time: ImprovedTube.played_time
-								   });
+		});
 	}
 	ImprovedTube.played_time = 0;
 	ImprovedTube.playerControls();
@@ -444,13 +413,14 @@ ImprovedTube.playerOnPause = function (event) {
 };
 
 ImprovedTube.playerOnEnded = function (event) {
-	ImprovedTube.playlistUpNextAutoplay(event);
+	ImprovedTube.playlistUpNextAutoplay();
+	ImprovedTube.upNextAutoplay(event);
 
-	ImprovedTube.messages.send({action: 'analyzer',
-		//adding "?" (not a fix)
-		name: ImprovedTube.elements.yt_channel_name?.__data.tooltipText,
+	ImprovedTube.messages.send({
+		action: 'analyzer',
+		name: ImprovedTube.elements.yt_channel_name?.__data?.tooltipText,
 		time: ImprovedTube.played_time
-							   });
+	});
 
 	ImprovedTube.played_time = 0;
 };
@@ -466,6 +436,20 @@ ImprovedTube.onmousedown = function (event) {
 	window.addEventListener('mousedown', function (event) {
 		ImprovedTube.user_interacted = true;
 	}, true);
+};
+
+ImprovedTube.hasParam = function (name) {
+	return new URLSearchParams(location.search).has(name);
+};
+
+ImprovedTube.hasParams = function (names) {
+	const params = new URLSearchParams(location.search);
+	for (const name of names) {
+		if (params.has(name)) {
+			return true;
+		}
+	}
+	return false;
 };
 
 ImprovedTube.getParam = function (query, name) {
@@ -557,85 +541,83 @@ ImprovedTube.createIconButton = function (options) {
 		type = this.button_icons[options.type];
 
 	for (const attr of type.svg) svg.setAttribute(attr[0], attr[1]);
+	if (type.svgStyle) for (const style of type.svgStyle) svg.style[style[0]] = style[1];
 	for (const attr of type.path) path.setAttribute(attr[0], attr[1]);
+	if (type.style) for (const style of type.style) button.style[style[0]] = style[1];
 
 	svg.appendChild(path);
 	button.appendChild(svg);
 
+	if (options.dataset) for (const data of options.dataset) button.dataset[data[0]] = data[1];
+
 	if (options.className) button.className = options.className;
 	if (options.id) button.id = options.id;
-	if (options.text) button.appendChild(document.createTextNode(options.text));
+	if (options.title) button.title = options.title;
 	if (options.href) button.href = options.href;
+	if (options.text) button.appendChild(document.createTextNode(options.text));
 	if (options.onclick) {
 		if (!options.propagate) {
 			//we fully own all click events landing on this button
-			button.onclick = function (event) {
+			button.addEventListener('click', function (event) {
 				event.preventDefault();
 				event.stopPropagation();
 				options.onclick.apply(this, arguments);
-			}
+			}, true);
 		} else {
-			button.onclick = options.onclick;
+			button.addEventListener('click', options.onclick, true);
 		}
 	}
 	return button;
 };
 
 ImprovedTube.createPlayerButton = function (options) {
-	var controls = options.position == "right" ? this.elements.player_right_controls : this.elements.player_left_controls;
-	if (controls) {
-		var button = document.createElement('button');
+	const controls = options.position == "right" ? this.elements.player_right_controls : this.elements.player_left_controls;
 
-		button.className = 'ytp-button it-player-button';
+	if (!controls) return; // nowhere to attach
 
-		button.dataset.title = options.title;
+	const button = document.createElement('button');
 
-		button.addEventListener('mouseover', function () {
-			var tooltip = document.createElement('div'),
-				rect = this.getBoundingClientRect();
+	button.className = 'ytp-button it-player-button';
 
-			tooltip.className = 'it-player-button--tooltip';
+	button.dataset.title = options.title;
 
-			tooltip.style.left = rect.left + rect.width / 2 + 'px';
-			tooltip.style.top = rect.top - 8 + 'px';
+	button.addEventListener('mouseover', function () {
+		const tooltip = document.createElement('div'),
+			rect = this.getBoundingClientRect();
 
-			tooltip.textContent = this.dataset.title;
-			if (this.storage && (this.storage.player_cinema_mode_button || this.storage.player_auto_hide_cinema_mode_when_paused || this.storage.player_auto_cinema_mode)) {
-				tooltip.style.zIndex = 10001;
-			} // needed for cinema mode
-			function mouseleave () {
-				tooltip.remove();
+		tooltip.className = 'it-player-button--tooltip';
 
-				this.removeEventListener('mouseleave', mouseleave);
-			}
+		tooltip.style.left = rect.left + rect.width / 2 + 'px';
+		tooltip.style.top = rect.top - 8 + 'px';
 
-			this.addEventListener('mouseleave', mouseleave);
+		tooltip.textContent = this.dataset.title;
 
-			document.body.appendChild(tooltip);
-		});
+		function mouseleave() {
+			tooltip.remove();
 
-		if (options.id) {
-			if (this.elements.buttons[options.id]) {
-				this.elements.buttons[options.id].remove();
-			}
-
-			button.id = options.id;
-
-			this.elements.buttons[options.id] = button;
+			this.removeEventListener('mouseleave', mouseleave);
 		}
 
-		if (options.child) {
-			button.appendChild(options.child);
-		}
+		this.addEventListener('mouseleave', mouseleave);
 
-		button.style.opacity = options.opacity || .5;
+		document.body.appendChild(tooltip);
+	});
 
-		if (options.onclick) {
-			button.onclick = options.onclick;
-		}
+	if (options.id) {
+		this.elements.buttons[options.id]?.remove();
 
-		controls.insertBefore(button, controls.childNodes[3]);
+		button.id = options.id;
+
+		this.elements.buttons[options.id] = button;
 	}
+
+	if (options.child) button.appendChild(options.child);
+
+	button.style.opacity = options.opacity || .5;
+
+	if (options.onclick) button.onclick = options.onclick;
+
+	controls.insertBefore(button, controls.childNodes[3]);
 };
 
 ImprovedTube.empty = function (element) {
@@ -679,9 +661,7 @@ ImprovedTube.videoTitle = function () {
 
 // Function to extract and store the number of subscribers
 ImprovedTube.extractSubscriberCount = function (subscriberCountNode) {
-	if (!subscriberCountNode) {
-		subscriberCountNode = document.getElementById('owner-sub-count');
-	}
+	if (!subscriberCountNode) subscriberCountNode = document.getElementById('owner-sub-count');
 	if (subscriberCountNode) {
 		// Extract the subscriber count and store it for further use
 		var subscriberCountText = subscriberCountNode.textContent.trim();
