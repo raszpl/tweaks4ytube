@@ -1937,9 +1937,6 @@ satus.components.slider = function (component, skeleton) {
 	input.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || 0;
 
 	textInput.type = 'text';
-	textInput.value = input.value;
-
-	component.track.style.width = 100 / (input.max - input.min) * (input.value - input.min) + '%';
 
 	textInput.addEventListener('blur', function () {
 		const component = this.parentNode.parentNode;
@@ -1982,6 +1979,8 @@ satus.components.slider = function (component, skeleton) {
 
 		this.track.style.width = 100 / (input.max - input.min) * (input.value - input.min) + '%';
 	};
+
+	component.update();
 
 	if (skeleton.on) {
 		for (const type in skeleton.on) {
@@ -2396,8 +2395,8 @@ satus.components.switch = function (component, skeleton) {
 	component.dataset.value = value;
 	component.flip = satus.components.switch.flip;
 
-	// 'custom' disables default onclick, user provided function should handle this functionality manually
-	if (!skeleton.custom) {
+	// variant: 'manual' disables default onclick, user provided function should handle this functionality manually
+	if (!skeleton.variant) {
 		component.addEventListener('click', function () {
 			this.flip();
 		}, true);
