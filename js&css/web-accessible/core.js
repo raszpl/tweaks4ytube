@@ -7,12 +7,8 @@
 	# Listener
 	# Send
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# GLOBAL VARIABLE
---------------------------------------------------------------*/
-
-var ImprovedTube = {
+/*--- GLOBAL VARIABLE ----------------------------------------*/
+const ImprovedTube = {
 	obeserver_rules: {},
 	storage: {},
 	elements: {
@@ -139,19 +135,17 @@ ImprovedTube.ytapiPlayVideo = () => {
 
 if (!location.pathname.startsWith('/embed/')) {
 	document.addEventListener('loadstart', function (event) {
-	if (!(event.target instanceof HTMLMediaElement) || event.target.closest('#inline-preview-player')) { return };
-	if (event.target.parentElement.parentElement.playVideo != ImprovedTube.ytapiPlayVideo) {
-		ImprovedTube.ytapiPlay = event.target.parentElement.parentElement.playVideo;
-		ImprovedTube.ytapitarget = event.target;
-		event.target.parentElement.parentElement.playVideo = ImprovedTube.ytapiPlayVideo;
-	}
-	console.log('loadstart: !!!!!!!!!!!!!!!!!', ImprovedTube.storage);
-	event.target.pause();
+		if (!(event.target instanceof HTMLMediaElement) || event.target.closest('#inline-preview-player')) return;
+		if (event.target.parentElement.parentElement.playVideo != ImprovedTube.ytapiPlayVideo) {
+			ImprovedTube.ytapiPlay = event.target.parentElement.parentElement.playVideo;
+			ImprovedTube.ytapitarget = event.target;
+			event.target.parentElement.parentElement.playVideo = ImprovedTube.ytapiPlayVideo;
+		}
+		console.log('loadstart: !!!!!!!!!!!!!!!!!', ImprovedTube.storage);
+		event.target.pause();
 	}, true);
-}
-/*--------------------------------------------------------------
-CODEC || 30FPS
-----------------------------------------------------------------
+};
+/*--- CODEC || 30FPS -------------------------------------------
 	Do not move, needs to be on top of first injected content
 	file to patch HTMLMediaElement before YT player uses it.
 --------------------------------------------------------------*/
@@ -188,7 +182,7 @@ if (localStorage['it-codec'] || localStorage['it-player30fps']) {
 --------------------------------------------------------------*/
 document.addEventListener('it-message-from-extension', function (message) {
 	message = message.detail;
-	switch(message.action) {
+	switch (message.action) {
 		case 'storage-loaded':
 			ImprovedTube.storage = message.storage;
 			ImprovedTube.init();
@@ -196,18 +190,16 @@ document.addEventListener('it-message-from-extension', function (message) {
 
 		// REACTION OR VISUAL FEEDBACK WHEN THE USER CHANGES A SETTING (already automated for our CSS features):
 		case 'storage-changed':
-			let camelized_key = message.camelizedKey;
-
 			if (ImprovedTube.isset(message.value)) {
 				ImprovedTube.storage[message.key] = message.value;
 			} else {
 				delete ImprovedTube.storage[message.key];
 			}
 
-			switch(camelized_key) {
+			switch (message.camelizedKey) {
 				case 'blocklist':
 				case 'blocklistActivate':
-					camelized_key = 'blocklistInit';
+					message.camelizedKey = 'blocklistInit';
 					break
 
 				case 'playerPlaybackSpeed':
@@ -367,13 +359,14 @@ document.addEventListener('it-message-from-extension', function (message) {
 			}
 
 			// dont trigger shortcuts on config change, reinitialize handler instead
-			if (message.key.startsWith('shortcut_')) camelized_key = 'shortcutsInit';
+			if (message.key.startsWith('shortcut_')) message.camelizedKey = 'shortcutsInit';
 
-			if (ImprovedTube[camelized_key]) try {
-				ImprovedTube[camelized_key]();
+			if (ImprovedTube[message.camelizedKey]) try {
+				ImprovedTube[message.camelizedKey]();
 			} catch {
-				console.error('it-message-from-extension: Problem inside called '+camelized_key+'()');
+				console.error('it-message-from-extension: Problem inside called '+message.camelizedKey+'()');
 			}
+			break
 
 		case 'focus':
 			if (ImprovedTube.elements.player) {
@@ -410,13 +403,15 @@ document.addEventListener('it-message-from-extension', function (message) {
 			break
 
 		case 'responseOptionsUrl':
-			const iframe = document.querySelector('.it-button__iframe');
+			{
+				const iframe = document.querySelector('.it-button__iframe');
 
-			if (iframe) iframe.src = message.url;
+				if (iframe) iframe.src = message.url;
+			}
 			break
 
 		case 'performance':
-			ImprovedTube.perf.time = performance.getEntriesByName("set").reduce((partialSum, a) => partialSum + a.duration, 0).toFixed(1);
+			ImprovedTube.perf.time = 'getEntriesByName' in performance ? performance.getEntriesByName("set").reduce((partialSum, a) => partialSum + a.duration, 0).toFixed(1) : null;
 			ImprovedTube.messageSend({
 				action: 'performance',
 				perf: ImprovedTube.perf
