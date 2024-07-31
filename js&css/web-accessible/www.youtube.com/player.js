@@ -1,4 +1,5 @@
 /*--- AUTOPLAY DISABLE -------------------------------------------------------*/
+// HIXME
 ImprovedTube.autoplayDisable = function (videoElement) {
 	if (this.storage.player_autoplay_disable
 		|| this.storage.playlist_autoplay === false
@@ -34,7 +35,7 @@ ImprovedTube.autoplayDisable = function (videoElement) {
 	}
 };
 /*--- FORCED PLAY VIDEO FROM THE BEGINNING -----------------------------------*/
-// todo: fix me !!!!!!!!!!!
+// FIXME
 ImprovedTube.forcedPlayVideoFromTheBeginning = function (video) {
 	const player = this.elements.player,
 		//video = this.elements.video,
@@ -119,13 +120,17 @@ ImprovedTube.playbackSpeed = function (newSpeed) {
 
 	return newSpeed;
 };
-/*------------------------------------------------------------------------------
-FORCED PLAYBACK SPEED
-------------------------------------------------------------------------------*/
+/*--- FORCED PLAYBACK SPEED --------------------------------------------------*/
+// FIXME
 ImprovedTube.playerPlaybackSpeed = function () {
 	if (this.storage.player_forced_playback_speed) {
 		const player = this.elements.player,
-			video = player.querySelector('video');
+			video = player.querySelector('video'),
+			speed = this.storage.player_playback_speed;
+
+		if (!Number(speed)) return;
+		player.setPlaybackRate(Number(speed));
+		/*			
 		let option = this.storage.player_playback_speed;
 		if (this.isset(option) === false) {
 			option = 1;
@@ -314,7 +319,7 @@ ImprovedTube.playerPlaybackSpeed = function () {
 					})();
 				}
 			}
-		}
+		}*/
 	}
 };
 /*--- PLAYER SUBTITLES -------------------------------------------------------*/
