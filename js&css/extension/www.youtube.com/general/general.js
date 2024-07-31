@@ -40,7 +40,7 @@ extension.features.youtubeHomePage = function (anything) {
 		}
 	} else if (anything === 'init') {
 		extension.events.on('init', function (resolve) {
-			if (/(www|m)\.youtube\.com\/?(\?|\#|$)/.test(location.href)) {
+			if (/(www|m)\.youtube\.com\/?(\?|#|$)/.test(location.href)) {
 				chrome.storage.local.get('youtube_home_page', function (items) {
 					const option = items.youtube_home_page;
 
@@ -475,7 +475,7 @@ extension.features.thumbnailsQuality = function (anything) {
 	}
 };
 /*--- DISABLE VIDEO PLAYBACK ON HOVER ------------------------*/
-extension.features.disableThumbnailPlayback = function (event) {
+extension.features.disableThumbnailPlayback = function () {
 	function handler (event) {
 		if (event.composedPath().some(elem => (elem.matches != null && elem.matches('#content.ytd-rich-item-renderer, #contents.ytd-item-section-renderer'))
 		)) {
@@ -496,7 +496,7 @@ extension.features.openNewTab = function () {
 			const searchButton = document.querySelector("button#search-icon-legacy");
 			const inputField = document.querySelector("input#search");
 
-			searchButton.addEventListener("mousedown", (event) => {
+			searchButton.addEventListener("mousedown", () => {
 				performSearchNewTab(inputField.value);
 			});
 			inputField.addEventListener("keydown", function (event) {
