@@ -107,7 +107,7 @@ also fix ImprovedTube.shortcutToggleLoop
 */
 ImprovedTube.playlistShuffle = function () {
 	if (ImprovedTube.storage.playlist_shuffle) {
-		const button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
+		//const button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
 		/*
 		this.blocklistChannelObserver = new MutationObserver(function(mutationList) {
 			if (!button.isConnected) {
@@ -128,7 +128,7 @@ ImprovedTube.playlistShuffle = function () {
 			//button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
 			if (button && (option === true && button.querySelector("path").attributes.d.textContent.split(" ")[0].startsWith('M18.1'))) button.click();
 		}, 10000);
-		
+
 		*/
 	}
 };
@@ -152,7 +152,7 @@ ImprovedTube.playlistPopup = function () {
  * @param {boolean} [checkVideo] - [optional] if `true` checks the {@linkcode ImprovedTube.elements.player} to get the video ID, time, and size, if available, otherwise starts first video of playlist - default `false` (starts first video of playlist)
  * @returns {HTMLButtonElement | null} the playlist popup button to insert into the DOM or `null` if the {@linkcode playlistID} is `null`
  */
-	function playlistPopupCreateButton (playlistID, className, altButtonStyle, checkVideo) {
+	function playlistPopupCreateButton (playlistID, className, altButtonStyle) {
 		"use strict";
 		return ImprovedTube.createIconButton({
 			type: 'playlistPopup',
@@ -244,10 +244,10 @@ ImprovedTube.playlistPopup = function () {
 			playlistShareButton.insertAdjacentElement('afterend', playlistPopupCreateButton(playlistID, 'it-popup-playlist-button-playlist'));
 		}
 		if (miniItemButton && playlistIDMini) {
-			miniItemButton.appendChild(playlistPopupCreateButton(playlistIDMini, 'it-popup-playlist-button-playlist', true, true));
+			miniItemButton.appendChild(playlistPopupCreateButton(playlistIDMini, 'it-popup-playlist-button-playlist', true));
 		}
 		if (panelItemButton && playlistID) {
-			panelItemButton.appendChild(playlistPopupCreateButton(playlistID, 'it-popup-playlist-button-panel', true, true));
+			panelItemButton.appendChild(playlistPopupCreateButton(playlistID, 'it-popup-playlist-button-panel', true));
 		}
 	} else {
 		document.querySelector('#it-popup-playlist-button')?.remove();

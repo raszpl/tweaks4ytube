@@ -37,9 +37,9 @@ ImprovedTube.autoplayDisable = function (videoElement) {
 /*--- FORCED PLAY VIDEO FROM THE BEGINNING -----------------------------------*/
 // FIXME
 ImprovedTube.forcedPlayVideoFromTheBeginning = function (video) {
-	const player = this.elements.player,
+	const player = this.elements.player;
 		//video = this.elements.video,
-		paused = video?.paused;
+		//paused = video?.paused;
 
 	if (player && video && this.storage.forced_play_video_from_the_beginning && location.pathname == '/watch') {
 		//console.log('trying to player.seekTo(0)');
@@ -125,12 +125,12 @@ ImprovedTube.playbackSpeed = function (newSpeed) {
 ImprovedTube.playerPlaybackSpeed = function () {
 	if (this.storage.player_forced_playback_speed) {
 		const player = this.elements.player,
-			video = player.querySelector('video'),
+			//video = player.querySelector('video'),
 			speed = this.storage.player_playback_speed;
 
 		if (!Number(speed)) return;
 		player.setPlaybackRate(Number(speed));
-		/*			
+		/*
 		let option = this.storage.player_playback_speed;
 		if (this.isset(option) === false) {
 			option = 1;
