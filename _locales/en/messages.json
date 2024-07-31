@@ -167,6 +167,9 @@
 	"autoPictureInPicture": {
 		"message": "Auto Picture-In-Picture"
 	},
+	"autoplay": {
+		"message": "Autoplay"
+	},
 	"autoplayDisable": {
 		"message": "Force Autoplay Off"
 	},
