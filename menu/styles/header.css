@@ -1,22 +1,25 @@
 /*--------------------------------------------------------------
 >>> HEADER
 --------------------------------------------------------------*/
-
 .satus-header>.satus-section--align-start {
 	max-width: calc(100% - 136px);
 }
 
-.satus-base .satus-span--title::after {
+.satus-header .satus-span--title {
+	font-weight: 500;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	flex: 1;
+}
+
+.satus-header .satus-span--version {
 	font: 700 10px sans-serif;
-
 	margin: 0 0 0 4px;
-
-	content: attr(data-version);
-
 	opacity: .6;
 }
 
-.satus-base[title-version='false'] .satus-span--title::after {display:none;}
+.satus-base[title-version='false'] .satus-span--version {display:none;}
 
 .satus-modal--vertical-menu .satus-button svg {
 	stroke: var(--satus-primary);
@@ -24,7 +27,6 @@
 
 .satus-modal--vertical-menu .satus-button .satus-span {
 	overflow: hidden;
-
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }

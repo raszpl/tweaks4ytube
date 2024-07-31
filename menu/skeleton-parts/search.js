@@ -1,8 +1,8 @@
 /*--------------------------------------------------------------
 >>> PLAYLIST
 --------------------------------------------------------------*/
-
-extension.skeleton.header.sectionEnd.search.on.click = {
+//extension.skeleton.header.sectionEnd.search.on.click = {
+extension.skeleton.header.sectionSearch = {
 	component: 'text-field',
 	variant: 'search',
 	focus: true,
@@ -13,6 +13,9 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 	rows: 1,
 	search: false,
 	searchPosition: 0,
+	attr: {
+		'hidden': false
+	},
 	on: {
 		render: function () {
 			this.focus();
@@ -29,7 +32,8 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 					search_results.close();
 				}
 
-				this.remove();
+				//this.remove();
+				this.hidden = true;
 			}
 		},
 		input: function (event) {
@@ -198,7 +202,8 @@ extension.skeleton.header.sectionEnd.search.on.click = {
 					search_results.close();
 				}
 
-				this.parentNode.remove();
+				//this.parentNode.remove();
+				document.querySelector('#sectionSearch').hidden = true;
 			}
 		},
 

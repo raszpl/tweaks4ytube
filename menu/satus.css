@@ -9,33 +9,33 @@
 	margin-right: -18px !important;
 	max-width: 272px !important;
 }
-div:not([home-style="list"]) .satus-button--themes, div:not([home-style="list"]) .satus-button--playlist,div:not([home-style="list"])  .satus-button--channel, div:not([home-style="list"]) .satus-button--shortcuts {
+div:not([improvedtube-home=list]) .satus-button--themes, div:not([improvedtube-home=list]) .satus-button--playlist,div:not([improvedtube-home=list])  .satus-button--channel, div:not([improvedtube-home=list]) .satus-button--shortcuts {
 	transform: scale(0.91);
 	margin-top: -10px !important;
 	margin-left: -5px !important;
 	margin-right: -28px !important;
 }
-div:not([home-style="list"]) .satus-button--blocklist, div:not([home-style="list"]) .satus-button--analyzer {
+div:not([improvedtube-home=list]) .satus-button--blocklist, div:not([improvedtube-home=list]) .satus-button--analyzer {
 	transform: scale(0.78);
 	margin-top: -22px !important;
 	margin-left: 110px !important;
 	margin-right: -150px !important;
 }
 
-div[home-style="list"] .satus-button--themes, div[home-style="list"] .satus-button--playlist,div[home-style="list"]  .satus-button--channel, div[home-style="list"] .satus-button--shortcuts {
+div[improvedtube-home=list] .satus-button--themes, div[improvedtube-home=list] .satus-button--playlist,div[improvedtube-home=list]  .satus-button--channel, div[improvedtube-home=list] .satus-button--shortcuts {
 	transform: scale(0.92);
 	margin-bottom: -17px !important;
 	margin-left:3px !important;
 	max-width: 197px !important;
 	margin-top:2px !important;
 }
-div[home-style="list"] .satus-button--blocklist, div[home-style="list"] .satus-button--analyzer {
+div[improvedtube-home=list] .satus-button--blocklist, div[improvedtube-home=list] .satus-button--analyzer {
 	transform: scale(0.75);
 	margin-left: 165px !important;
 	max-width: 141px !important;
 	margin-top: -72px !important;
 }
-div[home-style="list"] .satus-button--analyzer {margin-top: -16px !important;}
+div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !important;}
 
 
 /*--------------------------------------------------------------
@@ -193,7 +193,7 @@ div[home-style="list"] .satus-button--analyzer {margin-top: -16px !important;}
 	animation: zoomIn 150ms linear forwards;
 	animation-delay: 20ms;
 	opacity: 0;
-	color: var(--satus-shortcut-key-text);
+	color: var(--satus-modal-foreground);
 	border-radius: 3px;
 	background-color: var(--satus-modal-background);
 	box-shadow: var(--satus-modal-shadow);
@@ -1154,19 +1154,6 @@ As our Syntax markup isnt read for <textarea>, is it?
 
     background: #fff;
     box-shadow: 0 0 4px rgb(0, 0, 0, .64);
-}
-/*--------------------------------------------------------------
->>> SPAN
---------------------------------------------------------------*/
-
-.satus-span--title {
-	font-weight: 500;
-	overflow: hidden;
-
-	white-space: nowrap;
-	text-overflow: ellipsis;
-
-	flex: 1;
 }
 /*--------------------------------------------------------------
 >>> BUTTON

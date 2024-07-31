@@ -10,12 +10,9 @@
 
 .satus-text-field--search {
 	position: absolute;
-	z-index: 1;
-	right: 60px;
+	z-index: 2;
 
-	width: calc(100vw - 72px);
-	margin: 0;
-	padding-right: 36px;
+	width: calc(320px - 71px);
 }
 
 .satus-text-field--search:focus {
@@ -33,15 +30,8 @@
 
 .satus-text-field--search>.satus-button {
 	position: absolute;
-	z-index: 9;
-	top: 0;
 	right: 0;
-
-	width: 26px;
-	min-width: 26px;
-	height: 26px;
-	margin: 4px;
-	padding: 3px;
+	z-index: 10;
 }
 
 .satus-text-field--search[results] {

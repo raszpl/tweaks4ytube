@@ -5,26 +5,23 @@
 # Header
 # Main
 --------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# BASE
---------------------------------------------------------------*/
+/*--- BASE ---------------------------------------------------*/
 let extension = {
 	skeleton: {
 		component: 'base'
 	}
 };
-/*--------------------------------------------------------------
-# HEADER
---------------------------------------------------------------*/
+/*--- HEADER -------------------------------------------------*/
 extension.skeleton.header = {
 	component: 'header',
+
 	sectionStart: {
 		component: 'section',
-		variant: 'align-start',
+		class: 'satus-section--align-start',
 
 		back: {
 			component: 'button',
-			variant: 'icon',
+			class: 'satus-section--icon',
 			attr: {
 				'hidden': 'true'
 			},
@@ -49,12 +46,14 @@ extension.skeleton.header = {
 				}
 			}
 		},
-		title: {
+		it_title: {
 			component: 'span',
-			variant: 'title',
-			data: {
-				version: chrome.runtime.getManifest().version
-			}
+			class: 'satus-span--title'
+		},
+		it_version: {
+			component: 'span',
+			class: 'satus-span--version',
+			text: chrome.runtime.getManifest().version
 		}
 	},
 	sectionEnd: {
@@ -64,8 +63,9 @@ extension.skeleton.header = {
 			component: 'button',
 			variant: 'icon',
 			on: {
-				render: function () {
-					this.click();
+				click: function () {
+					document.querySelector('#sectionSearch').hidden = false;
+					document.querySelector('#sectionSearch').dispatchEvent(new CustomEvent('render'));
 				}
 			},
 
@@ -144,37 +144,41 @@ extension.skeleton.header = {
 	}
 };
 
-/*--------------------------------------------------------------
-# MAIN
---------------------------------------------------------------*/
+/*--- MAIN ---------------------------------------------------*/
 extension.skeleton.main = {
 	component: 'main',
+
 	layers: {
 		component: 'layers',
 		on: {
 			open: function () {
-				var skeleton = satus.last(this.path),
-					section = this.baseProvider.skeleton.header.sectionStart,
-					title = 'ImprovedTube';
+				const skeleton = satus.last(this.path),
+					section = this.baseProvider.skeleton.header.sectionStart;
+				let	title;
 
 				if (skeleton.parentSkeleton) {
 					if (skeleton.parentSkeleton.label) {
 						title = skeleton.parentSkeleton.label.text;
 					} else if (skeleton.parentSkeleton.text) {
 						title = skeleton.parentSkeleton.text;
+					} else {
+						title = chrome.runtime.getManifest().short_name;
 					}
 				}
 
 				section.back.rendered.hidden = this.path.length <= 1;
-				section.title.rendered.innerText = satus.locale.get(title);
+				section.it_title.rendered.innerText = satus.locale.get(title);
+				section.it_version.rendered.hidden = this.path.length > 1;
+				
 
-				var vertical_menu = document.querySelector('.satus-modal--vertical-menu');
+				const vertical_menu = document.querySelector('.satus-modal--vertical-menu');
 
 				if (vertical_menu) {
 					vertical_menu.close();
 				}
 			}
 		},
+
 		section: {
 			component: 'section',
 			variant: function () {

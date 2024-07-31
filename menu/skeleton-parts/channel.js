@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> CHANNEL
---------------------------------------------------------------*/
-
+/*--- CHANNEL ------------------------------------------------*/
 extension.skeleton.main.layers.section.channel = {
 	component: 'button',
 	variant: 'channel',
@@ -49,10 +46,6 @@ extension.skeleton.main.layers.section.channel = {
 			channel_hide_featured_content: {
 				component: 'switch',
 				text: 'hideFeaturedContent'
-			},
-			channel_compact_theme: {
-				component: 'switch',
-				text: 'compactTheme'
 			}
 		}
 	},

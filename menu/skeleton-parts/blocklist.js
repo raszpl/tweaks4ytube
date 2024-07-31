@@ -10,7 +10,7 @@ extension.skeleton.main.layers.section.blocklist = {
 		click: {
 			blocklist_activate: {
 				component: 'switch',
-				variant: 'activation',
+				class: 'satus-switch--activation',
 				text: 'activate'
 			},
 			section2: {
@@ -25,73 +25,93 @@ extension.skeleton.main.layers.section.blocklist = {
 					},
 					on: {
 						click: {
-							component: 'section',
-							variant: 'card',
-							on: {
-								render: function () {
-									let skeleton = {},
-										blocklist = satus.storage.get('blocklist');
+							add_channel: {
+								component: 'section',
+								variant: 'card',
+								add_channel: {
+									component: 'button',
+									text: 'Add channel to Blocklist',
+									var1: 'Channel URL',
+									var2: 'Optional thumbnail ULR',
+									var3: '',
+									on: {
+										click: {
+											component: 'modal',
+											variant: 'confirm',
+											content: function () {return '11234'}
+											}
+										}
+								}
+							},
+							channels: {
+								component: 'section',
+								variant: 'card',
+								on: {
+									render: function () {
+										let skeleton = {},
+											blocklist = satus.storage.data.blocklist;
 
-									if (blocklist && blocklist.channels) {
-										for (let key in blocklist.channels) {
-											let channel = blocklist.channels[key];
+										if (blocklist && blocklist.channels) {
+											for (let key in blocklist.channels) {
+												let channel = blocklist.channels[key];
 
-											if (channel !== false) {
-												skeleton[key] = {
-													component: 'div',
-													variant: 'blocklist',
-													data: {
-														id: key
-													},
-
-													title: {
+												if (channel !== false) {
+													skeleton[key] = {
 														component: 'div',
-														text: channel.title || ''
-													},
-													delete: {
-														component: 'button',
-														on: {
-															click: function () {
-																let blocklist = satus.storage.get('blocklist'),
-																	component = this.parentNode;
-
-																if (blocklist && blocklist.channels) {
-																	delete blocklist.channels[component.dataset.id];
-
-																	satus.storage.set('blocklist', blocklist, function () {
-																		component.remove();
-																	});
-																}
-															}
+														variant: 'blocklist',
+														data: {
+															id: key
 														},
 
-														svg: {
-															component: 'svg',
-															attr: {
-																'fill': 'currentColor',
-																'viewBox': '0 0 24 24'
+														title: {
+															component: 'div',
+															text: channel.title || ''
+														},
+														delete: {
+															component: 'button',
+															on: {
+																click: function () {
+																	let blocklist = satus.storage.get('blocklist'),
+																		component = this.parentNode;
+
+																	if (blocklist && blocklist.channels) {
+																		delete blocklist.channels[component.dataset.id];
+
+																		satus.storage.set('blocklist', blocklist, function () {
+																			component.remove();
+																		});
+																	}
+																}
 															},
 
-															path: {
-																component: 'path',
+															svg: {
+																component: 'svg',
 																attr: {
-																	'd': 'M6 19c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v10zM18 4h-2.5l-.7-.7A1 1 0 0 0 14 3H9.9a1 1 0 0 0-.7.3l-.7.7H6c-.6 0-1 .5-1 1s.5 1 1 1h12c.6 0 1-.5 1-1s-.5-1-1-1z'
+																	'fill': 'currentColor',
+																	'viewBox': '0 0 24 24'
+																},
+
+																path: {
+																	component: 'path',
+																	attr: {
+																		'd': 'M6 19c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v10zM18 4h-2.5l-.7-.7A1 1 0 0 0 14 3H9.9a1 1 0 0 0-.7.3l-.7.7H6c-.6 0-1 .5-1 1s.5 1 1 1h12c.6 0 1-.5 1-1s-.5-1-1-1z'
+																	}
 																}
 															}
 														}
-													}
-												};
+													};
+												}
 											}
 										}
-									}
 
-									if (Object.keys(skeleton).length === 0) {
-										satus.render({
-											component: 'span',
-											text: 'empty'
-										}, this);
-									} else {
-										satus.render(skeleton, this);
+										if (Object.keys(skeleton).length === 0) {
+											satus.render({
+												component: 'span',
+												text: 'empty'
+											}, this);
+										} else {
+											satus.render(skeleton, this);
+										}
 									}
 								}
 							}

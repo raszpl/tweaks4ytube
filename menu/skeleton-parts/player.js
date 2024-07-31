@@ -41,18 +41,16 @@ extension.skeleton.main.layers.section.player.on.click = {
 	section_1: {
 		component: 'section',
 		variant: 'card',
-		autopause_when_switching_tabs: {
+		player_autopause_when_switching_tabs: {
 			component: 'switch',
 			text: 'autopauseWhenSwitchingTabs',
-			storage: 'player_autopause_when_switching_tabs',
-			id: 'autopause_when_switching_tabs',
 			on: {
 				click: function () {
 					if (this.dataset.value === 'true' && satus.storage.get('only_one_player_instance_playing')) {
-						document.getElementById('only_one_player_instance_playing').flip(false);
+						document.getElementById('only_one_player_instance_playing')?.flip(false);
 					}
 					if (this.dataset.value === 'true' && satus.storage.get('player_autoPip')) {
-						document.getElementById('player_autoPip').flip(false);
+						document.getElementById('player_autoPip')?.flip(false);
 					}
 				}
 			}
@@ -60,25 +58,21 @@ extension.skeleton.main.layers.section.player.on.click = {
 		only_one_player_instance_playing: {
 			component: 'switch',
 			text: 'onlyOnePlayerInstancePlaying',
-			id: 'only_one_player_instance_playing',
 			on: {
 				click: function () {
 					if (this.dataset.value === 'true' && satus.storage.get('player_autopause_when_switching_tabs')) {
-						document.getElementById('autopause_when_switching_tabs').flip(false);
+						document.getElementById('player_autopause_when_switching_tabs')?.flip(false);
 					}
 				}
 			}
 		},
 		pause_while_typing_on_youtube: {
 			component: 'switch',
-			text: 'pauseWhileIAmTypingOnYouTube',
-			storage: 'pause_while_typing_on_youtube',
-			id: 'pause_while_typing_on_youtube',
+			text: 'pauseWhileIAmTypingOnYouTube'
 		},
-		autoplay_disable: {
+		player_autoplay_disable: {
 			component: 'switch',
-			text: 'autoplayDisable',
-			storage: 'player_autoplay_disable'
+			text: 'autoplayDisable'
 		},
 		up_next_autoplay: {
 			component: 'switch',
@@ -93,8 +87,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 		player_autoPip: {
 			component: 'switch',
 			text: 'Auto_PiP_picture_in_picture',
-			id: 'player_autoPip',
-			custom: true,
+			variant: 'manual',
 			on: {
 				click: function () {
 					if (!document.pictureInPictureEnabled) return;
@@ -108,8 +101,13 @@ extension.skeleton.main.layers.section.player.on.click = {
 								// manually turn switch ON
 								where.flip(true);
 								if (satus.storage.get('player_autopause_when_switching_tabs')) {
-									document.getElementById('only_one_player_instance_playing').flip(true);
-									document.getElementById('autopause_when_switching_tabs').flip(false);
+									//document.getElementById('only_one_player_instance_playing')?.flip(true);
+									//document.getElementById('player_autopause_when_switching_tabs')?.flip(false);
+									
+									
+									satus.storage.set('only_one_player_instance_playing', true);
+									document.getElementById('only_one_player_instance_playing')?.render();
+									
 								}
 							},
 							cancel: function () {
@@ -126,7 +124,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 		player_autoPip_outside: {
 			component: 'switch',
 			text: 'playerAutoPipOutside',
-			id: 'player_autoPip_outside',
 			value: true,
 			on: {
 				render: function () {
@@ -139,8 +136,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 		},
 		player_forced_volume: {
 			component: 'switch',
-			text: 'forcedVolume',
-			id: 'forced-volume'
+			text: 'forcedVolume'
 		},
 		player_volume: {
 			component: 'slider',
@@ -156,8 +152,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 		},
 		player_forced_playback_speed: {
 			component: 'switch',
-			text: 'forcedPlaybackSpeed',
-			id: 'forced-playback-speed'
+			text: 'forcedPlaybackSpeed'
 		},
 		player_force_speed_on_music: {
 			component: 'switch',
@@ -176,10 +171,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 			max: 3.17,
 			step: .01
 		},
-		autofullscreen: {
+		player_autofullscreen: {
 			component: 'switch',
-			text: 'autoFullscreen',
-			storage: 'player_autofullscreen'
+			text: 'autoFullscreen'
 		},
 		subtitles: {
 			component: 'button',
@@ -206,7 +200,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_language: {
 						component: 'select',
 						text: 'language',
-						id: 'language_closed_caption',
 						options: [{
 							value: 'default',
 							text: 'default_CC'
@@ -546,11 +539,8 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_font_family: {
 						component: 'select',
 						text: 'fontFamily',
-						index: 3,
+						value: 4,
 						options: [{
-							text: 'Proportional Sans-Serif',
-							value: 4
-						}, {
 							text: 'Monospaced Serif',
 							value: 1
 						}, {
@@ -559,6 +549,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 						}, {
 							text: 'Monospaced Sans-Serif',
 							value: 3
+						}, {
+							text: 'Proportional Sans-Serif',
+							value: 4
 						}, {
 							text: 'Casual',
 							value: 5
@@ -602,7 +595,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_font_size: {
 						component: 'select',
 						text: 'fontSize',
-						index: 2,
+						value: 0,
 						options: [{
 							text: '50%',
 							value: -2
@@ -629,7 +622,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_background_color: {
 						component: 'select',
 						text: 'backgroundColor',
-						index: 7,
+						value: '#000',
 						options: [{
 							text: 'white',
 							value: '#fff'
@@ -735,7 +728,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 		player_quality: {
 			component: 'select',
 			text: 'quality',
-			id: 'player_quality',
 			options: [{
 				text: 'disabled',
 				value: 'disabled'
@@ -808,7 +800,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 		player_quality_without_focus: {
 			component: 'select',
 			text: 'qualityWithoutFocus',
-			id: 'player_quality_without_focus',
 			options: function () {
 				return extension.skeleton.main.layers.section.player.on.click.section_video.player_quality.options;
 			},
@@ -832,7 +823,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 						block_av1: {
 							component: 'switch',
 							text: 'blockAv1',
-							value: false
 						},
 						block_vp9: {
 							component: 'switch',
@@ -879,9 +869,8 @@ extension.skeleton.main.layers.section.player.on.click = {
 					}
 				}
 			},
-			list: {
+			player_codecs_list: {
 				component: 'span',
-				id: 'player_codecs',
 				style: {
 					opacity: .64
 				},
@@ -905,24 +894,22 @@ extension.skeleton.main.layers.section.player.on.click = {
 							this.style = 'color: red!important; font-weight: bold;';
 							this.textContent = 'none';
 						}
-						document.getElementById('player_quality').dispatchEvent(new CustomEvent('render'));
-						document.getElementById('player_quality_without_focus').dispatchEvent(new CustomEvent('render'));
-						//document.getElementById('quality_when_low_battery').dispatchEvent(new CustomEvent('render'));
+						document.getElementById('player_quality')?.dispatchEvent(new CustomEvent('render'));
+						document.getElementById('player_quality_without_focus')?.dispatchEvent(new CustomEvent('render'));
 					}
 				}
 			}
 		},
-		h264: {
+		player_h264: {
 			component: 'switch',
 			variant: 'manual',
 			text: 'codecH264',
-			storage: 'player_h264',
 			on: {
 				click: function () {
 					let refresh = function () {
 						// send signal for #player_codecs to refresh, will in turn redraw #player_quality/#player_quality_without_focus
 						//  when we change player_h264 directly
-						document.getElementById('player_codecs').dispatchEvent(new CustomEvent('render'));
+						document.getElementById('player_codecs_list')?.dispatchEvent(new CustomEvent('render'));
 					};
 
 					if (this.dataset.value === 'false') {
@@ -956,10 +943,9 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'switch',
 			text: 'limit30fps',
 		},
-		sdr: {
+		player_SDR: {
 			component: 'switch',
-			text: 'forceSDR',
-			storage: 'player_SDR'
+			text: 'forceSDR'
 		}
 	},
 	section_buttons: {
@@ -972,8 +958,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 		},
 		player_repeat_button: {
 			component: 'switch',
-			text: 'repeat',
-			id: 'player_repeat_button'
+			text: 'repeat'
 		},
 		player_always_repeat: {
 			component: 'switch',
@@ -981,8 +966,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 		},
 		player_screenshot_button: {
 			component: 'switch',
-			text: 'Screenshot',
-			id: 'player_screenshot_button'
+			text: 'Screenshot'
 		},
 		embed_subtitle: {
 			component: 'switch',
@@ -1012,13 +996,11 @@ extension.skeleton.main.layers.section.player.on.click = {
 		},
 		player_cinema_mode_button: {
 			component: 'switch',
-			text: 'player_cinema_mode_button',
-			id: 'player_cinema_mode_button'
+			text: 'player_cinema_mode_button'
 		},
 		player_auto_cinema_mode: {
 			component: 'switch',
-			text: 'player_auto_cinema_mode',
-			id: 'player_auto_cinema_mode'
+			text: 'player_auto_cinema_mode'
 		},
 		player_rotate_button: {
 			component: 'switch',

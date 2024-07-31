@@ -10,7 +10,7 @@ extension.skeleton.main.layers.section.analyzer = {
 		click: {
 			analyzer_activation: {
 				component: 'switch',
-				variant: 'activation',
+				class: 'satus-switch--activation',
 				text: 'activate'
 			},
 			chartSection: {

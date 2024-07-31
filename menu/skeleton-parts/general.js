@@ -52,8 +52,7 @@ extension.skeleton.main.layers.section.general = {
 					component: 'select',
 					options: [{
 						text: 'onAllVideos',
-						value: 'all_videos',
-						default: 'true'
+						value: 'all_videos'
 					}, {
 						text: 'blockAll',
 						value: 'block_all'
@@ -67,8 +66,6 @@ extension.skeleton.main.layers.section.general = {
 						text: 'blockMusic',
 						value: 'block_music'
 					}],
-					storage: 'ads',
-
 					on: {
 						change: function (event) {
 							const selectedValue = event.target.value;
@@ -260,31 +257,9 @@ extension.skeleton.main.layers.section.general = {
 							component: 'modal',
 							variant: 'confirm',
 							content: 'thisWillRemoveAllWatchedVideos',
-							buttons: {
-								cancel: {
-									component: 'button',
-									text: 'cancel',
-									on: {
-										click: function () {
-											this.modalProvider.close();
-										}
-									}
-								},
-								reset: {
-									component: 'button',
-									text: 'accept',
-									on: {
-										click: function () {
-											var modal = this.parentNode.parentNode.parentNode;
-
-											satus.storage.remove('watched');
-
-											modal.skeleton.parentSkeleton.counter.rendered.textContent = '0';
-
-											modal.close();
-										}
-									}
-								}
+							ok: function () {
+								satus.storage.remove('watched');
+								document.getElementById('counter')?.dispatchEvent(new CustomEvent('render'));
 							}
 						}
 					},
@@ -296,13 +271,7 @@ extension.skeleton.main.layers.section.general = {
 						},
 						on: {
 							render: function () {
-								var watched = satus.storage.get('watched');
-
-								if (watched) {
-									this.textContent = Object.keys(watched).length;
-								} else {
-									this.textContent = '0';
-								}
+								this.textContent = Object.keys(satus.storage.get('watched') || 0).length;
 							}
 						}
 					}

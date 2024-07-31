@@ -9,11 +9,7 @@
 # Developer options
 # About
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# BUTTON
---------------------------------------------------------------*/
-
+/*--- BUTTON -------------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings = {
 	component: 'button',
 	category: true,
@@ -58,11 +54,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings = {
 		text: 'settings'
 	}
 };
-
-/*--------------------------------------------------------------
-# APPEARANCE
---------------------------------------------------------------*/
-
+/*--- APPEARANCE ---------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSection.appearance = {
 	component: 'button',
 	text: 'appearance',
@@ -100,10 +92,9 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 				variant: 'card',
 				title: 'homeScreen',
 
-				layout: {
+				improvedtube_home: {
 					component: 'select',
 					text: 'layout',
-					storage: 'improvedtube_home',
 					options: [{
 						text: 'bubbles',
 						value: 'bubbles'
@@ -186,11 +177,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# LANGUAGE
---------------------------------------------------------------*/
-
+/*--- LANGUAGE -----------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.language = {
 	component: 'button',
 	text: 'language',
@@ -318,18 +305,16 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					{value: "zh-HK", text: "中文 (香港)"},
 					{value: "ko", text: "한국어"}
 				],
-				improvedtube: {
+				it_language: {
 					component: 'select',
 					text: 'improvedtubeLanguage',
-					storage: 'language',
 					options: function () {
 						return extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.language.on.click.section.languages;
 					}
 				},
-				youtube: {
+				youtube_language: {
 					component: 'select',
 					text: 'youtubeLanguage',
-					storage: 'youtube_language',
 					options: function () {
 						return [{value: 'disabled', text: "Disabled"}].concat(extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.language.on.click.section.languages);
 					},
@@ -345,11 +330,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# BACKUP & RESET
---------------------------------------------------------------*/
-
+/*--- BACKUP & RESET -----------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.backupAndReset = {
 	component: 'button',
 	text: 'backupAndReset',
@@ -374,16 +355,41 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 			section: {
 				component: 'section',
 				variant: 'card',
-
 				importSettings: {
 					component: 'button',
 					text: 'importSettings',
 					on: {
-						click: function () {
-							if (location.href.indexOf('/index.html?action=import-settings') !== -1) {
-								extension.importSettings();
-							} else {
-								window.open(chrome.runtime.getURL('menu/index.html?action=import-settings'), '_blank');
+						click: {
+							component: 'modal',
+							variant: 'confirm',
+							content: 'areYouSureYouWantToImportTheData',
+							ok: function () {
+								// Firefox 'popups opened from a panel cause the panel to close' from 2017
+								// https://bugzilla.mozilla.org/show_bug.cgi?id=1378527 workaround:
+								if (satus.user.browser.name() == 'Firefox' && !document.body.hasAttribute('tab')) {
+									window.open(chrome.runtime.getURL('menu/index.html?action=import-settings'), '_blank');
+									return;
+								}
+								
+								const input = document.createElement('input');
+
+								input.type = 'file';
+
+								input.addEventListener('change', function () {
+									var file_reader = new FileReader();
+
+									file_reader.onload = function () {
+										var data = JSON.parse(this.result);
+										for (const key in data) {
+											satus.storage.set(key, data[key]);
+										}
+										if (location.search == '?action=import-settings') window.close();
+									};
+
+									file_reader.readAsText(this.files[0]);
+								});
+
+								input.click();
 							}
 						}
 					}
@@ -392,11 +398,34 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					component: 'button',
 					text: 'exportSettings',
 					on: {
-						click: function () {
-							if (location.href.indexOf('/index.html?action=export-settings') !== -1) {
-								extension.exportSettings();
-							} else {
-								window.open(chrome.runtime.getURL('menu/index.html?action=export-settings'), '_blank');
+						click: {
+							component: 'modal',
+							variant: 'confirm',
+							content: 'areYouSureYouWantToExportTheData',
+							ok: function () {
+								// Firefox 'popups opened from a panel cause the panel to close' from 2017
+								// https://bugzilla.mozilla.org/show_bug.cgi?id=1378527 workaround:
+								if (satus.user.browser.name() == 'Firefox' && !document.body.hasAttribute('tab')) {
+									window.open(chrome.runtime.getURL('menu/index.html?action=export-settings'), '_blank');
+									return;
+								}
+
+								const blob = new Blob([JSON.stringify(satus.storage.data)], {
+									type: 'application/json;charset=utf-8'
+								});
+
+								chrome.permissions.request({
+									permissions: ['downloads']
+								}, function (granted) {
+									if (granted) {
+										chrome.downloads.download({
+											url: URL.createObjectURL(blob),
+											filename: 'improvedtube.json',
+											saveAs: true
+										});
+									}
+									if (location.search == '?action=export-settings') document.body.onfocus = () => window.close();
+								});
 							}
 						}
 					}
@@ -411,8 +440,18 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					component: 'button',
 					text: 'pushSyncSettings',
 					on: {
-						click: function () {
-							extension.pushSettings();
+						click: {
+							component: 'modal',
+							variant: 'confirm',
+							content: 'areYouSureYouWantToSyncTheData',
+							ok: function () {
+								try {
+									chrome.storage.sync.clear();
+									chrome.storage.sync.set({settings: JSON.stringify(satus.storage.data)});
+								} catch (error) {
+									console.error(error);
+								}
+							}
 						}
 					}
 				},
@@ -420,8 +459,18 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					component: 'button',
 					text: 'pullSyncSettings',
 					on: {
-						click: function () {
-							extension.pullSettings();
+						click: {
+							component: 'modal',
+							variant: 'confirm',
+							content: 'areYouSureYouWantToImportTheData',
+							ok: function () {
+								chrome.storage.sync.get('settings', function (r) {
+									const data = JSON.parse(r['settings']);
+									for (const key in data) {
+										satus.storage.set(key, data[key]);
+									}
+								});
+							}
 						}
 					}
 				}
@@ -485,27 +534,8 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 							component: 'modal',
 							variant: 'confirm',
 							content: 'allYourSettingsWillBeErasedAndCanTBeRecovered',
-							buttons: {
-								cancel: {
-									component: 'button',
-									text: 'cancel',
-									on: {
-										click: function () {
-											this.modalProvider.close();
-										}
-									}
-								},
-								reset: {
-									component: 'button',
-									text: 'reset',
-									on: {
-										click: function () {
-											satus.storage.clear(function () {
-												window.close();
-											});
-										}
-									}
-								}
+							ok: function () {
+								satus.storage.clear();
 							}
 						}
 					}
@@ -518,29 +548,10 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 							component: 'modal',
 							variant: 'confirm',
 							content: 'allYourShortcutsWillBeErasedAndCanTBeRecovered',
-							buttons: {
-								cancel: {
-									component: 'button',
-									text: 'cancel',
-									on: {
-										click: function () {
-											this.modalProvider.close();
-										}
-									}
-								},
-								reset: {
-									component: 'button',
-									text: 'reset',
-									on: {
-										click: function () {
-											for (var key in satus.storage.data) {
-												if (key.indexOf('shortcut_') === 0) {
-													satus.storage.remove(key);
-												}
-											}
-
-											this.modalProvider.close();
-										}
+							ok: function () {
+								for (const key in satus.storage.data) {
+									if (key.startsWith('shortcut_')) {
+										satus.storage.remove(key);
 									}
 								}
 							}
@@ -551,11 +562,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# DEVELOPER OPTIONS
---------------------------------------------------------------*/
-
+/*--- DEVELOPER OPTIONS --------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.developerOptions = {
 	component: 'button',
 	text: 'developerOptions',
@@ -587,10 +594,8 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 						component: 'section',
 						variant: 'transparent-card',
 						title: 'YouTube API',
-						textField: {
+						google_api_key: {
 							component: 'text-field',
-							storage: 'google-api-key',
-							value: 'AIzaSyCXRRCFwKAXOiF1JkUBmibzxJF1cPuKNwA',
 							rows: 1,
 							lineNumbers: false
 						}
@@ -602,10 +607,11 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				text: 'CSS',
 				on: {
 					click: {
-						component: 'text-field',
-						storage: 'custom_css',
-						style: {
-							height: '100%'
+						custom_css: {
+							component: 'text-field',
+							style: {
+								height: '100%'
+							}
 						}
 					}
 				}
@@ -615,10 +621,11 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				text: 'JavaScript',
 				on: {
 					click: {
-						component: 'text-field',
-						storage: 'custom_js',
-						style: {
-							height: '100%'
+						custom_js: {
+							component: 'text-field',
+							style: {
+								height: '100%'
+							}
 						}
 					}
 				}
@@ -626,11 +633,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# ABOUT
---------------------------------------------------------------*/
-
+/*--- ABOUT ----------------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.about = {
 	component: 'button',
 	text: 'My_specs',
@@ -700,7 +703,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 										['platform', satus.user.browser.platform()],
 										['audioFormats', satus.user.browser.audio().join(', ')],
 										['videoFormats', satus.user.browser.video().join(', ')],
-										['Java', satus.user.browser.java()],
 										['Cookies', satus.user.browser.cookies()]
 									]
 								}
@@ -732,11 +734,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# DATE & TIME
---------------------------------------------------------------*/
-
+/*--- DATE & TIME --------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.dateAndTime = {
 	component: 'button',
 	text: 'dateAndTime',

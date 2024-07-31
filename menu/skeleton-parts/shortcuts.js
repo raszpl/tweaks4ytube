@@ -54,7 +54,7 @@ extension.skeleton.main.layers.section.shortcuts = {
 							},
 							shortcut_quality_2160p: {
 								component: 'shortcut',
-								text: '2160p'
+								text: '2160p (4K UHD)'
 							},
 							shortcut_quality_2880p: {
 								component: 'shortcut',
