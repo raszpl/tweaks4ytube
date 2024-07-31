@@ -1,99 +1,14 @@
 /*--------------------------------------------------------------
 >>> BACKGROUND
 ----------------------------------------------------------------
-# webRequest.onBeforeRequest
 # Locale
-# IMPORTING OLD SETTINGS
 # Context menu
 # Tab focus/blur
 # Message listener
 # Uninstall URL
 --------------------------------------------------------------*/
-/*
-// For Manifest3:
-/*-----# Persistent Serviceworker:
-		"Manifest2 Background.js"-----*/
-// Periodic "keep-alive" message every 29.5 seconds
-// const keepAliveInterval = setInterval(() => chrome.runtime.sendMessage({ status: 'keep-alive' }), 29.5 * 1000);
-
-/* Sidepanel Option
-  chrome.storage.local.get('improvedTubeSidePanel', function (result) {
-	if ( result.improvedTubeSidePanel && result.improvedTubeSidePanel === true) {
-		chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
-	} else {chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }) }
-  });
-*/
-/*---------------------------
-# IMPORTING OLD SETTINGS
------------------------------*/
 chrome.runtime.onInstalled.addListener(function (installed) {
-	if (installed.reason == 'update') {
-		//		var thisVersion = chrome.runtime.getManifest().version;
-		//		console.log("Updated from " + installed.previousVersion + " to " + thisVersion + "!");
-		// Shortcut renames:
-		chrome.storage.local.get(['shortcut_auto', 'shortcut_144p', 'shortcut_240p', 'shortcut_360p', 'shortcut_480p', 'shortcut_720p', 'shortcut_1080p', 'shortcut_1440p', 'shortcut_2160p', 'shortcut_2880p', 'shortcut_4320p'], function (result) {
-			// validate and move to new name
-			for (let [name, keys] of Object.entries(result)) {
-				if (!keys) continue;
-				let newKeys = {},
-					newName = name.replace('shortcut_', 'shortcut_quality_');
-				for (const button of ['alt', 'ctrl', 'shift', 'wheel', 'toggle']) {
-					if (keys[button]) newKeys[button] = keys[button];
-				}
-				if (keys['keys'] && Object.keys(keys['keys'])?.length) {
-					newKeys['keys'] = keys['keys'];
-				}
-				// only shortcuts with Key of Wheel are valid and saved
-				if (newKeys['keys'] || newKeys['wheel']) chrome.storage.local.set({[newName]: newKeys});
-			}
-			chrome.storage.local.remove(Object.keys(result));
-		});
-		chrome.storage.local.get(['shortcut_volume_step', 'shortcut_playback_speed_step'], function (result) {
-			for (let [name, value] of Object.entries(result)) {
-				let newName = name.replace('shortcut_', 'shortcuts_');
-				chrome.storage.local.set({[newName]: value});
-			}
-			chrome.storage.local.remove(Object.keys(result));
-		});
-		chrome.storage.local.get('player_autoplay', function (result) {
-			if (result.player_autoplay === false) {
-				chrome.storage.local.set({player_autoplay_disable: true});
-				chrome.storage.local.remove(['player_autoplay']);
-			}
-		});
-		chrome.storage.local.get('channel_default_tab', function (result) {
-			if (result.channel_default_tab === '/home') {
-				chrome.storage.local.set({channel_default_tab: '/'});
-			}
-		});
-		chrome.storage.local.get('player_quality', function (result) {
-			if (result.player_quality === 'auto') {
-				chrome.storage.local.get('player_quality_auto', function (result) {
-					if (result.player_quality_auto !== 'migrated') {
-						chrome.storage.local.set({player_quality: 'disabled'});
-						chrome.storage.local.set({player_quality_auto: 'migrated'});
-					}
-				});
-			}
-		});
-		chrome.storage.local.get('hideSubscribe', function (result) {
-			if (result.hideSubscribe === true) {
-				chrome.storage.local.set({subscribe: 'hidden'});
-				chrome.storage.local.remove(['hideSubscribe']);
-			}
-		});
-		chrome.storage.local.get('limit_page_width', function (result) {
-			if (result.limit_page_width === false) {
-				chrome.storage.local.set({no_page_margin: true});
-				chrome.storage.local.remove(['limit_page_width']);
-				chrome.storage.local.get('player_size', function (r) {
-					if (r.player_size == 'full_window' || r.player_size == 'fit_to_window') {
-						chrome.storage.local.set({player_size: 'max_width'});
-					}
-				});
-			}
-		});
-	} else if (installed.reason == 'install') {
+	if (installed.reason == 'install') {
 		if (navigator.userAgent.indexOf("Firefox") != -1) {
 			chrome.storage.local.set({below_player_pip: false})
 		}
@@ -104,7 +19,6 @@ chrome.runtime.onInstalled.addListener(function (installed) {
 			// still needed? (are screenshots broken in Safari?):
 			chrome.storage.local.set({below_player_screenshot: false})
 		}
-		// console.log('Thanks for installing!');
 	}
 });
 /*--------------------------------------------------------------
@@ -128,7 +42,7 @@ function getLocale (language, callback) {
 	}).catch(function () {
 		getLocale('en', callback);
 	});
-}
+};
 /*--------------------------------------------------------------
 # CONTEXT MENU
 --------------------------------------------------------------*/
@@ -136,8 +50,6 @@ function updateContextMenu (language) {
 	if (!language || language === 'default') language = chrome.i18n.getUILanguage();
 	getLocale(language, function (response) {
 		const items = [
-			'donate',
-			'rateMe',
 			'GitHub'
 		];
 		chrome.contextMenus.removeAll();
@@ -154,15 +66,14 @@ function updateContextMenu (language) {
 		}
 		chrome.contextMenus.onClicked.addListener(function (info) {
 			const links = [
-				'https://www.improvedtube.com/donate',
-				'https://chrome.google.com/webstore/detail/improve-youtube-video-you/bnomihfieiccainjcjblhegjgglakjdd',
-				'https://github.com/code4charity/YouTube-Extension'
+				'https://github.com/raszpl/tweaks4ytube'
 			];
 			chrome.tabs.create({ url: links[info.menuItemId] }); //manifest3
 			// window.open(links[info.menuItemId]); //manifest2
 		});
 	});
-}
+};
+
 chrome.runtime.onInstalled.addListener(function () {
 	chrome.storage.local.get(function (items) {
 		updateContextMenu(items.language);
@@ -238,10 +149,10 @@ chrome.windows.onFocusChanged.addListener(function (wId) {
 # MESSAGE LISTENER
 --------------------------------------------------------------*/
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-	console.log(message);
+	console.log(message?.action);
 	//console.log(sender);
 
-	switch (message.action || message.name || message) {
+	switch (message?.action) {
 		case 'play':
 			tabPrune(function () {
 				for (let id in tabConnected) {
@@ -275,30 +186,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 				top: 20,
 				url: message.url
 			});
-			break
-
-		case 'download':
-			chrome.permissions.request({
-				permissions: ['downloads'],
-				origins: ['https://www.youtube.com/*']
-			}, function (granted) {
-				if (granted) {
-					try {
-						const blob = new Blob([JSON.stringify(message.value)], {
-							type: 'application/json;charset=utf-8'
-						});
-						chrome.downloads.download({
-							url: URL.createObjectURL(blob),
-							filename: message.filename,
-							saveAs: true
-						});
-					} catch (error) {
-						console.error(error);
-					}
-				} else {
-					console.error('Permission is not granted.');
-				}
-			})
 			break
 	}
 });
