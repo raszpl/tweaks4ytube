@@ -260,20 +260,20 @@ ImprovedTube.commentsSidebar = function () {
             #primary, #secondary {
                 overflow: overlay !important;
             }
-            
+
             ::-webkit-scrollbar
             {
                 width: 16px;
                 height: 7px;
             }
-            
+
             ::-webkit-scrollbar-thumb{
                 background-color: ${color};
                 border-radius: 10px;
                 border: 4px solid transparent;
                 background-clip: padding-box;
             }
-            
+
             ::-webkit-scrollbar-thumb:hover{
                 background-color: ${colorHover};
             }`;
@@ -282,7 +282,7 @@ ImprovedTube.commentsSidebar = function () {
 					const cssRule = `
             #primary, #secondary {
                 overflow: overlay !important;
-            }            
+            }
             ::-webkit-scrollbar
             {
                 width: 0px;
@@ -350,186 +350,192 @@ ImprovedTube.livechat = function () {
 /*------------------------------------------------------------------------------
   DETAILS
 ------------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------------
-  EXTRA BUTTONS BELOW THE PLAYER
-------------------------------------------------------------------------------*/
-ImprovedTube.improvedtubeYoutubeButtonsUnderPlayer = function () {
-	if (window.self !== window.top) {
-		return false;
-	}
-	if (document.documentElement.dataset.pageType === 'video') {
+/*--- BUTTONS UNDER PLAYER ---------------------------------------------------*/
+ImprovedTube.buttonsUnderPlayer = function () {
+	if (window.self !== window.top) return false;
+	if (document.documentElement.dataset.pageType != 'video') return;
 
-		var section = document.querySelector('#subscribe-button');
+	const section = document.querySelector('#subscribe-button');
 	 /*  if (this.storage.description == "classic"
 		||  this.storage.description == "classic_expanded" || this.storage.description == "classic_hidden"  )
 	   {var section = document.querySelector('#flex.ytd-video-primary-info-renderer');}
    */
-		if (section && !section.querySelector('.improvedtube-player-button')) {
-			if (this.storage.below_player_loop !== false) {
-				var button = document.createElement('button'),
-					svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-					path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-		                var transparentOrOn = .5; if (this.storage.player_always_repeat === true ) {
-					transparentOrOn = 1;
+	if (section && !section.querySelector('.improvedtube-player-button')) {
+		if (this.storage.below_player_loop !== false) {
+			const button = document.createElement('button'),
+				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+				path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	                let transparentOrOn = .5; if (this.storage.player_always_repeat === true ) {
+				transparentOrOn = 1;
+			}
+			button.className = 'improvedtube-player-button';
+			button.id = 'it-below-player-loop';
+			button.dataset.tooltip = 'Loop';
+			svg.style.opacity = transparentOrOn;
+			svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
+			path.setAttributeNS(null, 'd', 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z');
+
+			button.onclick = function () {
+				const video = ImprovedTube.elements.video,
+					svg = this.children[0];
+
+				function matchLoopState (opacity) {
+	    svg.style.opacity = opacity;
+					if (ImprovedTube.storage.player_repeat_button === true) {
+                  	 const otherButton = document.querySelector('#it-repeat-button');
+                   	 otherButton.style.opacity = opacity;
+         	        }
+	           }
+				if (video.hasAttribute('loop')) {
+					video.removeAttribute('loop');
+					matchLoopState('.5')
+				} else if (!/ad-showing/.test(ImprovedTube.elements.player.className)) {
+					video.setAttribute('loop', '');
+					matchLoopState('1')
 				}
-				button.className = 'improvedtube-player-button';
-				button.id = 'it-below-player-loop';
-				button.dataset.tooltip = 'Loop';
-				svg.style.opacity = transparentOrOn;
-				svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
-				path.setAttributeNS(null, 'd', 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z');
+			};
 
-				button.onclick = function () {
-					var video = ImprovedTube.elements.video,
-						svg = this.children[0];
+			svg.appendChild(path); 	button.appendChild(svg);
+			section.insertAdjacentElement('afterend', button)
+		}
+		if (this.storage.below_player_pip !== false) {
+			const button = document.createElement('button'),
+				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+				path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-					function matchLoopState (opacity) {
-		    svg.style.opacity = opacity;
-						if (ImprovedTube.storage.player_repeat_button === true) {
-                   	 var otherButton = document.querySelector('#it-repeat-button');
-                    	 otherButton.style.opacity = opacity;
-          	        }
-	            }
-					if (video.hasAttribute('loop')) {
-						video.removeAttribute('loop');
-						matchLoopState('.5')
-					} else if (!/ad-showing/.test(ImprovedTube.elements.player.className)) {
-						video.setAttribute('loop', '');
-						matchLoopState('1')
-					}
-				};
+			button.className = 'improvedtube-player-button';
+			button.dataset.tooltip = 'PiP';
+			svg.style.opacity = '.64';
+			svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
+			path.setAttributeNS(null, 'd', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z');
 
-				svg.appendChild(path); 	button.appendChild(svg);
-				section.insertAdjacentElement('afterend', button)
-			}
-			if (this.storage.below_player_pip !== false) {
-				var button = document.createElement('button'),
-					svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-					path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			button.onclick = function () {
+				ImprovedTube.enterPip();
+			};
 
-				button.className = 'improvedtube-player-button';
-				button.dataset.tooltip = 'PiP';
-				svg.style.opacity = '.64';
-				svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
-				path.setAttributeNS(null, 'd', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z');
+			svg.appendChild(path);	button.appendChild(svg);
+			section.insertAdjacentElement('afterend', button)
+		}
 
-				button.onclick = function () {
-					ImprovedTube.enterPip();
-				};
+		if (this.storage.below_player_screenshot !== false) {
+			const button = document.createElement('button'),
+				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+				path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-				svg.appendChild(path);	button.appendChild(svg);
-				section.insertAdjacentElement('afterend', button)
-			}
+			button.className = 'improvedtube-player-button';
+			button.dataset.tooltip = 'Screenshot';
+			svg.style.opacity = '.55';
+			svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
+			path.setAttributeNS(null, 'd', 'M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z');
 
-			if (this.storage.below_player_screenshot !== false) {
-				var button = document.createElement('button'),
-					svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-					path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			button.onclick = ImprovedTube.screenshot;
 
-				button.className = 'improvedtube-player-button';
-				button.dataset.tooltip = 'Screenshot';
-				svg.style.opacity = '.55';
-				svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
-				path.setAttributeNS(null, 'd', 'M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z');
-
-				button.onclick = ImprovedTube.screenshot;
-
-				svg.appendChild(path);	button.appendChild(svg);
-				section.insertAdjacentElement('afterend', button)
-			}
-	  }
-	}
-};
-/*------------------------------------------------------------------------------
- EXPAND DESCRIPTION
-------------------------------------------------------------------------------*/
-ImprovedTube.expandDescription = function (el) {
-	if (this.storage.description === "expanded" || this.storage.description === "classic_expanded") {
-		if (el) {
-			el.click(); setTimeout(function () {
-				ImprovedTube.elements.player.focus();
-			}, 1200);
-		} else {
-			var tries = 0; 	var intervalMs = 210;
-			if (location.href.indexOf('/watch?') !== -1) {
-				var maxTries = 10;
-			} else {
-				var maxTries = 0;
-			}
-			// ...except when it is an embedded player?
-			var waitForDescription = setInterval(() => {
-				if (++tries >= maxTries) {
-					el = document.querySelector('#description-inline-expander')
-					if ( el) {
-						el.click(); 	setTimeout(function () {
-							ImprovedTube.elements.player.focus();
-						}, 1200); clearInterval(waitForDescription);
-					}
-					intervalMs *= 1.11;
-				}
-			}, intervalMs);
+			svg.appendChild(path);	button.appendChild(svg);
+			section.insertAdjacentElement('afterend', button)
 		}
 	}
-}
-/*------------------------------------------------------------------------------
- HIDE DETAIL BUTTON
-------------------------------------------------------------------------------*/
-// ImprovedTube.hideDetailButton = function (el) {
-//     if (el.length === 4) {
-//         el[3].setAttribute("id", "Save-button");
-//         el[2].setAttribute("id", "Clip-button");
-//         el[1].setAttribute("id", "Thanks-button");
-//     }
-//     else if (el.length === 3) {
-//         el[2].setAttribute("id", "Save-button");
-//         el[1].setAttribute("id", "Clip-button");
-//     }
-// };
-/*--------------------------------------------------------------
- DAY OF WEEK
---------------------------------------------------------------*/
-ImprovedTube.dayOfWeek = function () {
-	if (this.storage.day_of_week === true) {
-		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		setTimeout(function () {
-			var videoDate;
-			try {
-				videoDate = JSON.parse(document.querySelector('#microformat script')?.textContent)?.uploadDate
-			} catch {
-				//YouTube related video or internal link?
-				try {
-					videoDate = document.querySelector("[itemprop=datePublished]").content;
-				} catch { }
-			} //..no? must be new session?
-			var tempDate = new Date(videoDate);
-			var element = document.querySelector(".ytd-day-of-week");
-			if (!element) {
-				var label = document.createElement("span");
-				label.textContent = days[tempDate.getDay() + 1] + '  ';
-				label.className = "ytd-day-of-week";
-				//update please:
-				try {
-					document.querySelector("#info span:nth-child(2)")?.append(label);
-				} catch {
-					try {
-						document.querySelector("#info #info-strings yt-formatted-string")?.append(label);
-					} catch {}
-				}
-			} // else { element.textContent = days[tempDate.getDay() + 1] + ", "; }
-		}, 4321);
+};
+/*--- EXPAND DESCRIPTION -----------------------------------------------------*/
+ImprovedTube.description = function (description = document.querySelector('#description-inline-expander')) {
+	function observe (mutationList) {
+		const hidden = description.querySelector('#snippet-text');
+		if (!hidden?.hasAttribute('hidden')
+			&& hidden.parentNode.parentNode.expanded != ImprovedTube.videoId()) {
+
+			hidden.parentNode.parentNode.isExpanded = true;
+			hidden.parentNode.parentNode.expanded = ImprovedTube.videoId();
+			hidden.parentNode.parentNode.querySelector('#expand').hidden = true;
+		}
+	};
+	ImprovedTube.description.observer = new MutationObserver(observe);
+
+	if (this.storage.description === 'expanded') {
+		const mutation = description?.querySelector('#attributed-snippet-text');
+
+		if (!description || !mutation) {
+			console.error('description: Cant find proper Description element');
+			return;
+		}
+
+		if (!ImprovedTube.description.node) {
+			// call once to change whats there now
+			observe();
+			// monitor description
+			ImprovedTube.description.node = mutation;
+			ImprovedTube.description.observer.observe(mutation, {
+				childList: true,
+				subtree: true,
+				characterData: true
+			});
+		}
+	} else {
+		if (ImprovedTube.description.node) {
+			ImprovedTube.description.observer.disconnect();
+			delete ImprovedTube.description.node;
+		}
 	}
 };
-/*------------------------------------------------------------------------------
- HOW LONG AGO THE VIDEO WAS UPLOADED
-------------------------------------------------------------------------------*/
+/*--- DAY OF WEEK ------------------------------------------------------------*/
+// This works only with certain browser locales, for example EN/US. Cant fix it, should
+// probably remove it completely as it looks quite useless to begin with.
+ImprovedTube.dayOfWeek = function (node = document.querySelector('#description-inner')) {
+	function observe (mutationList) {
+		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			date = node.querySelector("#info span:nth-child(3)"),
+			dateText = date?.innerText,
+			newDate = new Date(dateText).getDay();
+
+		if (!date || isNaN(newDate)) return;
+
+		let element = document.querySelector(".ytd-day-of-week");
+		if (!element) {
+			element = document.createElement("span");
+			element.className = "ytd-day-of-week";
+			document.querySelector("#info span:nth-child(2)").append(element);
+		}
+		element.textContent = days[newDate] + ' ';
+	};
+	ImprovedTube.dayOfWeek.observer = new MutationObserver(observe);
+
+	if (this.storage.day_of_week) {
+		const date = node?.querySelector("#info span:nth-child(3)");
+
+		if (!date) {
+			console.error('dayOfWeek: Cant fint proper Date element');
+			return;
+		}
+
+		if (!ImprovedTube.dayOfWeek.node) {
+			// call once to change whats there now
+			observe();
+			// monitor Data element
+			ImprovedTube.dayOfWeek.node = date;
+			ImprovedTube.dayOfWeek.observer.observe(date, {
+				childList: true,
+				subtree: true,
+				characterData: true
+			});
+		}
+	} else {
+		if (ImprovedTube.dayOfWeek.node) {
+			ImprovedTube.dayOfWeek.observer.disconnect();
+			delete ImprovedTube.dayOfWeek.node;
+		}
+		node?.querySelector(".ytd-day-of-week")?.remove();
+	}
+};
+/*--- HOW LONG AGO THE VIDEO WAS UPLOADED ------------------------------------*/
 ImprovedTube.howLongAgoTheVideoWasUploaded = function () {
-	if (this.storage.how_long_ago_the_video_was_uploaded === true && this.elements.yt_channel_name) {
-		var xhr = new XMLHttpRequest(),
-			key = this.storage["google-api-key"] || ImprovedTube.defaultApiKey,
+	if (this.storage.how_long_ago_the_video_was_uploaded
+		&& (this.storage['google_api_key'] || ImprovedTube.defaultApiKey)
+		&& this.elements.yt_channel_name) {
+
+		const xhr = new XMLHttpRequest(),
+			key = this.storage['google_api_key'] || ImprovedTube.defaultApiKey,
 			id = this.getParam(location.href.slice(location.href.indexOf("?") + 1), "v");
 
 		function timeSince (date) {
-			var seconds = Math.floor((new Date() - new Date(date)) / 1000),
+			let seconds = Math.floor((new Date() - new Date(date)) / 1000),
 				interval = Math.floor(seconds / 31536000);
 
 			if (interval > 1) {
@@ -556,7 +562,7 @@ ImprovedTube.howLongAgoTheVideoWasUploaded = function () {
 		}
 
 		xhr.addEventListener("load", function () {
-			var response = JSON.parse(this.responseText),
+			const response = JSON.parse(this.responseText),
 				element = ImprovedTube.elements.how_long_ago_the_video_was_uploaded || document.createElement("div");
 
 			ImprovedTube.empty(element);
@@ -578,19 +584,20 @@ ImprovedTube.howLongAgoTheVideoWasUploaded = function () {
 		xhr.send();
 	}
 };
-/*------------------------------------------------------------------------------
- SHOW CHANNEL VIDEOS COUNT
-------------------------------------------------------------------------------*/
+/*--- CHANNEL VIDEOS COUNT ---------------------------------------------------*/
 ImprovedTube.channelVideosCount = function () {
-	if (this.storage.channel_videos_count === true && this.elements.yt_channel_link) {
-		var key = this.storage["google-api-key"] || ImprovedTube.defaultApiKey;
+	if (this.storage.channel_videos_count
+		&& (this.storage['google_api_key'] || ImprovedTube.defaultApiKey)
+		&& this.elements.yt_channel_name) {
+
+		const key = this.storage['google_api_key'] || ImprovedTube.defaultApiKey;
 		if (this.elements.yt_channel_link.href.indexOf("/channel/") == -1) {
-			var xhr = new XMLHttpRequest(),
-				id = this.getParam(location.href.slice(location.href.indexOf("?") + 1), "v");
+			const xhr = new XMLHttpRequest(),
+				id = this.getParam(location.href, "v");
 			xhr.open("GET", "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=" + key, false);
 			xhr.send();
 			if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-				var response = JSON.parse(xhr.responseText);
+				const response = JSON.parse(xhr.responseText);
 				id = response.items[0].snippet.channelId;
 			}
 		} else {
@@ -603,7 +610,7 @@ ImprovedTube.channelVideosCount = function () {
 		xhr = new XMLHttpRequest();
 
 		xhr.addEventListener("load", function () {
-			var response = JSON.parse(this.responseText),
+			const response = JSON.parse(this.responseText),
 				parent = document.querySelector("#meta ytd-channel-name + yt-formatted-string"),
 				element = ImprovedTube.elements.channel_videos_count || document.createElement("div");
 
@@ -628,55 +635,3 @@ ImprovedTube.channelVideosCount = function () {
 		xhr.send();
 	}
 };
-if (ImprovedTube.storage.header_transparent2 === true) {
-	/*------------------------------------------------------------------------------
-    TURN TOP BAR TRANSPARENT WHEN SCROLLING
-    ------------------------------------------------------------------------------*/
-	window.addEventListener('scroll', function () {
-		var masthead = document.querySelector('html[it-header-transparent=true] ytd-masthead');
-		var endButtons = masthead.querySelector('#end');
-
-		if (window.scrollY === 0) {
-			endButtons.style.visibility = 'visible';
-		} else {
-			endButtons.style.visibility = 'hidden';
-		}
-	});
-
-	function handleScroll () {
-		var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		var buttonsContainer = document.getElementById('buttons');
-
-		if (scrollTop > 100) {
-			buttonsContainer.classList.add('hidden');
-		} else {
-			buttonsContainer.classList.remove('hidden');
-		}
-	}
-
-	/*------------------------------------------------------------------------------
-    CHECK IF USER IS SCROLLING
-    ------------------------------------------------------------------------------*/
-	window.addEventListener("scroll", handleScroll);
-
-	function getScrollDirection () {
-		var lastScrollTop = 0;
-		return function () {
-			var st = window.pageYOffset || document.documentElement.scrollTop;
-			var scrollDirection = st > lastScrollTop ? 'down' : 'up';
-			lastScrollTop = st <= 0 ? 0 : st;
-			return scrollDirection;
-		};
-	}
-
-	var scrollDirection = getScrollDirection();
-
-	window.addEventListener('scroll', function () {
-		var direction = scrollDirection();
-		if (direction === 'down') {
-			document.documentElement.setAttribute('data-scroll-direction', 'down');
-		} else {
-			document.documentElement.removeAttribute('data-scroll-direction');
-		}
-	});
-}

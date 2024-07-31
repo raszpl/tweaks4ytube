@@ -2,9 +2,12 @@
 4.8.0 BLOCKLIST
 ------------------------------------------------------------------------------*/
 ImprovedTube.blocklistNode = function (node) {
-	if (!this.storage.blocklist_activate || !node) return;
+	if (!this.storage.blocklist_activate 
+		|| !node
+		|| (!(node.href && node.classList.contains('ytd-thumbnail'))
+			&& !node.classList.contains('ytd-video-preview'))) return;
 
-	const video = node.href?.match(ImprovedTube.regex.video_id)?.[1] || (node.classList?.contains('ytd-video-preview') ? 'video-preview' : null),
+	const video = node.href?.match(ImprovedTube.regex.video_id)?.[1] || (node.classList.contains('ytd-video-preview') ? 'video-preview' : null),
 		channel = node.parentNode?.__dataHost?.__data?.data?.shortBylineText?.runs?.[0]?.navigationEndpoint?.commandMetadata?.webCommandMetadata?.url?.match(ImprovedTube.regex.channel)?.groups?.name,
 		blockedElement = this.blocklistElementTypeHelper(node);
 
@@ -13,7 +16,6 @@ ImprovedTube.blocklistNode = function (node) {
 	// YT reuses Thumbnail cells dynamically, need to monitor all created Thumbnail links and dynamically apply/remove 'it-blocklisted-*' classes
 	if (!this.elements.observerList.includes(node)) {
 		this.blocklistObserver.observe(node, {
-			attributes: true,
 			attributeFilter: ['href']
 		});
 		// keeping a list to attach only one observer per tracked element
@@ -58,7 +60,7 @@ ImprovedTube.blocklistNode = function (node) {
 					|| this.parentNode.__dataHost?.__data?.data?.title?.simpleText
 					|| this.parentNode.__dataHost?.__data?.videoPreviewData?.accessibilityText
 					|| blockedElement?.querySelector('[title]')?.title;
-			let added = false,
+			let add = false,
 				type = 'video';
 
 			if (!video || !blockedElement || !title) {
@@ -74,13 +76,13 @@ ImprovedTube.blocklistNode = function (node) {
 				// unblocking blocklisted video
 			} else {
 				// block this video
-				added = true;
+				add = true;
 			}
 
 			// this message will trigger 'storage-changed' event and eventually blocklistInit() full rescan
-			ImprovedTube.messages.send({
+			ImprovedTube.messageSend({
 				action: 'blocklist',
-				added: added,
+				add: add,
 				type: type,
 				id: type == 'channel' ? channel : video,
 				title: title,
@@ -129,9 +131,9 @@ ImprovedTube.blocklistChannel = function (node) {
 		}
 
 		// this message will trigger 'storage-changed' event and eventually blocklistInit() full rescan
-		ImprovedTube.messages.send({
+		ImprovedTube.messageSend({
 			action: 'blocklist',
-			added: !ImprovedTube.storage.blocklist.channels[id],
+			add: !ImprovedTube.storage.blocklist.channels[id],
 			type: 'channel',
 			id: id,
 			title: title,

@@ -1,13 +1,9 @@
 /*------------------------------------------------------------------------------
 4.10.0 SETTINGS
 ------------------------------------------------------------------------------*/
-
-/*------------------------------------------------------------------------------
-4.10.1 IMPROVEDTUBE ICON
-------------------------------------------------------------------------------*/
-
-ImprovedTube.improvedtubeYoutubeIcon = function () {
-	var data = localStorage.getItem('improvedtube-button-position'),
+/*--- TUBE ICON --------------------------------------------------------------*/
+ImprovedTube.youtubeIcon = function () {
+	let data = localStorage.getItem('improvedtube-button-position'),
 		x = 0,
 		y = 0,
 		option = this.storage.improvedtube_youtube_icon,
@@ -21,7 +17,7 @@ ImprovedTube.improvedtubeYoutubeIcon = function () {
 	}
 
 	if (!button) {
-		var label = document.createElement('span');
+		const label = document.createElement('span');
 
 		button = document.createElement('button');
 
@@ -29,7 +25,7 @@ ImprovedTube.improvedtubeYoutubeIcon = function () {
 
 		button.addEventListener('mousedown', function (event) {
 			if (ImprovedTube.storage.improvedtube_youtube_icon === 'draggable') {
-				var x2 = event.layerX,
+				const x2 = event.layerX,
 					y2 = event.layerY;
 
 				function mousemove (event) {
@@ -67,7 +63,7 @@ ImprovedTube.improvedtubeYoutubeIcon = function () {
 
 		button.addEventListener('click', function () {
 			if (this.classList.contains('it-button--dragging') === false) {
-				var rect = this.getBoundingClientRect(),
+				let rect = this.getBoundingClientRect(),
 					left = rect.x,
 					top = rect.y,
 					scrim = document.createElement('div'),
@@ -95,7 +91,7 @@ ImprovedTube.improvedtubeYoutubeIcon = function () {
 				document.body.appendChild(scrim);
 				document.body.appendChild(iframe);
 
-				ImprovedTube.messages.send({requestOptionsUrl: true});
+				ImprovedTube.messageSend({action: 'requestOptionsUrl'});
 			}
 		});
 
@@ -111,15 +107,13 @@ ImprovedTube.improvedtubeYoutubeIcon = function () {
 	button.style.top = '';
 
 	if (option === 'header_left') {
-		if (this.storage.header_position === 'normal' && this.elements.masthead.start) {
-			this.elements.masthead.start.appendChild(button);
-		} else if (this.elements.app_drawer.start) {
-			this.elements.app_drawer.start.appendChild(button);
+		if (this.storage.header_position === 'normal' && document.querySelector('YTD-MASTHEAD #start')) {
+			document.querySelector('YTD-MASTHEAD #start')?.appendChild(button)
+		} else {
+			document.querySelector('tp-yt-app-drawer #header')?.appendChild(button)
 		}
 	} else if (option === 'header_right') {
-		if (this.elements.masthead.end) {
-			this.elements.masthead.end.appendChild(button);
-		}
+		document.querySelector('ytd-masthead #end')?.appendChild(button);
 	} else if (option === 'below_player') {
 		if (this.elements.video_title) {
 			button.classList.add('it-button--below-player');
@@ -143,16 +137,12 @@ ImprovedTube.improvedtubeYoutubeIcon = function () {
 		button.remove();
 	}
 };
-
-/*-----------------------------------------------------------------------------
-4.10.3 DELETE YOUTUBE COOKIES
------------------------------------------------------------------------------*/
-
+/*--- DELETE YOUTUBE COOKIES ------------------------------------------------*/
 ImprovedTube.deleteYoutubeCookies = function () {
-	var cookies = document.cookie.split(';');
+	const cookies = document.cookie.split(';');
 
-	for (var i = 0, l = cookies.length; i < l; i++) {
-		var cookie = cookies[i],
+	for (const i = 0, l = cookies.length; i < l; i++) {
+		const cookie = cookies[i],
 			eqPos = cookie.indexOf('='),
 			name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
 
@@ -163,11 +153,7 @@ ImprovedTube.deleteYoutubeCookies = function () {
 		location.reload();
 	}, 100);
 };
-
-/*-----------------------------------------------------------------------------
-4.10.4 YOUTUBE LANGUAGE
------------------------------------------------------------------------------*/
-
+/*--- YOUTUBE LANGUAGE ------------------------------------------------------*/
 ImprovedTube.youtubeLanguage = function () {
 	let value = this.storage.youtube_language;
 
