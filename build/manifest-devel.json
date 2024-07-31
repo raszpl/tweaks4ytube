@@ -1,0 +1,103 @@
+{
+	"manifest_version": 3,
+	"short_name": "tweaks4ytube LOCAL TEST",
+	"name": "tweaks4ytube! LOCAL TEST",
+	"description": "__MSG_description_ext__",
+	"version": "1.0",
+	"default_locale": "en",
+	"icons": {
+		"128": "menu/icons/128.png",
+		"16": "menu/icons/16.png",
+		"32": "menu/icons/32.png",
+		"48": "menu/icons/48.png"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+		"id": "{11111111-1111-1111-1111-111111111111}"
+		}
+	},
+  	"background": {
+		"service_worker": "background.js",
+  		"scripts": ["background.js"]
+	},
+	"action": {
+		"default_popup": "menu/index.html",
+		"default_area": "navbar"
+	},
+	"options_page": "menu/index.html",
+	"options_ui": {
+		"page": "menu/index.html"
+	},
+	"content_scripts": [
+		{
+			"world": "MAIN",
+			"js": [
+				"js&css/web-accessible/core.js",
+				"js&css/web-accessible/functions.js",
+				"js&css/web-accessible/www.youtube.com/appearance.js",
+				"js&css/web-accessible/www.youtube.com/player.js",
+				"js&css/web-accessible/www.youtube.com/themes.js",
+				"js&css/web-accessible/www.youtube.com/playlist.js",
+				"js&css/web-accessible/www.youtube.com/channel.js",
+				"js&css/web-accessible/www.youtube.com/shortcuts.js",
+				"js&css/web-accessible/www.youtube.com/blocklist.js",
+				"js&css/web-accessible/www.youtube.com/settings.js",
+				"js&css/web-accessible/init.js"
+			],
+			"matches": ["https://www.youtube.com/*"],
+			"exclude_matches": ["https://www.youtube.com/audiolibrary/*", "https://www.youtube.com/tv*", "https://www.youtube.com/live_chat_replay*"],
+			"run_at": "document_start"
+		}, {
+			"css": [
+				"js&css/extension/www.youtube.com/styles.css",
+				"js&css/extension/www.youtube.com/general/general.css",
+				"js&css/extension/www.youtube.com/appearance/header/header.css",
+				"js&css/extension/www.youtube.com/appearance/player/player.css",
+				"js&css/extension/www.youtube.com/appearance/details/details.css",
+				"js&css/extension/www.youtube.com/appearance/sidebar/sidebar.css",
+				"js&css/extension/www.youtube.com/appearance/comments/comments.css"
+			],
+			"js": ["js&css/web-accessible/www.youtube.com/livechat.js"],
+			"matches": ["https://www.youtube.com/live_chat_replay*"],
+			"run_at": "document_start"
+		}, {
+			"css": [
+				"js&css/extension/www.youtube.com/styles.css",
+				"js&css/extension/www.youtube.com/general/general.css",
+				"js&css/extension/www.youtube.com/appearance/header/header.css",
+				"js&css/extension/www.youtube.com/appearance/player/player.css",
+				"js&css/extension/www.youtube.com/appearance/details/details.css",
+				"js&css/extension/www.youtube.com/appearance/sidebar/sidebar.css",
+				"js&css/extension/www.youtube.com/appearance/comments/comments.css"
+			],
+			"js": [
+				"js&css/extension/core.js",
+				"js&css/extension/www.youtube.com/general/general.js",
+				"js&css/extension/www.youtube.com/appearance/sidebar/sidebar.js",
+				"js&css/extension/www.youtube.com/appearance/comments/comments.js",
+				"js&css/extension/init.js"
+			],
+			"matches": ["https://www.youtube.com/*"],
+			"exclude_matches": ["https://www.youtube.com/audiolibrary/*", "https://www.youtube.com/tv*", "https://www.youtube.com/live_chat_replay*"],
+			"run_at": "document_start"
+		}
+	],
+	"host_permissions": ["https://www.youtube.com/*"],
+	"optional_permissions": [
+		"downloads"
+	],
+	"permissions": [
+		"contextMenus",
+		"storage"
+	],
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"menu/index.html",
+				"menu/icons/48.png",
+				"css/icon.svg"
+			],
+			"matches": ["https://www.youtube.com/*"]
+		}
+	]
+}
