@@ -2763,6 +2763,7 @@ satus.user.device.screen = function () {
 };
 /*--- RAM ------------------------------------------------------*/
 satus.user.device.ram = function () {
+	// eslint-disable-next-line
 	return navigator.deviceMemory ? (navigator.deviceMemory + ' GB') : '';
 };
 /*---  GPU --------------------------------------------------*/
