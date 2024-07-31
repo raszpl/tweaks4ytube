@@ -19,7 +19,7 @@
 /*--------------------------------------------------------------
 # GLOBAL VARIABLE
 --------------------------------------------------------------*/
-let extension = {
+const extension = {
 	domReady: false,
 	events: {
 		listeners: {}
@@ -133,10 +133,10 @@ const htmlAttributes = [
 ];
 /*--- CAMELIZE -----------------------------------------------*/
 extension.camelize = function (string) {
-	var result = '';
+	let result = '';
 
-	for (var i = 0, l = string.length; i < l; i++) {
-		var character = string[i];
+	for (let i = 0, l = string.length; i < l; i++) {
+		const character = string[i];
 
 		if (character === '_' || character === '-') {
 			i++;
@@ -154,11 +154,9 @@ extension.camelize = function (string) {
 --------------------------------------------------------------*/
 /*--- ON ------------------------------------------------------*/
 extension.events.on = function (type, listener, options = {}) {
-	var listeners = extension.events.listeners;
+	const listeners = extension.events.listeners;
 
-	if (!listeners[type]) {
-		listeners[type] = [];
-	}
+	if (!listeners[type]) listeners[type] = [];
 
 	if (options.async === true) {
 		listener = (function (original) {
@@ -176,11 +174,11 @@ extension.events.on = function (type, listener, options = {}) {
 };
 /*--- TRIGGER ------------------------------------------------*/
 extension.events.trigger = async function (type, data) {
-	var listeners = extension.events.listeners[type];
+	const listeners = extension.events.listeners[type];
 
 	if (listeners) {
-		for (var i = 0, l = listeners.length; i < l; i++) {
-			var listener = listeners[i];
+		for (let i = 0, l = listeners.length; i < l; i++) {
+			const listener = listeners[i];
 
 			if (typeof listener === 'function') {
 				if (listener instanceof(async function () {}).constructor === true) {
@@ -195,7 +193,7 @@ extension.events.trigger = async function (type, data) {
 /*--- INJECT -------------------------------------------------*/
 extension.inject = function (paths, callback) {
 	if (paths.length > 0) {
-		var element,
+		let element,
 			path = chrome.runtime.getURL(paths[0]);
 
 		if (path.indexOf('.css') !== -1) {
@@ -220,73 +218,31 @@ extension.inject = function (paths, callback) {
 		callback();
 	}
 };
-/*extension.inject = function (urls, callback) {
-	var threads = urls.length;
-
-	for (var i = 0, l = urls.length; i < l; i++) {
-		var element,
-			url = chrome.runtime.getURL(urls[i]);
-
-		if (url.indexOf('.css') !== -1) {
-			element = document.createElement('link');
-
-			element.rel = 'stylesheet';
-			element.href = url;
-		} else {
-			element = document.createElement('script');
-
-			element.src = url;
-		}
-
-		element.onload = function () {
-			threads--;
-
-			if (threads === 0) {
-				callback();
-			}
-		};
-
-		document.documentElement.appendChild(element);
-	}
-};*/
-
 /*--------------------------------------------------------------
 # MESSAGES
 ----------------------------------------------------------------
 	Designed for messaging between contexts of extension and
 	website.
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# SEND
---------------------------------------------------------------*/
-
+/*--- SEND ---------------------------------------------------*/
 extension.messages.send = function (message) {
 	if (typeof cloneInto == 'function') message = cloneInto(message, window); // FF needs this
 	document.dispatchEvent(new CustomEvent('it-message-from-extension', {'detail': message}));
 };
-
 /*--------------------------------------------------------------
 # STORAGE
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# GET
---------------------------------------------------------------*/
-
+/*--- GET ----------------------------------------------------*/
 extension.storage.get = function (key) {
 	if (key.indexOf('/') === -1) {
 		return this.data[key];
 	} else {
-		var target = this.data,
-			path = key.split('/').filter(function (value) {
-				return value != '';
-			});
+		let target = this.data;
 
-		for (var i = 0, l = key.length; i < l; i++) {
-			var part = key[i];
+		for (let i = 0, l = key.length; i < l; i++) {
+			const part = key[i];
 
-			if (target.hasOwnProperty(part)) {
+			if (Object.keys(target).includes(part)) {
 				target = target[part];
 			} else {
 				return undefined;
@@ -294,11 +250,7 @@ extension.storage.get = function (key) {
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# LISTENER
---------------------------------------------------------------*/
-
+/*--- LISTENER -----------------------------------------------*/
 extension.storage.listener = function () {
 	chrome.storage.onChanged.addListener(function (changes) {
 		for (const key in changes) {
@@ -333,10 +285,7 @@ extension.storage.listener = function () {
 		}
 	});
 };
-
-/*--------------------------------------------------------------
-# LOAD
---------------------------------------------------------------*/
+/*--- LOAD ---------------------------------------------------*/
 extension.storage.load = function (callback) {
 	chrome.storage.local.get(function (items) {
 		extension.storage.data = items;
