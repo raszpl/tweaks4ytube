@@ -28,4 +28,4 @@ jobs:
       
       - name: Run eslint
         run: npx eslint --config=build/test/eslint.config.mjs
-        continue-on-error: true
+        continue-on-error: false
