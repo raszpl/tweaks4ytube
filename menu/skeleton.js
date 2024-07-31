@@ -143,7 +143,6 @@ extension.skeleton.header = {
 		}
 	}
 };
-
 /*--- MAIN ---------------------------------------------------*/
 extension.skeleton.main = {
 	component: 'main',
@@ -169,7 +168,6 @@ extension.skeleton.main = {
 				section.back.rendered.hidden = this.path.length <= 1;
 				section.it_title.rendered.innerText = satus.locale.get(title);
 				section.it_version.rendered.hidden = this.path.length > 1;
-				
 
 				const vertical_menu = document.querySelector('.satus-modal--vertical-menu');
 
