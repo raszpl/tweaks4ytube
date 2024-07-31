@@ -27,7 +27,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 	++ImprovedTube.perf.elements_handled_id;
 	//++ImprovedTube.perf.elements_handled_class;
 
-	switch(node.nodeName) {
+	switch (node.nodeName) {
 		case 'A':
 			if (node.href) {
 				ImprovedTube.channelDefaultTab(node);
@@ -148,13 +148,13 @@ ImprovedTube.ytElementsHandler = function (node) {
 						}
 
 						return {width: ImprovedTube.elements.player.offsetWidth,
-								height: Math.round(ImprovedTube.elements.player.offsetWidth / (16 / 9))
-							};
+							height: Math.round(ImprovedTube.elements.player.offsetWidth / (16 / 9))
+						};
 					}
 
 					return {width: NaN, // ??
-							height: NaN
-						};
+						height: NaN
+					};
 				};
 
 				node.calculateNormalPlayerSize_ = node.calculateCurrentPlayerSize_; // ??
@@ -165,7 +165,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			--ImprovedTube.perf.elements_handled_name;
 			break
 	}
-	switch(node.id) {
+	switch (node.id) {
 		case 'description-inline-expander':
 			ImprovedTube.description(node);
 			break
@@ -173,12 +173,12 @@ ImprovedTube.ytElementsHandler = function (node) {
 		case 'description-inner':
 			ImprovedTube.dayOfWeek(node);
 			break
-	
+
 		case 'chat-messages':
 			ImprovedTube.elements.livechat.button = document.querySelector('[aria-label="Close"]');
 			ImprovedTube.livechat();
 			break
-	
+
 		case 'movie_player':
 			if (ImprovedTube.elements.player) break;
 			ImprovedTube.elements.player = node;
@@ -192,18 +192,18 @@ ImprovedTube.ytElementsHandler = function (node) {
 				new MutationObserver(function (mutationList) {
 					for (var i = 0, l = mutationList.length; i < l; i++) {
 						var mutation = mutationList[i];
-	
+
 						if (mutation.type === 'childList') {
 							for (var j = 0, k = mutation.addedNodes.length; j < k; j++) {
 								var node = mutation.addedNodes[j];
-	
+
 								if (node instanceof Element
 									&& node.querySelector('ytp-ad-player-overlay, .ytp-ad-text, .ytp-ad-overlay-close-container, ytd-button-renderer#dismiss-button, *[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button.ytp-button, .ytp-ad-skip-button-modern.ytp-button') !== null) {
 									ImprovedTube.playerAds(node);
 								}
 							}
 						}
-						if (mutation.type === 'attributes' && mutation.attributeName === 'id' && mutation.target.querySelector('*[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button-modern.ytp-button',)){
+						if (mutation.type === 'attributes' && mutation.attributeName === 'id' && mutation.target.querySelector('*[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button-modern.ytp-button',)) {
 							ImprovedTube.playerAds(node);
 						}
 					}
@@ -211,24 +211,25 @@ ImprovedTube.ytElementsHandler = function (node) {
 								  subtree: true
 								 });
 			}
-	
+
 			new MutationObserver(function (mutationList) {
 				for (var i = 0, l = mutationList.length; i < l; i++) {
 					var mutation = mutationList[i];
-	
+
 					if (mutation.type === 'attributes') {
 						if (mutation.attributeName === 'style') {
 							ImprovedTube.playerHdThumbnail();
 						}
 					}
 				}
-			}).observe(ImprovedTube.elements.player_thumbnail, {attributes: true,
-																attributeFilter: ['style'],
-																childList: false,
-																subtree: false
-															   });
+			}).observe(ImprovedTube.elements.player_thumbnail, {
+				attributes: true,
+				attributeFilter: ['style'],
+				childList: false,
+				subtree: false
+			});
 			break
-	
+
 		case 'panels':
 			if (document.documentElement.dataset.pageType === 'video') {
 				setTimeout(function () {
@@ -237,7 +238,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 				}, 200);
 			}
 			break
-	
+
 		default:
 			--ImprovedTube.perf.elements_handled_id;
 			break
@@ -246,7 +247,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 		case 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap':
 			if (node.parentNode.parentNode.parentNode.parentNode.id == 'description-inline-expander') ImprovedTube.description(node.parentNode.parentNode.parentNode.parentNode);
 			break
-	
+
 		default:
 			--ImprovedTube.perf.elements_handled_class;
 			break
@@ -305,7 +306,7 @@ ImprovedTube.videoPageUpdate = function () {
 };
 
 ImprovedTube.playerOnPlay = function () {
-	document.addEventListener('pause', function (original) {
+	document.addEventListener('pause', function () {
 		console.log('document.pause');
 	}, true);
 
@@ -329,7 +330,7 @@ ImprovedTube.playerOnPlay = function () {
 				this.removeEventListener('pause', ImprovedTube.playerOnPause, true);
 				this.addEventListener('pause', ImprovedTube.playerOnPause, true);
 				this.onpause = (event) => {
-					console.log('this.onpause',event);
+					console.log('this.onpause', event);
 				};
 				this.removeEventListener('ended', ImprovedTube.playerOnEnded, true);
 				this.addEventListener('ended', ImprovedTube.playerOnEnded, true);
@@ -447,8 +448,8 @@ ImprovedTube.onkeydown = function () {
 	}, true);
 };
 
-ImprovedTube.onmousedown = function (event) {
-	window.addEventListener('mousedown', function (event) {
+ImprovedTube.onmousedown = function () {
+	window.addEventListener('mousedown', function () {
 		ImprovedTube.user_interacted = true;
 	}, true);
 };
@@ -607,7 +608,7 @@ ImprovedTube.createPlayerButton = function (options) {
 
 		tooltip.textContent = this.dataset.title;
 
-		function mouseleave() {
+		function mouseleave () {
 			tooltip.remove();
 
 			this.removeEventListener('mouseleave', mouseleave);
@@ -682,16 +683,16 @@ ImprovedTube.extractSubscriberCount = function () {
 	const subscriberCountNode = document.getElementById('owner-sub-count');
 
 	if (!subscriberCountNode) return 0;
-	
+
 	// Extract the subscriber count and store it for further use
 	const subscriberCountText = subscriberCountNode.textContent.trim();
 	let subscriberCount = parseFloat(subscriberCountText.replace(/[^0-9.]/g, ''));
-	
+
 	if (subscriberCountText.includes('K')) {
 		subscriberCount *= 1000;
 	} else if (subscriberCountText.includes('M')) {
 		subscriberCount *= 1000000;
 	}
-	
+
 	return subscriberCount;
 };
