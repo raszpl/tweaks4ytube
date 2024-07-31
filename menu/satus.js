@@ -663,7 +663,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 
 							if (val === satus.storage.get(key)) return;
 							if (val === undefined) {
-									satus.storage.remove(key);
+								satus.storage.remove(key);
 							} else {
 								// only store if actually different value
 								satus.storage.set(key, val);
@@ -710,24 +710,25 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 	if ((!element || element.renderChildren !== false) & skip_children !== true) {
 		// special keywords that cant be their own elements
 		const excluded = [
-				'attr',
-				'style',
-				'data',
-				'class',
-				'component',
-				'text',
-				'variant',
-				'value',
-				'baseProvider',
-				'layersProvider',
-				'parentObject',
-				'parentSkeleton',
-				'parentElement',
-				'rendered',
-				'before',
-				'category',
-				'on'
-			];
+			'attr',
+			'style',
+			'data',
+			'class',
+			'component',
+			'text',
+			'variant',
+			'value',
+			'baseProvider',
+			'layersProvider',
+			'parentObject',
+			'parentSkeleton',
+			'parentElement',
+			'rendered',
+			'before',
+			'category',
+			'on'
+		];
+
 		for (const key in skeleton) {
 			if (excluded.includes(key)) continue;
 			let item = skeleton[key];
@@ -783,7 +784,7 @@ satus.search = function (query, object, callback) {
 				// plop matching results in object - this means we cant have two elements with same name in whole Menu
 				results[key] = Object.assign({}, item);
 			}
-			
+
 			if (satus.isObject(item)
 				&& !satus.isArray(item)
 				&& !satus.isElement(item)
@@ -862,10 +863,9 @@ satus.storage.default = function (skeleton, target) {
 			break
 
 		case 'radio':
-			const inputs = skeleton.parentSkeleton.parentSkeleton;
 			// determine default value for whole radio section
-			for (const key in inputs) {
-				let item = inputs[key];
+			for (const key in skeleton.parentSkeleton.parentSkeleton) {
+				let item = skeleton.parentSkeleton.parentSkeleton[key];
 
 				// components can be functions
 				if (satus.isFunction(item)) item = item();
@@ -879,7 +879,7 @@ satus.storage.default = function (skeleton, target) {
 			}
 			break
 	}
-// save to skeleton.rendered.storage.value
+	// save to skeleton.rendered.storage.value
 	if (target) target = value;
 	return value;
 };
@@ -954,7 +954,7 @@ satus.text = function (element, value) {
 --------------------------------------------------------------*/
 /*--- MODAL ----------------------------------------------------*/
 satus.components.modal = function (component, skeleton) {
-	const content = skeleton.content;
+	let content = skeleton.content;
 
 	component.scrim = component.createChildElement('div', 'scrim');
 	component.surface = component.createChildElement('div', 'surface');
@@ -2009,12 +2009,12 @@ satus.components.shortcut = function (component, skeleton) {
 		component.mousewheel = function (event) {
 			event.stopPropagation();
 
-			if ((component.data.wheel === 0 
+			if ((component.data.wheel === 0
 					&& (Object.keys(component.data.keys).length === 0
-						&& component.data.alt === false 
-						&& component.data.ctrl === false 
+						&& component.data.alt === false
+						&& component.data.ctrl === false
 						&& component.data.shift === false))
-				|| (component.data.wheel < 0 && event.deltaY > 0) 
+				|| (component.data.wheel < 0 && event.deltaY > 0)
 				|| (component.data.wheel > 0 && event.deltaY < 0)) {
 
 				component.data = {
@@ -2235,7 +2235,7 @@ satus.components.switch = function (component, skeleton) {
 satus.components.switch.flip = function (val) {
 	let where = this;
 
-	function flipTrue() {
+	function flipTrue () {
 		where.dataset.value = 'true';
 		if (where.skeleton.value == true) {
 			// skeleton.value: true makes this a default true flip switch where the only active state we save is false
@@ -2244,7 +2244,7 @@ satus.components.switch.flip = function (val) {
 			where.storage.value = true;
 		}
 	};
-	function flipFalse() {
+	function flipFalse () {
 		where.dataset.value = 'false';
 		if (where.skeleton.value == true) {
 			// skeleton.value: true makes this a default true flip switch where the only active state we save is false

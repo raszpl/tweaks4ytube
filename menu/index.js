@@ -37,7 +37,7 @@ extension.attributes = function (key) {
 		it_analyzer: true,
 		layer_animation_scale: false
 	};
-	function attrib(attribute) {
+	function attrib (attribute) {
 		const value = satus.storage.get(attribute);
 
 		attribute = attribute.replace('it_', '').replace(/_/g, '-');
@@ -68,8 +68,8 @@ chrome.runtime.sendMessage({
 		return;
 	}
 	if (response.isTab) {
-		document.body.setAttribute('tab','');
-		
+		document.body.setAttribute('tab', '');
+
 		if (!location.search.startsWith('?action=')) return;
 
 		const element = document.createElement('button');
@@ -83,14 +83,12 @@ chrome.runtime.sendMessage({
 			element.appendChild(document.createTextNode(satus.locale.get('exportSettings')));
 		}
 
-		document.body.appendChild(element);			
+		document.body.appendChild(element);
 	}
 });
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (message) {
 	if (message.action === 'performance-reply') {
-		console.log("Message from the content script:");
-		console.log(message);
 		const element = document.createElement('pre');
 		element.style = 'position:fixed; top: 466px;';
 		element.appendChild(document.createTextNode('eEements start ' + message.perf.elements_start));
