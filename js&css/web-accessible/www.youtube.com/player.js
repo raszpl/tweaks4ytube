@@ -38,8 +38,8 @@ ImprovedTube.autoplayDisable = function (videoElement) {
 // FIXME
 ImprovedTube.forcedPlayVideoFromTheBeginning = function (video) {
 	const player = this.elements.player;
-		//video = this.elements.video,
-		//paused = video?.paused;
+	//video = this.elements.video,
+	//paused = video?.paused;
 
 	if (player && video && this.storage.forced_play_video_from_the_beginning && location.pathname == '/watch') {
 		//console.log('trying to player.seekTo(0)');
