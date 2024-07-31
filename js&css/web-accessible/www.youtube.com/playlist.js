@@ -27,12 +27,12 @@ ImprovedTube.playlistReverse = function (node) {
 	if (this.storage.playlist_reverse) {
 		// playlist_reverse button already applied or nowhere to attach it
 		if (document.body.querySelector('#it-reverse-playlist-button') || !node) return;
-/*
+		/*
 rename extension/www.youtube.com/styles.css
 #it-reverse-playlist {
 #it-reverse-playlist svg {
 #it-reverse-playlist.active svg {
-*/
+		*/
 		const button = ImprovedTube.createIconButton({
 			type: 'playlistReverse',
 			className: `style-scope yt-icon-button`,
