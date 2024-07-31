@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> ACTIVE FEATURES
---------------------------------------------------------------*/
-
+/*--- ACTIVE FEATURES ----------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.activeFeatures = {
 	component: 'button',
 	on: {
