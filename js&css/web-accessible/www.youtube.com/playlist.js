@@ -95,6 +95,7 @@ ImprovedTube.playlistRepeat = function () {
 		}, 10000);
 	}
 };
+/*--- SHUFFLE ----------------------------------------------------------------*/
 /*
 FIXME
 button.querySelector("path").attributes.d.textContent.startsWith('M20') off
@@ -102,9 +103,9 @@ button.querySelector("path").attributes.d.textContent.startsWith('M21') loop
 button.querySelector("path").attributes.d.textContent.startsWith('M13') loop with 1 in the middle, what does that even mean? :D
  https://github.com/code-charity/youtube/issues/1768#issuecomment-1720423923
 
-also fix ImprovedTube.shortcutToggleLoop */
-/*--- SHUFFLE ----------------------------------------------------------------*/
-ImprovedTube.playlistShuffle = function (node) {
+also fix ImprovedTube.shortcutToggleLoop
+*/
+ImprovedTube.playlistShuffle = function () {
 	if (ImprovedTube.storage.playlist_shuffle) {
 		const button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
 		/*
@@ -119,14 +120,16 @@ ImprovedTube.playlistShuffle = function (node) {
 			ImprovedTube.blocklistChannelObserver.disconnect();
 		}
 		*/
-
+		/*
 		setTimeout(function () {
 			let button = ImprovedTube.elements.playlist.shuffle_button,
 				option = ImprovedTube.storage.playlist_shuffle;
 			// FIXME this looks stupid
-			button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
+			//button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
 			if (button && (option === true && button.querySelector("path").attributes.d.textContent.split(" ")[0].startsWith('M18.1'))) button.click();
 		}, 10000);
+		
+		*/
 	}
 };
 /*--- POPUP ------------------------------------------------------------------*/
@@ -157,7 +160,25 @@ ImprovedTube.playlistPopup = function () {
 			id: 'it-popup-playlist-button',
 			title: 'Popup playlist',
 			dataset: [['list', playlistID]],
-			onclick: checkVideo ? function () {
+			onclick: function () {
+				const videoID = location.href.match(ImprovedTube.regex.video_id)?.[1],
+					playlistID = location.href.match(ImprovedTube.regex.playlist_id)?.[1],
+					url = location.protocol + '//www.youtube.com/embed/' + videoID
+						+ '?autoplay=' + (video.paused ? '0' : '1')
+						+ (video.currentTime > 5 ? '&start=' + parseInt(video.currentTime) : '')
+						+ (playlistID ? '&list=' + playlistID : '');
+
+				if (!playlistID) return; // no clicking for you! run away
+
+				player.pauseVideo();
+				ImprovedTube.messageSend({
+					action: 'popup',
+					url: url,
+					width: parseInt(player.offsetWidth * 0.75),
+					height: parseInt(player.offsetHeight * 0.75)
+				});
+			}
+			/*onclick: checkVideo ? function () {
 				const videoURL = ImprovedTube.elements.player?.getVideoUrl();
 				let width = ImprovedTube.elements.player.offsetWidth * 0.7;
 				let height = ImprovedTube.elements.player.offsetHeight * 0.7;
@@ -202,7 +223,7 @@ ImprovedTube.playlistPopup = function () {
 					height: height,
 					title: document.title
 				});
-			},
+			},*/
 		});
 	};
 
