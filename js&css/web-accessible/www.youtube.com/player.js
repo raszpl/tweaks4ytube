@@ -125,8 +125,8 @@ FORCED PLAYBACK SPEED
 ImprovedTube.playerPlaybackSpeed = function () {
 	if (this.storage.player_forced_playback_speed) {
 		const player = this.elements.player,
-			video = player.querySelector('video'),
-			option = this.storage.player_playback_speed;
+			video = player.querySelector('video');
+		let option = this.storage.player_playback_speed;
 		if (this.isset(option) === false) {
 			option = 1;
 		} else if ( option !== 1 && video.playbackRate !== option && (video.playbackRate > 1 || video.playbackRate < 1) ) {
@@ -316,7 +316,7 @@ ImprovedTube.playerPlaybackSpeed = function () {
 			}
 		}
 	}
-}
+};
 /*--- PLAYER SUBTITLES -------------------------------------------------------*/
 ImprovedTube.playerSubtitles = function () {
 	const player = this.elements.player;
@@ -627,7 +627,7 @@ ImprovedTube.playerForcedVolume = function () {
 /*--- PLAYER LOUDNESS NORMALIZATION ------------------------------------------*/
 ImprovedTube.playerLoudnessNormalization = function () {
 	const video = this.elements.video;
-	
+
 	function onvolumechange () {
 		if (document.querySelector('.ytp-volume-panel') && ImprovedTube.storage.player_loudness_normalization === false) {
 			let volume = Number(document.querySelector('.ytp-volume-panel').getAttribute('aria-valuenow'));
@@ -636,8 +636,8 @@ ImprovedTube.playerLoudnessNormalization = function () {
 	};
 
 	if (video) {
-		video.removeEventListener('volumechange', this.onvolumechange);
-		video.addEventListener('volumechange', this.onvolumechange);
+		video.removeEventListener('volumechange', onvolumechange);
+		video.addEventListener('volumechange', onvolumechange);
 	}
 
 	if (this.storage.player_loudness_normalization === false) {
@@ -697,7 +697,7 @@ ImprovedTube.screenshot = function () {
 		let captionElements = document.querySelectorAll('.captions-text .ytp-caption-segment');
 		captionElements.forEach(function (caption) { subText += caption.textContent.trim() + ' '; });
 
-		ImprovedTube.renderSubtitle(ctx, captionElements);
+		renderSubtitle(ctx, captionElements);
 	}
 
 	cvs.toBlob(function (blob) {
@@ -907,7 +907,7 @@ ImprovedTube.playerCinemaModeButton = function () {
 ImprovedTube.playerAutoCinemaMode = function (disable) {
 	if (location.pathname != '/watch') return;
 	const player = this.elements.player,
-			video = this.elements.video;
+		video = this.elements.video;
 
 	if (!player || !video) return; // need player and video
 
@@ -1084,9 +1084,7 @@ ImprovedTube.playerHideControls = function () {
 		player.onmousemove = null;
 	}
 };
-/*------------------------------------------------------------------------------
-CUSTOM MINI-PLAYER
-------------------------------------------------------------------------------*/
+/*--- CUSTOM MINI-PLAYER -----------------------------------------------------*/
 ImprovedTube.mini_player__setSize = function (width, height, keep_ar, keep_area) {
 	if (keep_ar) {
 		const aspect_ratio = ImprovedTube.elements.video.style.width.replace('px', '') / ImprovedTube.elements.video.style.height.replace('px', '');
@@ -1155,7 +1153,7 @@ ImprovedTube.miniPlayer_mouseDown = function (event) {
 	let is_player = false,
 		path = event.composedPath();
 
-	for (const i = 0, l = path.length; i < l; i++) {
+	for (let i = 0, l = path.length; i < l; i++) {
 		if ((path[i].classList && path[i].classList.contains('it-mini-player')) === true) {
 			is_player = true;
 		}
@@ -1425,7 +1423,6 @@ ImprovedTube.miniPlayer = function () {
 		window.removeEventListener('mousemove', this.miniPlayer_cursorUpdate);
 	}
 };
-
 /*--- CUSTOM PAUSE FUNCTIONS -------------------------------------------------*/
 ImprovedTube.pauseWhileTypingOnYoutube = function () {
 	if (ImprovedTube.storage.pause_while_typing_on_youtube) {
@@ -1479,7 +1476,8 @@ ImprovedTube.playerLimits = function () {
 	if (ImprovedTube.storage.block_vp9 || ImprovedTube.storage.block_av1 || ImprovedTube.storage.block_h264) {
 		let atlas = {block_vp9:'vp9|vp09', block_h264:'avc1', block_av1:'av01'}
 		localStorage['it-codec'] = Object.keys(atlas).reduce(function (all, key) {
-			return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all}, '');
+			return ImprovedTube.storage[key] ? ((all?all+'|':'') + atlas[key]) : all
+		}, '');
 	} else {
 		localStorage.removeItem('it-codec');
 	}

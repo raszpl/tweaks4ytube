@@ -26,9 +26,7 @@ ImprovedTube.descriptionSidebar = function () {
 /*------------------------------------------------------------------------------
   PLAYER
 ------------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------------
- PLAYER SIZE
-------------------------------------------------------------------------------*/
+/*--- PLAYER SIZE ------------------------------------------------------------*/
 ImprovedTube.playerSize = function () {
 	if (this.storage.player_size === "custom") {
 		var width = Number(this.storage.custom_player_size_width) || 1280,
@@ -46,9 +44,7 @@ ImprovedTube.playerSize = function () {
 		}
 	}
 };
-/*------------------------------------------------------------------------------
- FORCED THEATER MODE
-------------------------------------------------------------------------------*/
+/*--- FORCED THEATER MODE ----------------------------------------------------*/
 ImprovedTube.forcedTheaterMode = function () {
 	if (ImprovedTube.storage.forced_theater_mode === true && ImprovedTube.elements.ytd_watch && ImprovedTube.elements.player) {
 		var button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
@@ -61,9 +57,7 @@ ImprovedTube.forcedTheaterMode = function () {
 		}
 	}
 };
-/*------------------------------------------------------------------------------
- HD THUMBNAIL
-------------------------------------------------------------------------------*/
+/*--- HD THUMBNAIL -----------------------------------------------------------*/
 ImprovedTube.playerHdThumbnail = function () {
 	if (this.storage.player_hd_thumbnail === true) {
 		var thumbnail = ImprovedTube.elements.player_thumbnail;
@@ -73,9 +67,7 @@ ImprovedTube.playerHdThumbnail = function () {
 		}
 	}
 };
-/*------------------------------------------------------------------------------
- ALWAYS SHOW PROGRESS BAR
-------------------------------------------------------------------------------*/
+/*--- SHOW PROGRESS BAR ------------------------------------------------------*/
 ImprovedTube.showProgressBar = function () {
 	const player = ImprovedTube.elements.player;
 
@@ -152,9 +144,7 @@ ImprovedTube.playerRemainingDuration = function () {
 		element.textContent = " (-" + rTime + ")";
 	}
 };
-/*------------------------------------------------------------------------------
- Comments Sidebar Simple
-------------------------------------------------------------------------------*/
+/*--- COMMENTS SIDEBAR SIMPLE ------------------------------------------------*/
 ImprovedTube.commentsSidebarSimple = function () {
 	if (ImprovedTube.storage.comments_sidebar_simple === true) {
 		if (window.matchMedia("(min-width: 1599px)").matches) {
@@ -168,10 +158,8 @@ ImprovedTube.commentsSidebarSimple = function () {
 			);
 		}
 	}
-}
-/*------------------------------------------------------------------------------
- Comments Sidebar
-------------------------------------------------------------------------------*/
+};
+/*--- COMMENTS SIDEBAR -------------------------------------------------------*/
 ImprovedTube.commentsSidebar = function () {
 	if (ImprovedTube.storage.comments_sidebar === true) {
 		const video = document.querySelector("#player .ytp-chrome-bottom") || document.querySelector("#container .ytp-chrome-bottom");
@@ -308,29 +296,23 @@ ImprovedTube.commentsSidebar = function () {
 			};
 		}
 	}
-}
+};
 /*------------------------------------------------------------------------------
  SIDEBAR
 ------------------------------------------------------------------------------*/
-/*----------------------------------------------------------------
- TRANSCRIPT
---------------------------------------------------------------*/
+/*--- TRANSCRIPT ---------------------------------------------*/
 ImprovedTube.transcript = function (el) {
 	if (ImprovedTube.storage.transcript === true) {
 		el.querySelector('*[target-id*=transcript]')?.removeAttribute('visibility');
 	}
-}
-/*----------------------------------------------------------------
- CHAPTERS
---------------------------------------------------------------*/
+};
+/*--- CHAPTERS -----------------------------------------------*/
 ImprovedTube.chapters = function (el) {
 	if (ImprovedTube.storage.chapters === true) {
 		el.querySelector('*[target-id*=chapters]')?.removeAttribute('visibility');
 	}
-}
-/*------------------------------------------------------------------------------
- LIVECHAT
-------------------------------------------------------------------------------*/
+};
+/*--- LIVECHAT ---------------------------------------------------------------*/
 ImprovedTube.livechat = function () {
 	if (this.storage.livechat === "collapsed") {
 		if (typeof isCollapsed === 'undefined') {
@@ -437,7 +419,7 @@ ImprovedTube.buttonsUnderPlayer = function () {
 };
 /*--- EXPAND DESCRIPTION -----------------------------------------------------*/
 ImprovedTube.description = function (description = document.querySelector('#description-inline-expander')) {
-	function observe (mutationList) {
+	function observe () {
 		const hidden = description.querySelector('#snippet-text');
 		if (!hidden?.hasAttribute('hidden')
 			&& hidden.parentNode.parentNode.expanded != ImprovedTube.videoId()) {
@@ -479,7 +461,7 @@ ImprovedTube.description = function (description = document.querySelector('#desc
 // This works only with certain browser locales, for example EN/US. Cant fix it, should
 // probably remove it completely as it looks quite useless to begin with.
 ImprovedTube.dayOfWeek = function (node = document.querySelector('#description-inner')) {
-	function observe (mutationList) {
+	function observe () {
 		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 			date = node.querySelector("#info span:nth-child(3)"),
 			dateText = date?.innerText,
@@ -591,9 +573,11 @@ ImprovedTube.channelVideosCount = function () {
 		&& this.elements.yt_channel_name) {
 
 		const key = this.storage['google_api_key'] || ImprovedTube.defaultApiKey;
+		let id;
+
 		if (this.elements.yt_channel_link.href.indexOf("/channel/") == -1) {
-			const xhr = new XMLHttpRequest(),
-				id = this.getParam(location.href, "v");
+			const xhr = new XMLHttpRequest();
+			id = this.getParam(location.href, "v");
 			xhr.open("GET", "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=" + key, false);
 			xhr.send();
 			if (xhr.readyState === xhr.DONE && xhr.status === 200) {

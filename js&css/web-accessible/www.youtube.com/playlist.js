@@ -1,9 +1,7 @@
 /*------------------------------------------------------------------------------
 4.5.0 PLAYLIST
 ------------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------------
-4.5.1 UP NEXT AUTOPLAY
-------------------------------------------------------------------------------*/
+/*---- UP NEXT AUTOPLAY ------------------------------------------------------*/
 ImprovedTube.playlistUpNextAutoplay = function () {
 	const playlistData = this.elements.ytd_watch?.playlistData;
 
@@ -12,9 +10,9 @@ ImprovedTube.playlistUpNextAutoplay = function () {
 		&& playlistData.totalVideos
 		&& playlistData.localCurrentIndex) {
 
-		console.log('this.elements.video?.ended',this.elements.video?.ended);
+		console.log('this.elements.video?.ended', this.elements.video?.ended);
 
-		if (this.storage.playlist_up_next_autoplay === false) {
+		if (!this.storage.playlist_up_next_autoplay) {
 			playlistData.currentIndex = playlistData.totalVideos;
 		} else {
 			if (playlistData.currentIndex != playlistData.localCurrentIndex) {
@@ -24,9 +22,7 @@ ImprovedTube.playlistUpNextAutoplay = function () {
 		}
 	}
 };
-/*------------------------------------------------------------------------------
-4.5.2 REVERSE
-------------------------------------------------------------------------------*/
+/*--- REVERSE ----------------------------------------------------------------*/
 ImprovedTube.playlistReverse = function (node) {
 	if (this.storage.playlist_reverse) {
 		// playlist_reverse button already applied or nowhere to attach it
@@ -42,32 +38,32 @@ rename extension/www.youtube.com/styles.css
 			className: `style-scope yt-icon-button`,
 			id: 'it-reverse-playlist-button',
 			title: 'Reverse playlist',
-			onclick: function (event) {
+			onclick: function () {
 				this.classList.toggle('active');
 				ImprovedTube.playlistReversed = !ImprovedTube.playlistReversed;
 
 				const results = ImprovedTube.elements.ytd_watch.data.contents.twoColumnWatchNextResults,
 					playlist = results.playlist.playlist,
 					autoplay = results.autoplay.autoplay;
-	
+
 				playlist.contents.reverse();
-	
+
 				playlist.currentIndex = playlist.totalVideos - playlist.currentIndex - 1;
 				playlist.localCurrentIndex = playlist.contents.length - playlist.localCurrentIndex - 1;
-	
-				for (var i = 0, l = autoplay.sets.length; i < l; i++) {
-					var item = autoplay.sets[i];
-	
+
+				for (let i = 0, l = autoplay.sets.length; i < l; i++) {
+					const item = autoplay.sets[i];
+
 					item.autoplayVideo = item.previousButtonVideo;
 					item.previousButtonVideo = item.nextButtonVideo;
 					item.nextButtonVideo = item.autoplayVideo;
 				}
-	
+
 				ImprovedTube.elements.ytd_watch.updatePageData_(JSON.parse(JSON.stringify(ImprovedTube.elements.ytd_watch.data)));
-	
+
 				setTimeout(function () {
-					var playlist_manager = document.querySelector('yt-playlist-manager');
-	
+					const playlist_manager = document.querySelector('yt-playlist-manager');
+
 					ImprovedTube.elements.ytd_player.updatePlayerComponents(null, autoplay, null, playlist);
 					playlist_manager.autoplayData = autoplay;
 					playlist_manager.setPlaylistData(playlist);
@@ -85,13 +81,11 @@ rename extension/www.youtube.com/styles.css
 	}
 };
 
-/*------------------------------------------------------------------------------
-4.5.3 REPEAT
-------------------------------------------------------------------------------*/
+/*--- REPEAT -----------------------------------------------------------------*/
 ImprovedTube.playlistRepeat = function () {
 	if ( ImprovedTube.storage.playlist_repeat === true ) {
 	    setTimeout(function () {
-			var option = ImprovedTube.storage.playlist_repeat,
+			const option = ImprovedTube.storage.playlist_repeat,
 				button = document.querySelector("#button.ytd-playlist-loop-button-renderer") || document.querySelector("ytd-playlist-loop-button-renderer button") || document.querySelector("ytd-playlist-loop-button-renderer");
 			if (button && (option === true && button.querySelector("path").attributes.d.textContent.split(" ")[0].startsWith('M21')
 			) && button.querySelector("#tooltip")?.textContent !== 'Loop video'
@@ -104,18 +98,15 @@ ImprovedTube.playlistRepeat = function () {
 		}, 10000);
 	}
 };
-
 /*
+FIXME
 button.querySelector("path").attributes.d.textContent.startsWith('M20') off
 button.querySelector("path").attributes.d.textContent.startsWith('M21') loop
 button.querySelector("path").attributes.d.textContent.startsWith('M13') loop with 1 in the middle, what does that even mean? :D
  https://github.com/code-charity/youtube/issues/1768#issuecomment-1720423923
 
 also fix ImprovedTube.shortcutToggleLoop */
-
-/*------------------------------------------------------------------------------
-4.5.4 SHUFFLE
-------------------------------------------------------------------------------*/
+/*--- SHUFFLE ----------------------------------------------------------------*/
 ImprovedTube.playlistShuffle = function (node) {
 	if (ImprovedTube.storage.playlist_shuffle) {
 		const button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
@@ -126,23 +117,22 @@ ImprovedTube.playlistShuffle = function (node) {
 			}
 		});
 		this.blocklistChannelObserver.observe(node.parentNode.parentNode, {childList: true, subtree: true});
-		
+
 		if (typeof ImprovedTube.blocklistChannelObserver === 'object') {
 			ImprovedTube.blocklistChannelObserver.disconnect();
 		}
 		*/
-		
+
 		setTimeout(function (){
-			var button = ImprovedTube.elements.playlist.shuffle_button,
+			let button = ImprovedTube.elements.playlist.shuffle_button,
 				option = ImprovedTube.storage.playlist_shuffle;
+			// FIXME this looks stupid
 			button = document.querySelector('#playlist-actions #playlist-action-menu ytd-toggle-button-renderer');
 			if (button && (option === true && button.querySelector("path").attributes.d.textContent.split(" ")[0].startsWith('M18.1'))) button.click();
 		}, 10000);
 	}
 };
-/*------------------------------------------------------------------------------
-4.5.5 POPUP
-------------------------------------------------------------------------------*/
+/*--- POPUP ------------------------------------------------------------------*/
 /**
  * ## Adds a playlist popup button to each playlist panel found or update the links of existing popup buttons
  * - buttons will be added on the playlist page (next to the share button), in the playlist panel (after the loop and shuffle buttons), and/or the mini playlist section of the mini player (after the loop and shuffle buttons)
@@ -170,10 +160,10 @@ ImprovedTube.playlistPopup = function () {
 			id: 'it-popup-playlist-button',
 			title: 'Popup playlist',
 			dataset: [['list', playlistID]],
-			onclick: checkVideo ? function (event) {
+			onclick: checkVideo ? function () {
 				const videoURL = ImprovedTube.elements.player?.getVideoUrl();
-				let width = ImprovedTube.elements.player.offsetWidth * 0.7 ?? innerWidth * 0.4;
-				let height = ImprovedTube.elements.player.offsetHeight * 0.7 ?? innerHeight * 0.4;
+				let width = ImprovedTube.elements.player.offsetWidth * 0.7;
+				let height = ImprovedTube.elements.player.offsetHeight * 0.7;
 
 				"use strict";
 				if (videoURL != null && ImprovedTube.regex.video_id.test(videoURL)) {
@@ -197,14 +187,15 @@ ImprovedTube.playlistPopup = function () {
 					height: height,
 					title: document.title
 				});
-			} : function (event) {
-				let width = ImprovedTube.elements.player.offsetWidth * 0.7 ?? innerWidth * 0.45;
-				let height = ImprovedTube.elements.player.offsetHeight * 0.7 ?? innerHeight * 0.45;
-					if (!ImprovedTube.elements.player) {
-						shorts = /short/.test(this.parentElement.href);
-						if (  width / height  < 1 ) { vertical = true }  else { vertical = false }
-						if ( !vertical &&  shorts ){ width = height * 0.6}
-						if (  vertical && !shorts ){ height = width * 0.6}		}
+			} : function () {
+				let width = ImprovedTube.elements.player.offsetWidth * 0.7;
+				let height = ImprovedTube.elements.player.offsetHeight * 0.7;
+				if (!ImprovedTube.elements.player) {
+					shorts = /short/.test(this.parentElement.href);
+					if (width / height  < 1) { vertical = true } else { vertical = false }
+					if (!vertical &&  shorts) width = height * 0.6;
+					if (vertical && !shorts) height = width * 0.6;
+				}
 				"use strict";
 				window.open(`https://www.youtube.com/embed/videoseries?autoplay=${ImprovedTube.storage.playlist_autoplay ? '1' : '0'}&list=${this.dataset.list}`, '_blank', `directories=no,toolbar=no,location=no,menubar=no,status=no,titlebar=no,scrollbars=no,resizable=no,width=${width / 3},height=${height / 3}`);
 				//~ change focused tab to URL-less popup
@@ -223,7 +214,7 @@ ImprovedTube.playlistPopup = function () {
 
 		const playlistID = location.href.match(this.regex.playlist_id)?.[1]
 		if (!playlistID) return; // No playlistID, nothing to do here
-		
+
 		const playlistIDMini = this.elements.player?.getPlaylistId?.(),
 			// playlistShareButton is on /playlist?list=
 			playlistShareButton = document.body.querySelector('ytd-app>div#content>ytd-page-manager>ytd-browse>ytd-playlist-header-renderer ytd-button-renderer.ytd-playlist-header-renderer:has(button[title])'),

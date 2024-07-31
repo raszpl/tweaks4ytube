@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
 4.6.0 CHANNEL
 ------------------------------------------------------------------------------*/
-
 /*--- DEFAULT CHANNEL TAB ----------------------------------------------------*/
 ImprovedTube.channelDefaultTab = function (a) {
 	const option = this.storage.channel_default_tab;
@@ -14,7 +13,7 @@ ImprovedTube.channelDefaultTab = function (a) {
 
 		a.href = a.href.replace(this.regex.channel_home_page_postfix, '') + option;
 		a.onclick = function (event) {event.stopPropagation();};
-		
+
 		if (a.parentNode.classList.contains('ytd-channel-name') && document.documentElement.dataset.pageType === 'video') {
 			this.elements.yt_channel_name = a.parentNode; // a.textContent ?
 			this.elements.yt_channel_link = a;

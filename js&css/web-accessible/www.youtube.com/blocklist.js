@@ -2,7 +2,7 @@
 4.8.0 BLOCKLIST
 ------------------------------------------------------------------------------*/
 ImprovedTube.blocklistNode = function (node) {
-	if (!this.storage.blocklist_activate 
+	if (!this.storage.blocklist_activate
 		|| !node
 		|| (!(node.href && node.classList.contains('ytd-thumbnail'))
 			&& !node.classList.contains('ytd-video-preview'))) return;
