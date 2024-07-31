@@ -411,7 +411,8 @@ document.addEventListener('it-message-from-extension', function (message) {
 			break
 
 		case 'performance':
-			ImprovedTube.perf.time = 'getEntriesByName' in performance ? performance.getEntriesByName("set").reduce((partialSum, a) => partialSum + a.duration, 0).toFixed(1) : null;
+			// eslint-disable-next-line
+			ImprovedTube.perf.time = ('getEntriesByName' in performance) ? performance.getEntriesByName("set").reduce((partialSum, a) => partialSum + a.duration, 0).toFixed(1) : null;
 			ImprovedTube.messageSend({
 				action: 'performance',
 				perf: ImprovedTube.perf
