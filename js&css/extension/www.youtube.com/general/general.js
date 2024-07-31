@@ -141,7 +141,7 @@ extension.features.collapseOfSubscriptionSections = function (event) {
 --------------------------------------------------------------*/
 
 extension.features.onlyOnePlayerInstancePlaying = function () {
-	if (extension.storage.get('only_one_player_instance_playing') === true) {
+	if (extension.storage.get('only_one_player_instance_playing')) {
 		var videos = document.querySelectorAll('video');
 
 		for (var i = 0, l = videos.length; i < l; i++) {
@@ -338,6 +338,10 @@ extension.features.font = function (changed) {
 /*--------------------------------------------------------------
 # MARK WATCHED VIDEOS
 --------------------------------------------------------------*/
+extension.functions.getUrlParameter = function (url, parameter) {
+	var match = url.match(new RegExp('(\\?|\\&)' + parameter + '=[^&]+'));
+	if (match) {return match[0].substr(3);}
+};
 
 extension.features.markWatchedVideos = function (anything) {
 	if (anything instanceof Event) {

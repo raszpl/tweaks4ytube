@@ -16,12 +16,10 @@
 	# Listener
 	# Load
 --------------------------------------------------------------*/
-
 /*--------------------------------------------------------------
 # GLOBAL VARIABLE
 --------------------------------------------------------------*/
-
-var extension = {
+let extension = {
 	domReady: false,
 	events: {
 		listeners: {}
@@ -38,12 +36,11 @@ var extension = {
 };
 
 // list of settings we inject into HTML element as attributes, used by CSS.
-let htmlAttributes = [
+const htmlAttributes = [
 	"activated",
 	"ads",
 	"always_show_progress_bar",
 	"bluelight",
-	"channel_compact_theme",
 	"channel_hide_featured_content",
 	"collapse_of_subscription_sections",
 	"columns",
@@ -51,7 +48,7 @@ let htmlAttributes = [
 	"comments_sidebar",
 	"comments_sidebar_left",
 	"comments_sidebar_simple",
-	"compactSpacing",
+	"compact_spacing",
 	"description",
 	"embeddedHidePauseOverlay",
 	"embeddedHideShare",
@@ -134,11 +131,7 @@ let htmlAttributes = [
 	"youtube_home_page",
 	"youtubeDetailButtons"
 ];
-
-/*--------------------------------------------------------------
-# CAMELIZE
---------------------------------------------------------------*/
-
+/*--- CAMELIZE -----------------------------------------------*/
 extension.camelize = function (string) {
 	var result = '';
 
@@ -156,15 +149,10 @@ extension.camelize = function (string) {
 
 	return result;
 };
-
 /*--------------------------------------------------------------
 # EVENTS
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# ON
---------------------------------------------------------------*/
-
+/*--- ON ------------------------------------------------------*/
 extension.events.on = function (type, listener, options = {}) {
 	var listeners = extension.events.listeners;
 
@@ -186,11 +174,7 @@ extension.events.on = function (type, listener, options = {}) {
 		listeners[type].push(listener);
 	}
 };
-
-/*--------------------------------------------------------------
-# TRIGGER
---------------------------------------------------------------*/
-
+/*--- TRIGGER ------------------------------------------------*/
 extension.events.trigger = async function (type, data) {
 	var listeners = extension.events.listeners[type];
 
@@ -208,13 +192,7 @@ extension.events.trigger = async function (type, data) {
 		}
 	}
 };
-
-/*--------------------------------------------------------------
-# INJECT
-----------------------------------------------------------------
-
---------------------------------------------------------------*/
-
+/*--- INJECT -------------------------------------------------*/
 extension.inject = function (paths, callback) {
 	if (paths.length > 0) {
 		var element,
@@ -242,7 +220,6 @@ extension.inject = function (paths, callback) {
 		callback();
 	}
 };
-
 /*extension.inject = function (urls, callback) {
 	var threads = urls.length;
 
@@ -285,9 +262,7 @@ extension.inject = function (paths, callback) {
 --------------------------------------------------------------*/
 
 extension.messages.send = function (message) {
-	if (typeof cloneInto == 'function') {
-		message = cloneInto(message, window);
-	}
+	if (typeof cloneInto == 'function') message = cloneInto(message, window); // FF needs this
 	document.dispatchEvent(new CustomEvent('it-message-from-extension', {'detail': message}));
 };
 
@@ -327,13 +302,17 @@ extension.storage.get = function (key) {
 extension.storage.listener = function () {
 	chrome.storage.onChanged.addListener(function (changes) {
 		for (const key in changes) {
-			let value = changes[key].newValue,
+			const value = changes[key].newValue,
 				camelized_key = extension.camelize(key);
 
 			extension.storage.data[key] = value;
 
 			if (htmlAttributes.includes(key)) {
-				document.documentElement.setAttribute('it-' + key.replace(/_/g, '-'), value);
+				if (!(typeof value === 'undefined' || value === null || value === 'null')) {
+					document.documentElement.setAttribute('it-' + key, value);
+				} else {
+					document.documentElement.removeAttribute('it-' + key);
+				}
 			}
 
 			if (typeof extension.features[camelized_key] === 'function') {
@@ -358,21 +337,14 @@ extension.storage.listener = function () {
 /*--------------------------------------------------------------
 # LOAD
 --------------------------------------------------------------*/
-
 extension.storage.load = function (callback) {
 	chrome.storage.local.get(function (items) {
 		extension.storage.data = items;
 
 		// initialize theme in case YT is in Dark cookie mode
-		if (!extension.storage.data['theme'] && document.documentElement.hasAttribute('dark')) {
-			extension.storage.data['theme'] = 'dark';
+		if (!extension.storage.data.theme && document.documentElement.hasAttribute('dark')) {
+			extension.storage.data.theme = 'dark';
 			chrome.storage.local.set({theme: 'dark'});
-		}
-
-		for (const key in items) {
-			if (htmlAttributes.includes(key)) {
-				document.documentElement.setAttribute('it-' + key.replace(/_/g, '-'), items[key]);
-			}
 		}
 
 		extension.events.trigger('storage-loaded');
@@ -381,8 +353,15 @@ extension.storage.load = function (callback) {
 			storage: items
 		});
 
-		if (callback) {
-			callback(extension.storage.data);
+		extension.ready = true;
+		extension.events.trigger('init');
+
+		for (const key in items) {
+			if (htmlAttributes.includes(key) && !(typeof items[key] === 'undefined' || items[key] === null || items[key] === 'null')) {
+				document.documentElement.setAttribute('it-' + key, items[key]);
+			}
 		}
+
+		if (callback) callback(extension.storage.data);
 	});
 };
