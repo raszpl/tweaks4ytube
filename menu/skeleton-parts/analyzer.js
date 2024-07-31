@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> ANALYZER
---------------------------------------------------------------*/
-
+/*--- ANALYZER -----------------------------------------------*/
 extension.skeleton.main.layers.section.analyzer = {
 	component: 'button',
 	variant: 'analyzer',
@@ -22,10 +19,10 @@ extension.skeleton.main.layers.section.analyzer = {
 					component: 'chart',
 					type: 'bar',
 					labels: function () {
-						var labels = [];
+						const labels = [];
 
-						for (var i = 0; i < 4; i++) {
-							var hour = i * 6;
+						for (let i = 0; i < 4; i++) {
+							let hour = i * 6;
 
 							if (satus.storage.get('use_24_hour_format') === false) {
 								if (hour === 0) {
@@ -49,22 +46,22 @@ extension.skeleton.main.layers.section.analyzer = {
 						return labels;
 					},
 					datasets: function () {
-						var analyzer = satus.storage.get('analyzer'),
+						const analyzer = satus.storage.get('analyzer'),
 							datasets = [],
-							channel_counter = {},
-							max = 3600;
+							channel_counter = {};
+						let max = 3600;
 
 						if (satus.isObject(analyzer)) {
-							var hours = analyzer[ /*new Date().toDateString()*/ 'Sun May 29 2022'];
+							const hours = analyzer[ /*new Date().toDateString()*/ 'Sun May 29 2022'];
 
 							if (satus.isObject(hours)) {
-								for (var hour in hours) {
-									var channels = hours[hour],
-										max2 = 0;
+								for (const hour in hours) {
+									const channels = hours[hour];
+									let max2 = 0;
 
 									if (satus.isObject(channels)) {
-										for (var name in channels) {
-											var seconds = channels[name];
+										for (const name in channels) {
+											const seconds = channels[name];
 
 											if (satus.isNumber(seconds)) {
 												if (!satus.isObject(channel_counter[name])) {
@@ -73,7 +70,7 @@ extension.skeleton.main.layers.section.analyzer = {
 														data: []
 													};
 
-													for (var i = 0; i < 24; i++) {
+													for (let i = 0; i < 24; i++) {
 														channel_counter[name].data.push(0);
 													}
 												}
@@ -85,19 +82,17 @@ extension.skeleton.main.layers.section.analyzer = {
 										}
 									}
 
-									if (max2 > max) {
-										max = max2;
-									}
+									if (max2 > max) max = max2;
 								}
 							}
 						}
 
-						for (var i = 0, k = Object.keys(channel_counter), l = k.length; i < l; i++) {
-							var channel = channel_counter[k[i]];
+						for (let i = 0, k = Object.keys(channel_counter), l = k.length; i < l; i++) {
+							const channel = channel_counter[k[i]];
 
 							channel.color = satus.color.hslToRgb([360 / l * i, 100, 40]);
 
-							for (var j = 0, m = channel.data.length; j < m; j++) {
+							for (let j = 0, m = channel.data.length; j < m; j++) {
 								channel.data[j] = channel.data[j] / (max / 100);
 
 								if (channel.data[j] < 1) {
@@ -118,21 +113,21 @@ extension.skeleton.main.layers.section.analyzer = {
 				title: 'mostViewedChannels',
 				on: {
 					render: function () {
-						var analyzer = satus.storage.get('analyzer'),
+						const analyzer = satus.storage.get('analyzer'),
 							array = [],
 							object = {};
 
 						if (satus.isObject(analyzer)) {
-							for (var key in analyzer) {
-								var date = analyzer[key];
+							for (const key in analyzer) {
+								const date = analyzer[key];
 
 								if (satus.isObject(date)) {
-									for (var hour in date) {
-										var channels = date[hour];
+									for (const hour in date) {
+										const channels = date[hour];
 
 										if (satus.isObject(channels)) {
-											for (var name in channels) {
-												var data = channels[name];
+											for (const name in channels) {
+												const data = channels[name];
 
 												if (satus.isNumber(data)) {
 													if (!satus.isObject(object[name])) {
@@ -148,8 +143,8 @@ extension.skeleton.main.layers.section.analyzer = {
 							}
 						}
 
-						for (var key in object) {
-							var hours = 0,
+						for (const key in object) {
+							let hours = 0,
 								minutes = 0,
 								seconds = object[key];
 

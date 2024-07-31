@@ -29,6 +29,7 @@ extension.skeleton.main.layers.section.blocklist = {
 								component: 'section',
 								variant: 'card',
 								add_channel: {
+									// FIXME finish this
 									component: 'button',
 									text: 'Add channel to Blocklist',
 									var1: 'Channel URL',
@@ -39,8 +40,8 @@ extension.skeleton.main.layers.section.blocklist = {
 											component: 'modal',
 											variant: 'confirm',
 											content: function () {return '11234'}
-											}
 										}
+									}
 								}
 							},
 							channels: {

@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> PLAYER
---------------------------------------------------------------*/
-
+/*--- PLAYER -------------------------------------------------*/
 extension.skeleton.main.layers.section.player = {
 	component: 'button',
 	class: 'satus-button--player',
@@ -32,11 +29,7 @@ extension.skeleton.main.layers.section.player = {
 		text: 'player'
 	}
 };
-
-/*--------------------------------------------------------------
-# SECTION
---------------------------------------------------------------*/
-
+/*--- SECTION ------------------------------------------------*/
 extension.skeleton.main.layers.section.player.on.click = {
 	section_1: {
 		component: 'section',
@@ -98,24 +91,14 @@ extension.skeleton.main.layers.section.player.on.click = {
 							variant: 'confirm',
 							content: 'PipRequiresUserInteraction',
 							ok: function () {
-								// manually turn switch ON
 								where.flip(true);
 								if (satus.storage.get('player_autopause_when_switching_tabs')) {
-									//document.getElementById('only_one_player_instance_playing')?.flip(true);
-									//document.getElementById('player_autopause_when_switching_tabs')?.flip(false);
-									
-									
 									satus.storage.set('only_one_player_instance_playing', true);
 									document.getElementById('only_one_player_instance_playing')?.render();
-									
 								}
-							},
-							cancel: function () {
-								// nothing happens when we cancel
 							}
 						}, extension.skeleton.rendered);
 					} else {
-						// manually turn switch OFF
 						this.flip(false);
 					}
 				}
@@ -837,8 +820,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 												component: 'modal',
 												variant: 'confirm',
 												content: 'block_Codec_Alert_h264',
-												ok: function () { where.flip(true); },
-												cancel: function () {}
+												ok: function () { where.flip(true); }
 											}, extension.skeleton.rendered);
 										} else this.flip(true);
 									} else this.flip(false);

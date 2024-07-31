@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> PLAYLIST
---------------------------------------------------------------*/
-//extension.skeleton.header.sectionEnd.search.on.click = {
+/*--- SEARCH -------------------------------------------------*/
 extension.skeleton.header.sectionSearch = {
 	component: 'text-field',
 	variant: 'search',
@@ -36,7 +33,7 @@ extension.skeleton.header.sectionSearch = {
 				this.hidden = true;
 			}
 		},
-		input: function (event) {
+		input: function () {
 			let self = this,
 				value = this.value.trim();
 

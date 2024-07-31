@@ -370,7 +370,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 									window.open(chrome.runtime.getURL('menu/index.html?action=import-settings'), '_blank');
 									return;
 								}
-								
+
 								const input = document.createElement('input');
 
 								input.type = 'file';
@@ -481,47 +481,22 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				delete_youtube_cookies: {
 					component: 'button',
 					text: 'deleteYoutubeCookies',
-
 					on: {
 						click: {
 							component: 'modal',
-
-							message: {
-								component: 'span',
-								text: 'thisWillRemoveAllYouTubeCookies'
-							},
-							section: {
-								component: 'section',
-								variant: 'actions',
-
-								cancel: {
-									component: 'button',
-									text: 'cancel',
-									on: {
-										click: function () {
-											this.parentNode.parentNode.parentNode.close();
-										}
+							variant: 'confirm',
+							content: 'thisWillRemoveAllYouTubeCookies',
+							ok: function () {
+								chrome.tabs.query({
+									url: 'https://www.youtube.com/*',
+									discarded: false
+								}).then(tabs => {
+									for (let i = 0, l = tabs.length; i < l; i++) {
+										chrome.tabs.sendMessage(tabs[i].id, {
+											action: 'delete-youtube-cookies'
+										});
 									}
-								},
-								accept: {
-									component: 'button',
-									text: 'accept',
-									on: {
-										click: function () {
-											chrome.tabs.query({}, function (tabs) {
-												for (var i = 0, l = tabs.length; i < l; i++) {
-													if (tabs[i].hasOwnProperty('url')) {
-														chrome.tabs.sendMessage(tabs[i].id, {
-															action: 'delete-youtube-cookies'
-														});
-													}
-												}
-											});
-
-											this.parentNode.parentNode.parentNode.close();
-										}
-									}
-								}
+								});
 							}
 						}
 					}
