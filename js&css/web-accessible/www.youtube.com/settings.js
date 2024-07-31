@@ -141,7 +141,7 @@ ImprovedTube.youtubeIcon = function () {
 ImprovedTube.deleteYoutubeCookies = function () {
 	const cookies = document.cookie.split(';');
 
-	for (const i = 0, l = cookies.length; i < l; i++) {
+	for (let i = 0, l = cookies.length; i < l; i++) {
 		const cookie = cookies[i],
 			eqPos = cookie.indexOf('='),
 			name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;

@@ -210,6 +210,7 @@ ImprovedTube.shortcutSeekForward = function () {
 	this.elements.player?.seekBy(10);
 };
 /*--- SHORTCUT SEEK NEXT CHAPTER ---------------------------------------------*/
+// FIXME
 ImprovedTube.shortcutSeekNextChapter = function (previous) {
 	const player = this.elements.player,
 		progress_bar = player.querySelector('.ytp-progress-bar'),
@@ -223,11 +224,10 @@ ImprovedTube.shortcutSeekNextChapter = function (previous) {
 	}
 
 	const current_width = player.getCurrentTime() / (duration / 100) * (progress_bar.offsetWidth / 100);
-	let left = 0,
-		seek = 0;
-	
+	let left = 0;
+
 	if (previous) {
-		for (const i = chapters.length - 1; i > 0; i--) {
+		for (let i = chapters.length - 1; i > 0; i--) {
 			if (current_width > chapters[i].offsetLeft) {
 				if (i > 0) {
 					left = chapters[i - 1].offsetLeft;
@@ -237,7 +237,7 @@ ImprovedTube.shortcutSeekNextChapter = function (previous) {
 			}
 		}
 	} else {
-		for (const i = 1; i < chapters.length; i++) {
+		for (let i = 1; i < chapters.length; i++) {
 			left = chapters[i].offsetLeft;
 
 			if (current_width < left) {
@@ -246,7 +246,7 @@ ImprovedTube.shortcutSeekNextChapter = function (previous) {
 			}
 		}
 	}
-    document.querySelector('video').currentTime = left;
+	document.querySelector('video').currentTime = left;
 //	player.seekTo(left);
 };
 /*

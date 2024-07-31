@@ -80,7 +80,6 @@ rename extension/www.youtube.com/styles.css
 		document.querySelector('#it-reverse-playlist-button')?.remove();
 	}
 };
-
 /*--- REPEAT -----------------------------------------------------------------*/
 ImprovedTube.playlistRepeat = function () {
 	if ( ImprovedTube.storage.playlist_repeat === true ) {
@@ -92,9 +91,7 @@ ImprovedTube.playlistRepeat = function () {
 	  && button.firstElementChild?.firstElementChild?.attributes[2]?.textContent !== 'Loop video'
 	  && button.querySelector("#tooltip")?.textContent !== 'Turn off loop'
 	  && button.firstElementChild?.firstElementChild?.attributes[2]?.textContent !== 'Turn off loop'
-			) {
-				button.click();
-			}
+			) button.click();
 		}, 10000);
 	}
 };
@@ -123,7 +120,7 @@ ImprovedTube.playlistShuffle = function (node) {
 		}
 		*/
 
-		setTimeout(function (){
+		setTimeout(function () {
 			let button = ImprovedTube.elements.playlist.shuffle_button,
 				option = ImprovedTube.storage.playlist_shuffle;
 			// FIXME this looks stupid
@@ -192,8 +189,8 @@ ImprovedTube.playlistPopup = function () {
 				let height = ImprovedTube.elements.player.offsetHeight * 0.7;
 				if (!ImprovedTube.elements.player) {
 					shorts = /short/.test(this.parentElement.href);
-					if (width / height  < 1) { vertical = true } else { vertical = false }
-					if (!vertical &&  shorts) width = height * 0.6;
+					if (width / height < 1) { vertical = true } else { vertical = false }
+					if (!vertical && shorts) width = height * 0.6;
 					if (vertical && !shorts) height = width * 0.6;
 				}
 				"use strict";
