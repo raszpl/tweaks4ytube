@@ -165,7 +165,7 @@ document.addEventListener('it-message-from-web-accessible', function (message) {
 					if (!extension.storage.data.blocklist.channels
 						|| typeof extension.storage.data.blocklist.channels !== 'object') extension.storage.data.blocklist.channels = {};
 
-					if (message.added) {
+					if (message.add) {
 						extension.storage.data.blocklist.channels[message.id] = {
 							title: message.title,
 							preview: message.preview,
