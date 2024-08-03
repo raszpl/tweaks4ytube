@@ -379,7 +379,9 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 									var file_reader = new FileReader();
 
 									file_reader.onload = function () {
-										var data = JSON.parse(this.result);
+										// FIXME
+										//satus.storage.clear();
+										const data = JSON.parse(this.result);
 										for (const key in data) {
 											satus.storage.set(key, data[key]);
 										}
