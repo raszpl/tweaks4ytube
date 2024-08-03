@@ -40,6 +40,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			}
 			break
 
+		// FIXME
 		case 'YTD-TOGGLE-BUTTON-RENDERER':
 			if (node.querySelector('div#tooltip')?.innerText.includes('Shuffle playlist')) {
 				//button.click()
@@ -47,6 +48,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			}
 			break
 
+		// FIXME
 		case 'YTD-PLAYLIST-LOOP-BUTTON-RENDERER':
 			if (node.querySelector('div#tooltip')?.innerText.includes('Loop playlist')) {
 				//button aria-label="Loop playlist"
@@ -108,6 +110,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			ImprovedTube.buttonsUnderPlayer();
 			break
 
+		// FIXME
 		case 'YTD-MENU-RENDERER':
 			if (!node.classList.contains('ytd-playlist-panel-renderer')) return;
 			/* FALLTHROUGH */
@@ -128,6 +131,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			ImprovedTube.elements.ytd_player = node;
 			break
 
+		// FIXME
 		case 'YTD-WATCH-FLEXY':
 			ImprovedTube.elements.ytd_watch = node;
 			if (ImprovedTube.isset(ImprovedTube.storage.player_size)
@@ -179,6 +183,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			ImprovedTube.livechat();
 			break
 
+		// FIXME
 		case 'movie_player':
 			if (ImprovedTube.elements.player) break;
 			ImprovedTube.elements.player = node;
@@ -230,6 +235,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			});
 			break
 
+		// FIXME
 		case 'panels':
 			if (document.documentElement.dataset.pageType === 'video') {
 				setTimeout(function () {
@@ -244,8 +250,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			break
 	}
 /*	switch(node.className) {
-		case 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap':
-			if (node.parentNode.parentNode.parentNode.parentNode.id == 'description-inline-expander') ImprovedTube.description(node.parentNode.parentNode.parentNode.parentNode);
+		case '':
 			break
 
 		default:
@@ -670,8 +675,8 @@ ImprovedTube.showStatus = function (value) {
 	this.elements.player.appendChild(this.elements.status);
 };
 
-ImprovedTube.videoId = function (url = document.URL) {
-	return url.match(ImprovedTube.regex.video_id)[1] || url.searchParams.get('v') || movie_player.getVideoData().video_id
+ImprovedTube.videoId = function (url = location.search) {
+	return url.match(ImprovedTube.regex.video_id)?.[1];
 };
 
 ImprovedTube.videoTitle = function () {
