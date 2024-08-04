@@ -58,12 +58,30 @@ ImprovedTube.forcedTheaterMode = function () {
 	}
 };
 /*--- HD THUMBNAIL -----------------------------------------------------------*/
-ImprovedTube.playerHdThumbnail = function () {
-	if (this.storage.player_hd_thumbnail === true) {
-		var thumbnail = ImprovedTube.elements.player_thumbnail;
+ImprovedTube.playerHdThumbnail = function (node = document.querySelector('#movie_player .ytp-cued-thumbnail-overlay-image')) {
+	if (!node) return;
 
-		if (thumbnail.style.backgroundImage.indexOf("/hqdefault.jpg") !== -1) {
-			thumbnail.style.backgroundImage = thumbnail.style.backgroundImage.replace("/hqdefault.jpg", "/maxresdefault.jpg");
+	function observe () {
+		if (node.style.backgroundImage.includes("/hqdefault.jpg")) {
+			node.style.backgroundImage = node.style.backgroundImage.replace("/hqdefault.jpg", "/maxresdefault.jpg");
+		}
+	};
+
+	if (this.storage.player_hd_thumbnail) {
+		if (!ImprovedTube.playerHdThumbnail.node) {
+			// call once to change whats there now
+			observe();
+			// monitor description
+			ImprovedTube.playerHdThumbnail.node = node;
+			ImprovedTube.playerHdThumbnail.observer = new MutationObserver(observe);
+			ImprovedTube.playerHdThumbnail.observer.observe(node, {
+				attributeFilter: ['style'],
+			});
+		}
+	} else {
+		if (ImprovedTube.playerHdThumbnail.node) {
+			ImprovedTube.playerHdThumbnail.observer.disconnect();
+			delete ImprovedTube.playerHdThumbnail.node;
 		}
 	}
 };
@@ -429,7 +447,6 @@ ImprovedTube.description = function (description = document.querySelector('#desc
 			hidden.parentNode.parentNode.querySelector('#expand').hidden = true;
 		}
 	};
-	ImprovedTube.description.observer = new MutationObserver(observe);
 
 	if (this.storage.description === 'expanded') {
 		const mutation = description?.querySelector('#attributed-snippet-text');
@@ -444,6 +461,7 @@ ImprovedTube.description = function (description = document.querySelector('#desc
 			observe();
 			// monitor description
 			ImprovedTube.description.node = mutation;
+			ImprovedTube.description.observer = new MutationObserver(observe);
 			ImprovedTube.description.observer.observe(mutation, {
 				childList: true,
 				subtree: true,
@@ -477,7 +495,6 @@ ImprovedTube.dayOfWeek = function (node = document.querySelector('#description-i
 		}
 		element.textContent = days[newDate] + ' ';
 	};
-	ImprovedTube.dayOfWeek.observer = new MutationObserver(observe);
 
 	if (this.storage.day_of_week) {
 		const date = node?.querySelector("#info span:nth-child(3)");
@@ -492,6 +509,7 @@ ImprovedTube.dayOfWeek = function (node = document.querySelector('#description-i
 			observe();
 			// monitor Data element
 			ImprovedTube.dayOfWeek.node = date;
+			ImprovedTube.dayOfWeek.observer = new MutationObserver(observe);
 			ImprovedTube.dayOfWeek.observer.observe(date, {
 				childList: true,
 				subtree: true,
@@ -502,8 +520,8 @@ ImprovedTube.dayOfWeek = function (node = document.querySelector('#description-i
 		if (ImprovedTube.dayOfWeek.node) {
 			ImprovedTube.dayOfWeek.observer.disconnect();
 			delete ImprovedTube.dayOfWeek.node;
+			node?.querySelector(".ytd-day-of-week")?.remove();
 		}
-		node?.querySelector(".ytd-day-of-week")?.remove();
 	}
 };
 /*--- HOW LONG AGO THE VIDEO WAS UPLOADED ------------------------------------*/
