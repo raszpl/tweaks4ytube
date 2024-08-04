@@ -29,7 +29,7 @@ ImprovedTube.descriptionSidebar = function () {
 /*--- PLAYER SIZE ------------------------------------------------------------*/
 ImprovedTube.playerSize = function () {
 	if (this.storage.player_size === "custom") {
-		var width = Number(this.storage.custom_player_size_width) || 1280,
+		const width = Number(this.storage.custom_player_size_width) || 1280,
 			height = Number(this.storage.custom_player_size_height) || 720,
 			style = this.elements.player_size_style || document.createElement("style");
 
@@ -46,15 +46,17 @@ ImprovedTube.playerSize = function () {
 };
 /*--- FORCED THEATER MODE ----------------------------------------------------*/
 ImprovedTube.forcedTheaterMode = function () {
-	if (ImprovedTube.storage.forced_theater_mode === true && ImprovedTube.elements.ytd_watch && ImprovedTube.elements.player) {
-		var button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
-		if (button && ImprovedTube.elements.ytd_watch.theater === false) {
-			document.cookie = "wide=1;domain=.youtube.com";
-			//     ImprovedTube.elements.ytd_watch.theater = true;
-			setTimeout(function () {
-				button.click();
-			}, 100);
-		}
+	if (!ImprovedTube.elements.ytd_watch || !ImprovedTube.elements.player) return;
+	const button = ImprovedTube.elements.player.querySelector("button.ytp-size-button");
+	if (!button) return;
+
+	if (ImprovedTube.storage.forced_theater_mode && ImprovedTube.elements.ytd_watch.theater === false) {
+		document.cookie = "wide=1;domain=.youtube.com"; // session cookie
+		ImprovedTube.elements.ytd_watch.theater = true;
+		setTimeout(function () { button.click(); }, 100);
+	} else if (ImprovedTube.elements.ytd_watch.theater) {
+		delete ImprovedTube.elements.ytd_watch.theater;
+		setTimeout(function () { button.click(); }, 100);
 	}
 };
 /*--- HD THUMBNAIL -----------------------------------------------------------*/
@@ -134,10 +136,9 @@ ImprovedTube.showProgressBar = function () {
  VIDEO REMAINING DURATION
 ------------------------------------------------------------------------------*/
 ImprovedTube.formatSecond = function (rTime) {
-	var time = new Date(null);
-	if (this.storage.duration_with_speed === true) {
-		var playbackRate = this.elements.video.playbackRate;
-		time.setSeconds(rTime / playbackRate);
+	const time = new Date(null);
+	if (this.storage.duration_with_speed) {
+		time.setSeconds(rTime / this.elements.video.playbackRate);
 	} else {
 		time.setSeconds(rTime);
 	}
@@ -150,11 +151,11 @@ ImprovedTube.formatSecond = function (rTime) {
 };
 
 ImprovedTube.playerRemainingDuration = function () {
-	var player = ImprovedTube.elements.player;
-	var rTime = ImprovedTube.formatSecond((player.getDuration() - player.getCurrentTime()).toFixed(0));
-	var element = document.querySelector(".ytp-time-remaining-duration");
+	const player = ImprovedTube.elements.player,
+		rTime = ImprovedTube.formatSecond((player.getDuration() - player.getCurrentTime()).toFixed(0)),
+		element = document.querySelector(".ytp-time-remaining-duration");
 	if (!element) {
-		var label = document.createElement("span");
+		const label = document.createElement("span");
 		label.textContent = " (-" + rTime + ")";
 		label.className = "ytp-time-remaining-duration";
 		document.querySelector(".ytp-time-display").appendChild(label);
@@ -163,8 +164,9 @@ ImprovedTube.playerRemainingDuration = function () {
 	}
 };
 /*--- COMMENTS SIDEBAR SIMPLE ------------------------------------------------*/
+// FIXME never called, only when directly changing option
 ImprovedTube.commentsSidebarSimple = function () {
-	if (ImprovedTube.storage.comments_sidebar_simple === true) {
+	if (ImprovedTube.storage.comments_sidebar_simple) {
 		if (window.matchMedia("(min-width: 1599px)").matches) {
 			document.querySelector("#primary").insertAdjacentElement('afterend', document.querySelector("#comments"));
 		}
@@ -175,11 +177,14 @@ ImprovedTube.commentsSidebarSimple = function () {
 			}
 			);
 		}
+	} else if (!document.querySelector("#below #comments")) {
+		document.querySelector("#below").appendChild(document.querySelector("#comments"));
+		document.querySelector("#secondary").appendChild(document.querySelector("#related"));
 	}
 };
 /*--- COMMENTS SIDEBAR -------------------------------------------------------*/
 ImprovedTube.commentsSidebar = function () {
-	if (ImprovedTube.storage.comments_sidebar === true) {
+	if (ImprovedTube.storage.comments_sidebar) {
 		const video = document.querySelector("#player .ytp-chrome-bottom") || document.querySelector("#container .ytp-chrome-bottom");
 		let hasApplied = 0;
 		if (/watch\?/.test(location.href)) {
@@ -261,7 +266,7 @@ ImprovedTube.commentsSidebar = function () {
 				if (isDarkMode) [color, colorHover] = ["#616161", "#909090"];
 				else [color, colorHover] = ["#aaaaaa", "#717171"];
 				const style = document.createElement("style");
-				if (ImprovedTube.storage.comments_sidebar_scrollbars === true) {
+				if (ImprovedTube.storage.comments_sidebar_scrollbars) {
 					const cssRule = `
             #primary, #secondary {
                 overflow: overlay !important;
@@ -320,17 +325,18 @@ ImprovedTube.commentsSidebar = function () {
 ------------------------------------------------------------------------------*/
 /*--- TRANSCRIPT ---------------------------------------------*/
 ImprovedTube.transcript = function (el) {
-	if (ImprovedTube.storage.transcript === true) {
+	if (ImprovedTube.storage.transcript) {
 		el.querySelector('*[target-id*=transcript]')?.removeAttribute('visibility');
 	}
 };
 /*--- CHAPTERS -----------------------------------------------*/
 ImprovedTube.chapters = function (el) {
-	if (ImprovedTube.storage.chapters === true) {
+	if (ImprovedTube.storage.chapters) {
 		el.querySelector('*[target-id*=chapters]')?.removeAttribute('visibility');
 	}
 };
 /*--- LIVECHAT ---------------------------------------------------------------*/
+// FIXME
 ImprovedTube.livechat = function () {
 	if (this.storage.livechat === "collapsed") {
 		if (typeof isCollapsed === 'undefined') {
@@ -365,9 +371,8 @@ ImprovedTube.buttonsUnderPlayer = function () {
 			const button = document.createElement('button'),
 				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
 				path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-	                let transparentOrOn = .5; if (this.storage.player_always_repeat === true ) {
-				transparentOrOn = 1;
-			}
+			let transparentOrOn = .5;
+			if (this.storage.player_always_repeat) transparentOrOn = 1;
 			button.className = 'improvedtube-player-button';
 			button.id = 'it-below-player-loop';
 			button.dataset.tooltip = 'Loop';
@@ -380,8 +385,8 @@ ImprovedTube.buttonsUnderPlayer = function () {
 					svg = this.children[0];
 
 				function matchLoopState (opacity) {
-	    svg.style.opacity = opacity;
-					if (ImprovedTube.storage.player_repeat_button === true) {
+					svg.style.opacity = opacity;
+					if (ImprovedTube.storage.player_repeat_button ) {
                   	 const otherButton = document.querySelector('#it-repeat-button');
                    	 otherButton.style.opacity = opacity;
          	        }
