@@ -183,7 +183,6 @@ ImprovedTube.ytElementsHandler = function (node) {
 			ImprovedTube.livechat();
 			break
 
-		// FIXME
 		case 'movie_player':
 			if (ImprovedTube.elements.player) break;
 			ImprovedTube.elements.player = node;
@@ -193,30 +192,7 @@ ImprovedTube.ytElementsHandler = function (node) {
 			ImprovedTube.elements.player_subtitles_button = node.querySelector('.ytp-subtitles-button');
 			ImprovedTube.playerSize();
 			ImprovedTube.playerHdThumbnail(node.querySelector('.ytp-cued-thumbnail-overlay-image'));
-
-			if (typeof ImprovedTube.storage.ads !== 'undefined' && ImprovedTube.storage.ads !== "all_videos") {
-				new MutationObserver(function (mutationList) {
-					for (var i = 0, l = mutationList.length; i < l; i++) {
-						var mutation = mutationList[i];
-
-						if (mutation.type === 'childList') {
-							for (var j = 0, k = mutation.addedNodes.length; j < k; j++) {
-								var node = mutation.addedNodes[j];
-
-								if (node instanceof Element
-									&& node.querySelector('ytp-ad-player-overlay, .ytp-ad-text, .ytp-ad-overlay-close-container, ytd-button-renderer#dismiss-button, *[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button.ytp-button, .ytp-ad-skip-button-modern.ytp-button') !== null) {
-									ImprovedTube.playerAds(node);
-								}
-							}
-						}
-						if (mutation.type === 'attributes' && mutation.attributeName === 'id' && mutation.target.querySelector('*[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button-modern.ytp-button',)) {
-							ImprovedTube.playerAds(node);
-						}
-					}
-				}).observe(node, {childList: true, // attributes: true,
-								  subtree: true
-								 });
-			}
+			ImprovedTube.playerAds(node);
 			break
 
 		// FIXME
