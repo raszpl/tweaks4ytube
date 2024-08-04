@@ -241,9 +241,9 @@ ImprovedTube.pageOnFocus = function () {
 
 ImprovedTube.videoPageUpdate = function () {
 	if (document.documentElement.dataset.pageType === 'video') {
-		var video_id = this.getParam(new URL(location.href).search.substr(1), 'v');
+		const video_id = this.getParam(new URL(location.href).search.substr(1), 'v');
 
-		if (this.storage.track_watched_videos === true && video_id) {
+		if (this.storage.track_watched_videos && video_id) {
 			ImprovedTube.messageSend({action: 'watched',
 				type: 'add',
 				id: video_id,
@@ -258,7 +258,7 @@ ImprovedTube.videoPageUpdate = function () {
 		ImprovedTube.upNextAutoplay();
 		ImprovedTube.playerAutofullscreen();
 		ImprovedTube.playerSize();
-		if (this.storage.player_always_repeat === true) ImprovedTube.playerRepeat();
+		if (this.storage.player_always_repeat) ImprovedTube.playerRepeat();
 		ImprovedTube.playerScreenshotButton();
 		ImprovedTube.playerRepeatButton();
 		ImprovedTube.playerRotateButton();
@@ -327,7 +327,7 @@ ImprovedTube.initPlayer = function () {
 		ImprovedTube.playerQuality();
 		ImprovedTube.batteryFeatures();
 		ImprovedTube.playerForcedVolume();
-		if (this.storage.player_always_repeat === true) ImprovedTube.playerRepeat();
+		if (this.storage.player_always_repeat) ImprovedTube.playerRepeat();
 		ImprovedTube.playerScreenshotButton();
 		ImprovedTube.playerRepeatButton();
 		ImprovedTube.playerRotateButton();
@@ -362,8 +362,8 @@ ImprovedTube.playerOnTimeUpdate = function () {
 				ImprovedTube.playerQuality();
 			}
 
-			if (ImprovedTube.storage.always_show_progress_bar === true) ImprovedTube.showProgressBar();
-			if (ImprovedTube.storage.player_remaining_duration === true) ImprovedTube.playerRemainingDuration();
+			if (ImprovedTube.storage.always_show_progress_bar) ImprovedTube.showProgressBar();
+			if (ImprovedTube.storage.player_remaining_duration) ImprovedTube.playerRemainingDuration();
 			ImprovedTube.played_time += .5;
 		}, 500);
 	}
@@ -434,10 +434,10 @@ ImprovedTube.hasParams = function (names) {
 };
 
 ImprovedTube.getParam = function (query, name) {
-	var params = query.split('&'),
-		param = false;
+	const params = query.split('&');
+	let param = false;
 
-	for (var i = 0; i < params.length; i++) {
+	for (let i = 0; i < params.length; i++) {
 		params[i] = params[i].split('=');
 
 		if (params[i][0] == name) {
@@ -453,10 +453,10 @@ ImprovedTube.getParam = function (query, name) {
 };
 
 ImprovedTube.getParams = function (query) {
-	var params = query.split('&'),
+	const params = query.split('&'),
 		result = {};
 
-	for (var i = 0, l = params.length; i < l; i++) {
+	for (let i = 0, l = params.length; i < l; i++) {
 		params[i] = params[i].split('=');
 
 		result[params[i][0]] = params[i][1];
@@ -466,26 +466,23 @@ ImprovedTube.getParams = function (query) {
 };
 
 ImprovedTube.getCookieValueByName = function (name) {
-	var match = document.cookie.match(new RegExp('([; ]' + name + '|^' + name + ')([^\\s;]*)', 'g'));
+	const match = document.cookie.match(new RegExp('([; ]' + name + '|^' + name + ')([^\\s;]*)', 'g'))?.[0];
 
 	if (match) {
-		var cookie = match[0];
-
-		return cookie.replace(name + '=', '').replace(' ', '');
+		return match.replace(name + '=', '').replace(' ', '');
 	} else return '';
 };
 
 ImprovedTube.getPrefCookieValueByName = function (name) {
-	let prefs = this.getParams(this.getCookieValueByName('PREF'));
-	return prefs[name];
+	return this.getParams(this.getCookieValueByName('PREF'))[name];
 };
 
 // set PREF cookie name=value or delete name if value == null
 ImprovedTube.setPrefCookieValueByName = function (name, value) {
-	let originalPref = this.getCookieValueByName('PREF');
-	let prefs = this.getParams(originalPref);
-	let newPrefs = '';
-	let ampersant = '';
+	const originalPref = this.getCookieValueByName('PREF'),
+		prefs = this.getParams(originalPref);
+	let newPrefs = '',
+		ampersant = '';
 
 	if (name == 'f6' && prefs[name] & 1) {
 		// f6 holds other settings, possible values 80000 80001 400 401 1 none
@@ -508,7 +505,7 @@ ImprovedTube.setPrefCookieValueByName = function (name, value) {
 };
 
 ImprovedTube.setCookie = function (name, value) {
-	var date = new Date();
+	const date = new Date();
 
 	date.setTime(date.getTime() + 3.154e+10);
 
@@ -521,12 +518,16 @@ ImprovedTube.createIconButton = function (options) {
 		path = document.createElementNS('http://www.w3.org/2000/svg', 'path'),
 		type = this.button_icons[options.type];
 
-	for (const attr of type.svg) svg.setAttribute(attr[0], attr[1]);
+	if (type.svg) {
+		for (const attr of type.svg) svg.setAttribute(attr[0], attr[1]);
+	} else svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
 	if (type.svgStyle) for (const style of type.svgStyle) svg.style[style[0]] = style[1];
 	for (const attr of type.path) path.setAttribute(attr[0], attr[1]);
 	if (type.style) for (const style of type.style) button.style[style[0]] = style[1];
+	if (type.dataset) for (const data of type.dataset) button.dataset[data[0]] = data[1];
 
 	svg.appendChild(path);
+	if (options.opacity) svg.style.opacity = options.opacity;
 	button.appendChild(svg);
 
 	if (options.dataset) for (const data of options.dataset) button.dataset[data[0]] = data[1];
@@ -602,7 +603,7 @@ ImprovedTube.createPlayerButton = function (options) {
 };
 
 ImprovedTube.empty = function (element) {
-	for (var i = element.childNodes.length - 1; i > -1; i--) {
+	for (let i = element.childNodes.length - 1; i > -1; i--) {
 		element.childNodes[i].remove();
 	}
 };
