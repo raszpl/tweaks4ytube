@@ -35,32 +35,35 @@ const ImprovedTube = {
 	},
 	button_icons: {
 		blocklist: {
-			svg: [['viewBox', '0 0 24 24']],
 			path: [['d', 'M12 2a10 10 0 100 20 10 10 0 000-20zm0 18A8 8 0 015.69 7.1L16.9 18.31A7.9 7.9 0 0112 20zm6.31-3.1L7.1 5.69A8 8 0 0118.31 16.9z']]
 		},
 		playAll: {
-			svg: [['viewBox', '0 0 24 24']],
 			path: [['d', 'M6,4l12,8L6,20V4z']]
 		},
 		playlistPopup: {
-			svg: [['viewBox', '0 0 24 24']],
 			svgStyle: [['width', '24px'], ['height', '24px'], ['pointerEvents', 'none'], ['fill', 'currentColor']],
-			path: [['d', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z']],
-			style: [['opacity', .8]]
+			path: [['d', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z']]
 		},
 		playerPopup: {
-			svg: [['viewBox', '0 0 24 24']],
 			path: [['d', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z']],
 			//path: ImprovedTube.button_icons.playlistPopup.path,
-			style: [['opacity', .8]]
 		},
 		playlistReverse: {
-			svg: [['viewBox', '0 0 24 24']],
-			path: [['d', 'M9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z']],
-			style: [['opacity', .8]]
+			path: [['d', 'M9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z']]
+		},
+		belowPlayerLoop: {
+			path: [['d', 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z']],
+			dataset: [['tooltip', 'Loop']]
+		},
+		belowPlayerPip: {
+			path: [['d', 'M19 7h-8v6h8V7zm2-4H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14z']],
+			dataset: [['tooltip', 'PiP']]
+		},
+		belowPlayerScreenshot: {
+			path: [['d', 'M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z']],
+			dataset: [['tooltip', 'Screenshot']]
 		},
 		playerCinemaMode: {
-			svg: [['viewBox', '0 0 24 24']],
 			path: [['d', 'm 2.1852 2.2 h 3.7188 h 5.2974 h 5.184 h 3.5478 c 0.6012 0 1.1484 0.2737 1.5444 0.7113 c 0.396 0.4396 0.6408 1.047 0.6408 1.7143 v 1.4246 v 11.4386 v 1.4166 c 0 0.6673 -0.2466 1.2747 -0.6408 1.7143 c -0.396 0.4396 -0.9432 0.7113 -1.5444 0.7113 h -3.456 c -0.0288 0.006 -0.0594 0.008 -0.0918 0.008 c -0.0306 0 -0.0612 -0.002 -0.0918 -0.008 h -5.0004 c -0.0288 0.006 -0.0594 0.008 -0.0918 0.008 c -0.0306 0 -0.0612 -0.002 -0.0918 -0.008 h -5.1138 c -0.0288 0.006 -0.0594 0.008 -0.0918 0.008 c -0.0306 0 -0.0612 -0.002 -0.0918 -0.008 h -3.627 c -0.6012 0 -1.1484 -0.2737 -1.5444 -0.7113 s -0.6408 -1.047 -0.6408 -1.7143 v -1.4166 v -11.4386 v -1.4246 c 0 -0.6673 0.2466 -1.2747 0.6408 -1.7143 c 0.396 -0.4376 0.9432 -0.7113 1.5444 -0.7113 l 0 0 z m 7.749 6.2418 l 3.6954 2.8611 c 0.0576 0.04 0.1098 0.0959 0.1512 0.1618 c 0.1656 0.2657 0.1044 0.6274 -0.1332 0.8112 l -3.681 2.8252 c -0.09 0.0819 -0.207 0.1319 -0.333 0.1319 c -0.2916 0 -0.5274 -0.2617 -0.5274 -0.5854 v -5.7283 h 0.0018 c 0 -0.1159 0.0306 -0.2318 0.0936 -0.3337 c 0.1674 -0.2637 0.495 -0.3277 0.7326 -0.1439 l 0 0 z m 6.9768 9.6324 v 2.0879 h 3.0204 c 0.3114 0 0.594 -0.1419 0.7992 -0.3696 c 0.2052 -0.2278 0.333 -0.5415 0.333 -0.8871 v -0.8312 h -4.1526 l 0 0 z m -1.053 2.0879 v -2.0879 h -4.1292 v 2.0879 h 4.1292 l 0 0 z m -5.1822 0 v -2.0879 h -4.2444 v 2.0879 h 4.2444 l 0 0 z m -5.2992 0 v -2.0879 h -4.3236 v 0.8312 c 0 0.3457 0.1278 0.6593 0.333 0.8871 c 0.2052 0.2278 0.4878 0.3696 0.7992 0.3696 h 3.1914 l 0 0 z m -4.3236 -3.2567 h 4.851 h 5.2974 h 5.184 h 4.68 v -10.2697 h -4.68 h -5.184 h -5.2974 h -4.851 v 10.2697 l 0 0 z m 14.805 -11.4386 v -2.0979 h -4.1292 v 2.0959 h 4.1292 l 0 0.002 z m 1.053 -2.0979 v 2.0959 h 4.1526 v -0.8392 c 0 -0.3457 -0.1278 -0.6593 -0.333 -0.8871 c -0.2052 -0.2278 -0.4878 -0.3696 -0.7992 -0.3696 h -3.0204 l 0 0 z m -6.2352 2.0979 v -2.0979 h -4.2444 v 2.0959 h 4.2444 l 0 0.002 z m -5.2992 0 v -2.0979 h -3.1914 c -0.3114 0 -0.594 0.1419 -0.7992 0.3696 c -0.2052 0.2278 -0.333 0.5415 -0.333 0.8871 v 0.8392 h 4.3236 l 0 0.002 z']],
 			style: [['opacity', .64]]
 		}
@@ -285,38 +288,9 @@ document.addEventListener('it-message-from-extension', function (message) {
 					break
 
 				case 'belowPlayerPip':
-					if (ImprovedTube.storage.below_player_pip === false) {
-						document.querySelector('.improvedtube-player-button[data-tooltip="PiP"]')?.remove();
-					} else if (ImprovedTube.storage.below_player_pip === true) {
-						document.querySelectorAll('.improvedtube-player-button').forEach(e => e.remove());
-						ImprovedTube.buttonsUnderPlayer();
-					}
-					break
-
 				case 'belowPlayerScreenshot':
-					if (ImprovedTube.storage.below_player_screenshot === false) {
-						document.querySelector('.improvedtube-player-button[data-tooltip="Screenshot"]')?.remove();
-					} else if (ImprovedTube.storage.below_player_screenshot === true) {
-						document.querySelectorAll('.improvedtube-player-button').forEach(e => e.remove());
-						ImprovedTube.buttonsUnderPlayer();
-					}
-					break
-
 				case 'belowPlayerLoop':
-					if (ImprovedTube.storage.below_player_loop === false) {
-						document.querySelector('.improvedtube-player-button[data-tooltip="Loop"]')?.remove();
-					} else if (ImprovedTube.storage.below_player_loop === true) {
-						document.querySelectorAll('.improvedtube-player-button').forEach(e => e.remove());
-						ImprovedTube.buttonsUnderPlayer();
-					}
-					break
-
-				case 'playerRemainingDuration':
-					if (ImprovedTube.storage.player_remaining_duration === false) {
-						document.querySelector(".ytp-time-remaining-duration")?.remove();
-					} else if (ImprovedTube.storage.player_remaining_duration === true) {
-						ImprovedTube.playerRemainingDuration();
-					}
+					ImprovedTube.buttonsUnderPlayer();
 					break
 
 				case 'subtitlesFontFamily':
