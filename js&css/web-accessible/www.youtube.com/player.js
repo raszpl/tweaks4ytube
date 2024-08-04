@@ -466,29 +466,70 @@ ImprovedTube.upNextAutoplay = function (event) {
 	}
 };
 /*--- PLAYER ADS -------------------------------------------------------------*/
-ImprovedTube.playerAds = function (parent) {
-	const button = parent.querySelector('.ytp-ad-skip-button-modern.ytp-button,[class*="ytp-ad-skip-button"].ytp-button') || parent,
-		video = this.elements.video;
-	function skipAd () {
-		if (video) video.currentTime = video.duration;
-		if (button) button.click();
-	}
+ImprovedTube.playerAds = function (node) {
+	if (!node) return;
 
-	if (this.storage.ads === 'block_all') {
-		skipAd();
-	} else if (this.storage.ads === 'subscribed_channels') {
-		if (!parent.querySelector('#meta paper-button[subscribed]')) {
-			skipAd();
+	function observe (mutationList) {
+		function skip (parent) {
+			const button = parent.querySelector('.ytp-ad-skip-button-modern.ytp-button,[class*="ytp-ad-skip-button"].ytp-button') || parent,
+				video = this.elements.video;
+			function skipAd () {
+				if (video) video.currentTime = video.duration;
+				if (button) button.click();
+			}
+
+			if (this.storage.ads === 'block_all') {
+				skipAd();
+			} else if (this.storage.ads === 'subscribed_channels') {
+				if (!parent.querySelector('#meta paper-button[subscribed]')) {
+					skipAd();
+				}
+			} else if (this.storage.ads === 'block_music') {
+				if (ImprovedTube.elements.category === 'music') {
+					skipAd();
+				}
+			} else if (this.storage.ads === 'small_creators') {
+				const userDefiniedLimit = this.storage.smallCreatorsCount * parseInt(this.storage.smallCreatorsUnit),
+					subscribersNumber = ImprovedTube.extractSubscriberCount();
+				if (subscribersNumber > userDefiniedLimit) {
+					skipAd();
+				}
+			}
+		};
+
+		for (let i = 0, l = mutationList.length; i < l; i++) {
+			const mutation = mutationList[i];
+
+			if (mutation.type === 'childList') {
+				for (var j = 0, k = mutation.addedNodes.length; j < k; j++) {
+					const node = mutation.addedNodes[j];
+
+					if (node instanceof Element
+						&& node.querySelector('ytp-ad-player-overlay, .ytp-ad-text, .ytp-ad-overlay-close-container, ytd-button-renderer#dismiss-button, *[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button.ytp-button, .ytp-ad-skip-button-modern.ytp-button')) skip(node);
+				}
+			} else if (mutation.target instanceof HTMLElement
+				&& mutation.type === 'attributes'
+				&& mutation.attributeName === 'id'
+				&& mutation.target.querySelector('*[id^="ad-text"], *[id^="skip-button"], .ytp-ad-skip-button-modern.ytp-button')) skip(mutation.target);
 		}
-	} else if (this.storage.ads === 'block_music') {
-		if (ImprovedTube.elements.category === 'music') {
-			skipAd();
+	};
+
+	if (this.storage.ads) {
+		if (!ImprovedTube.playerAds.node) {
+			// call once to change whats there now
+			observe();
+			// monitor description
+			ImprovedTube.playerAds.node = node;
+			ImprovedTube.playerAds.observer = new MutationObserver(observe);
+			ImprovedTube.playerAds.observer.observe(node, {
+				childList: true,
+				subtree: true
+			});
 		}
-	} else if (this.storage.ads === 'small_creators') {
-		const userDefiniedLimit = this.storage.smallCreatorsCount * parseInt(this.storage.smallCreatorsUnit),
-			subscribersNumber = ImprovedTube.extractSubscriberCount();
-		if (subscribersNumber > userDefiniedLimit) {
-			skipAd();
+	} else {
+		if (ImprovedTube.playerAds.node) {
+			ImprovedTube.playerAds.observer.disconnect();
+			delete ImprovedTube.playerAds.node;
 		}
 	}
 };
