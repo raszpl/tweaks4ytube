@@ -190,9 +190,10 @@ ImprovedTube.ytElementsHandler = function (node) {
 			ImprovedTube.elements.video = node.querySelector('video');
 			ImprovedTube.elements.player_left_controls = node.querySelector('.ytp-left-controls');
 			ImprovedTube.elements.player_right_controls = node.querySelector('.ytp-right-controls');
-			ImprovedTube.elements.player_thumbnail = node.querySelector('.ytp-cued-thumbnail-overlay-image');
 			ImprovedTube.elements.player_subtitles_button = node.querySelector('.ytp-subtitles-button');
 			ImprovedTube.playerSize();
+			ImprovedTube.playerHdThumbnail(node.querySelector('.ytp-cued-thumbnail-overlay-image'));
+
 			if (typeof ImprovedTube.storage.ads !== 'undefined' && ImprovedTube.storage.ads !== "all_videos") {
 				new MutationObserver(function (mutationList) {
 					for (var i = 0, l = mutationList.length; i < l; i++) {
@@ -216,23 +217,6 @@ ImprovedTube.ytElementsHandler = function (node) {
 								  subtree: true
 								 });
 			}
-
-			new MutationObserver(function (mutationList) {
-				for (var i = 0, l = mutationList.length; i < l; i++) {
-					var mutation = mutationList[i];
-
-					if (mutation.type === 'attributes') {
-						if (mutation.attributeName === 'style') {
-							ImprovedTube.playerHdThumbnail();
-						}
-					}
-				}
-			}).observe(ImprovedTube.elements.player_thumbnail, {
-				attributes: true,
-				attributeFilter: ['style'],
-				childList: false,
-				subtree: false
-			});
 			break
 
 		// FIXME
