@@ -341,8 +341,9 @@ ImprovedTube.chapters = function (el) {
 // FIXME
 ImprovedTube.livechat = function () {
 	if (this.storage.livechat === "collapsed") {
+		let isCollapsed;
 		if (typeof isCollapsed === 'undefined') {
-			var isCollapsed = false;
+			isCollapsed = false;
 		}
 		if (ImprovedTube.elements.livechat && !isCollapsed) {
 			ImprovedTube.elements.livechat.button.click();
@@ -503,6 +504,7 @@ ImprovedTube.dayOfWeek = function (node = document.querySelector('#description-i
 	}
 };
 /*--- HOW LONG AGO THE VIDEO WAS UPLOADED ------------------------------------*/
+// FIXME this looks like it doesnt work, too lazy to get valid API key and check
 ImprovedTube.howLongAgoTheVideoWasUploaded = function () {
 	if (this.storage.how_long_ago_the_video_was_uploaded
 		&& (this.storage['google_api_key'] || ImprovedTube.defaultApiKey)
@@ -563,6 +565,7 @@ ImprovedTube.howLongAgoTheVideoWasUploaded = function () {
 	}
 };
 /*--- CHANNEL VIDEOS COUNT ---------------------------------------------------*/
+// FIXME this looks like it doesnt work, too lazy to get valid API key and check
 ImprovedTube.channelVideosCount = function () {
 	if (this.storage.channel_videos_count
 		&& (this.storage['google_api_key'] || ImprovedTube.defaultApiKey)
@@ -571,7 +574,7 @@ ImprovedTube.channelVideosCount = function () {
 		const key = this.storage['google_api_key'] || ImprovedTube.defaultApiKey;
 		let id;
 
-		if (this.elements.yt_channel_link.href.indexOf("/channel/") == -1) {
+		if (this.elements.yt_channel_link.indexOf("/channel/") == -1) {
 			const xhr = new XMLHttpRequest();
 			id = this.getParam(location.href, "v");
 			xhr.open("GET", "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=" + key, false);
@@ -581,7 +584,7 @@ ImprovedTube.channelVideosCount = function () {
 				id = response.items[0].snippet.channelId;
 			}
 		} else {
-			id = this.elements.yt_channel_link.href.slice(this.elements.yt_channel_link.href.indexOf("/channel/") + "/channel/".length);
+			id = this.elements.yt_channel_link.slice(this.elements.yt_channel_link.indexOf("/channel/") + "/channel/".length);
 			if (id.indexOf("/") !== -1) {
 				id = id.match(/.+?(?=\/)/)[0];
 			}
