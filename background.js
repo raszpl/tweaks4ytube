@@ -21,9 +21,7 @@ chrome.runtime.onInstalled.addListener(function (installed) {
 		}
 	}
 });
-/*--------------------------------------------------------------
-# LOCALE
---------------------------------------------------------------*/
+/*--- LOCALE -------------------------------------------------*/
 function getLocale (language, callback) {
 	language = language.replace('-', '_');
 	fetch('_locales/' + language.substring(0, 2) + '/messages.json').then(function (response) {
@@ -43,9 +41,7 @@ function getLocale (language, callback) {
 		getLocale('en', callback);
 	});
 };
-/*--------------------------------------------------------------
-# CONTEXT MENU
---------------------------------------------------------------*/
+/*--- CONTEXT MENU -------------------------------------------*/
 function updateContextMenu (language) {
 	if (!language || language === 'default') language = chrome.i18n.getUILanguage();
 	getLocale(language, function (response) {
@@ -84,9 +80,7 @@ chrome.storage.onChanged.addListener(function (changes) {
 	if (changes?.language) updateContextMenu(changes.language.newValue);
 	if (changes?.improvedTubeSidebar) chrome.sidePanel.setPanelBehavior({openPanelOnActionClick: changes.language.newValue});
 });
-/*--------------------------------------------------------------
-# TAB Helper, prune stale connected tabs
---------------------------------------------------------------*/
+/*--- TAB Helper, prune stale connected tabs -----------------*/
 let tabConnected = {},
 	tab = {},
 	tabPrev = {},
@@ -145,9 +139,7 @@ chrome.windows.onFocusChanged.addListener(function (wId) {
 		}
 	});
 });
-/*--------------------------------------------------------------
-# MESSAGE LISTENER
---------------------------------------------------------------*/
+/*--- MESSAGE LISTENER ---------------------------------------*/
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	console.log(message?.action);
 	//console.log(sender);
