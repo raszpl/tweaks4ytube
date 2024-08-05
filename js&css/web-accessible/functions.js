@@ -170,6 +170,10 @@ ImprovedTube.ytElementsHandler = function (node) {
 			break
 	}
 	switch (node.id) {
+		case 'items':
+			if (node.classList.contains('ytd-watch-next-secondary-results-renderer')) ImprovedTube.relatedVideos(node);
+			break
+
 		case 'description-inline-expander':
 			ImprovedTube.description(node);
 			break
