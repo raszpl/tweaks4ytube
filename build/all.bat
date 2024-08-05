@@ -51,7 +51,6 @@ move all.css "..\all.css"
 del all.js
 type "..\js&css\extension\core.js" > all.js
 type "..\js&css\extension\www.youtube.com\general\general.js" >> all.js
-type "..\js&css\extension\www.youtube.com\appearance\sidebar\sidebar.js" >> all.js
 type "..\js&css\extension\www.youtube.com\appearance\comments\comments.js" >> all.js
 type "..\js&css\extension\init.js" >> all.js
 move all.js "..\extension.js"
