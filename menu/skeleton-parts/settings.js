@@ -376,7 +376,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 								input.type = 'file';
 
 								input.addEventListener('change', function () {
-									var file_reader = new FileReader();
+									const file_reader = new FileReader();
 
 									file_reader.onload = function () {
 										// FIXME
