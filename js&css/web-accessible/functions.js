@@ -344,6 +344,7 @@ ImprovedTube.initPlayer = function () {
 	}
 };
 
+// HIXME
 var timeUpdateInterval = null;
 var noTimeUpdate = null;
 
@@ -384,7 +385,7 @@ ImprovedTube.playerOnPause = function () {
 	if (ImprovedTube.elements.yt_channel_name) {
 		ImprovedTube.messageSend({
 			action: 'analyzer',
-			name: ImprovedTube.elements.yt_channel_name.__dataHost.tooltipText,
+			name: ImprovedTube.elements.yt_channel_name,
 			time: ImprovedTube.played_time
 		});
 	}
@@ -399,7 +400,7 @@ ImprovedTube.playerOnEnded = function (event) {
 
 	ImprovedTube.messageSend({
 		action: 'analyzer',
-		name: ImprovedTube.elements.yt_channel_name.__dataHost.tooltipText,
+		name: ImprovedTube.elements.yt_channel_name,
 		time: ImprovedTube.played_time
 	});
 
