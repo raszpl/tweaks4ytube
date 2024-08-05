@@ -23,6 +23,7 @@ ImprovedTube.playlistUpNextAutoplay = function () {
 	}
 };
 /*--- REVERSE ----------------------------------------------------------------*/
+// FIXME
 ImprovedTube.playlistReverse = function (node) {
 	if (this.storage.playlist_reverse) {
 		// playlist_reverse button already applied or nowhere to attach it
@@ -73,25 +74,24 @@ rename extension/www.youtube.com/styles.css
 		});
 		node.appendChild(button);
 
-		if (this.playlistReversed === true) {
-			button.click();
-		}
+		if (this.playlistReversed) button.click();
 	} else {
 		document.querySelector('#it-reverse-playlist-button')?.remove();
 	}
 };
 /*--- REPEAT -----------------------------------------------------------------*/
+// FIXME
 ImprovedTube.playlistRepeat = function () {
-	if ( ImprovedTube.storage.playlist_repeat === true ) {
+	if (ImprovedTube.storage.playlist_repeat) {
 	    setTimeout(function () {
 			const option = ImprovedTube.storage.playlist_repeat,
 				button = document.querySelector("#button.ytd-playlist-loop-button-renderer") || document.querySelector("ytd-playlist-loop-button-renderer button") || document.querySelector("ytd-playlist-loop-button-renderer");
-			if (button && (option === true && button.querySelector("path").attributes.d.textContent.split(" ")[0].startsWith('M21')
-			) && button.querySelector("#tooltip")?.textContent !== 'Loop video'
-	  && button.firstElementChild?.firstElementChild?.attributes[2]?.textContent !== 'Loop video'
-	  && button.querySelector("#tooltip")?.textContent !== 'Turn off loop'
-	  && button.firstElementChild?.firstElementChild?.attributes[2]?.textContent !== 'Turn off loop'
-			) button.click();
+			if (button
+				&& (option && button.querySelector("path").attributes.d.textContent.split(" ")[0].startsWith('M21'))
+				&& button.querySelector("#tooltip")?.textContent !== 'Loop video'
+				&& button.firstElementChild?.firstElementChild?.attributes[2]?.textContent !== 'Loop video'
+				&& button.querySelector("#tooltip")?.textContent !== 'Turn off loop'
+				&& button.firstElementChild?.firstElementChild?.attributes[2]?.textContent !== 'Turn off loop') button.click();
 		}, 10000);
 	}
 };
