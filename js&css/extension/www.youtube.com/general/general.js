@@ -16,31 +16,19 @@
 /*--- YOUTUBE HOME PAGE --------------------------------------*/
 extension.features.youtubeHomePage = function (anything) {
 	if (anything instanceof Event) {
-		const event = anything;
+		const option = extension.storage.data.youtube_home_page;
 
-		if (event.target) {
-			let target = event.target;
+		if (option && option !== 'search' && anything.target?.closest('A#logo')) {
+			event.preventDefault();
+			event.stopPropagation();
 
-			while (target.parentNode) {
-				if (target.nodeName === 'A' && target.id === 'logo') {
-					const option = extension.storage.get('youtube_home_page');
+			window.open(option, '_self');
 
-					if (option !== 'search') {
-						event.preventDefault();
-						event.stopPropagation();
-
-						window.open(option, '_self');
-
-						return false;
-					}
-				} else {
-					target = target.parentNode;
-				}
-			}
+			return false;
 		}
 	} else if (anything === 'init') {
 		extension.events.on('init', function (resolve) {
-			if (/(www|m)\.youtube\.com\/?(\?|#|$)/.test(location.href)) {
+			if (location.pathname == '/') {
 				chrome.storage.local.get('youtube_home_page', function (items) {
 					const option = items.youtube_home_page;
 
@@ -58,7 +46,7 @@ extension.features.youtubeHomePage = function (anything) {
 			prepend: true
 		});
 	} else {
-		const option = extension.storage.get('youtube_home_page');
+		const option = extension.storage.data.youtube_home_page;
 
 		window.removeEventListener('click', this.youtubeHomePage);
 
@@ -105,14 +93,14 @@ extension.features.collapseOfSubscriptionSections = function (event) {
 	} else {
 		window.removeEventListener('click', this.collapseOfSubscriptionSections);
 
-		if (extension.storage.get('collapse_of_subscription_sections') && location.pathname == '/feed/subscriptions') {
+		if (extension.storage.data.collapse_of_subscription_sections && location.pathname == '/feed/subscriptions') {
 			window.addEventListener('click', this.collapseOfSubscriptionSections, true);
 		}
 	}
 };
 /*--- ONLY ONE PLAYER INSTANCE PLAYING -----------------------*/
 extension.features.onlyOnePlayerInstancePlaying = function () {
-	if (extension.storage.get('only_one_player_instance_playing')) {
+	if (extension.storage.data.only_one_player_instance_playing) {
 		const videos = document.querySelectorAll('video');
 
 		for (let i = 0, l = videos.length; i < l; i++) {
@@ -121,6 +109,7 @@ extension.features.onlyOnePlayerInstancePlaying = function () {
 	}
 };
 /*--- ADD "SCROLL TO TOP" ------------------------------------*/
+// HIXME what is going on here???
 extension.features.addScrollToTop = function (event) {
 	if (event instanceof Event) {
 		if (window.scrollY > window.innerHeight / 2) {
@@ -129,7 +118,7 @@ extension.features.addScrollToTop = function (event) {
 			document.documentElement.removeAttribute('it-scroll-to-top');
 		}
 	} else {
-		if (extension.storage.get('add_scroll_to_top')) {
+		if (extension.storage.data.add_scroll_to_top) {
 			this.addScrollToTop.button = document.createElement('div');
 			this.addScrollToTop.button.id = 'it-scroll-to-top';
 			this.addScrollToTop.button.className = 'satus-div';
@@ -147,7 +136,7 @@ extension.features.addScrollToTop = function (event) {
 				document.getElementById('it-scroll-to-top')?.remove();
 			});
 		}
-		if (extension.storage.get('add_scroll_to_top')) {
+		if (extension.storage.data.add_scroll_to_top) {
 			window.addEventListener('scroll', extension.features.addScrollToTop);
 		} else if (this.addScrollToTop.button) {
 			window.removeEventListener('scroll', extension.features.addScrollToTop);
@@ -158,14 +147,14 @@ extension.features.addScrollToTop = function (event) {
 /*--- CONFIRMATION BEFORE CLOSING ----------------------------*/
 extension.features.confirmationBeforeClosing = function () {
 	window.onbeforeunload = function () {
-		if (extension.storage.get('confirmation_before_closing')) {
+		if (extension.storage.data.confirmation_before_closing) {
 			return 'You have attempted to leave this page. Are you sure?';
 		}
 	};
 };
 /*--- DEFAULT CONTENT COUNTRY --------------------------------*/
 extension.features.defaultContentCountry = function (changed) {
-	const value = extension.storage.get('default_content_country');
+	const value = extension.storage.data.default_content_country;
 
 	if (value) {
 		if (value !== 'default') {
@@ -245,7 +234,7 @@ extension.features.popupWindowButtons = function (event) {
 									}
 								}
 
-								window.open('https://www.youtube.com/embed/' + this.dataset.id + '?autoplay=' + (extension.storage.get('player_autoplay_disable') ? '0' : '1'), '_blank', `directories=no,toolbar=no,location=no,menubar=no,status=no,titlebar=no,scrollbars=no,resizable=no,width=${width / 3},height=${height / 3}`);
+								window.open('https://www.youtube.com/embed/' + this.dataset.id + '?autoplay=' + (extension.storage.data.player_autoplay_disable ? '0' : '1'), '_blank', `directories=no,toolbar=no,location=no,menubar=no,status=no,titlebar=no,scrollbars=no,resizable=no,width=${width / 3},height=${height / 3}`);
 								chrome.runtime.sendMessage({
 									action: 'fixPopup',
 									width: width,
@@ -261,7 +250,7 @@ extension.features.popupWindowButtons = function (event) {
 			}
 		}
 	} else {
-		if (extension.storage.get('popup_window_buttons')) {
+		if (extension.storage.data.popup_window_buttons) {
 			window.addEventListener('mouseover', this.popupWindowButtons, true);
 		} else {
 			window.removeEventListener('mouseover', this.popupWindowButtons, true);
@@ -270,7 +259,7 @@ extension.features.popupWindowButtons = function (event) {
 };
 /*--- FONT ---------------------------------------------------*/
 extension.features.font = function (changed) {
-	const option = extension.storage.get('font');
+	const option = extension.storage.data.font;
 
 	if (option) {
 		const link = this.font.link || document.createElement('link'),
@@ -336,9 +325,7 @@ extension.features.markWatchedVideos = function (anything) {
 							target.itMarkWatchedVideosButton.appendChild(svg);
 							target.itMarkWatchedVideosButton.appendChild(svg2);
 
-							if (extension.storage.get('watched') && extension.storage.get('watched')[id]) {
-								target.itMarkWatchedVideosButton.setAttribute('watched', '')
-							};
+							if (extension.storage.data.watched?.[id]) target.itMarkWatchedVideosButton.setAttribute('watched', '');
 							target.appendChild(target.itMarkWatchedVideosButton);
 							target.itMarkWatchedVideosButton.addEventListener('click', function (event) {
 								const id = this.dataset.id,
@@ -347,25 +334,23 @@ extension.features.markWatchedVideos = function (anything) {
 								event.preventDefault();
 								event.stopPropagation();
 
-								if (!extension.storage.watched) extension.storage.watched = {};
+								if (!extension.storage.data.watched) extension.storage.data.watched = {};
 
 								if (value) {
-									extension.storage.get('watched')[id] = {
-										title: ''
-									};
+									extension.storage.data.watched[id] = {title: ''};
 								} else {
-									delete extension.storage.get('watched')[id];
+									delete extension.storage.data.watched[id];
 								}
 
 								chrome.storage.local.set({
-									watched: extension.storage.get('watched')
+									watched: extension.storage.data.watched
 								});
 							});
 
 						} else {
 							const button = target.itMarkWatchedVideosButton;
 
-							if (extension.storage.get('watched') && extension.storage.get('watched')[button.dataset.id]) {
+							if (extension.storage.data.watched?.[button.dataset.id]) {
 								button.setAttribute('watched', '');
 							} else {
 								button.removeAttribute('watched');
@@ -388,32 +373,30 @@ extension.features.markWatchedVideos = function (anything) {
 	} else {
 		window.removeEventListener('mouseover', this.markWatchedVideos, true);
 
-		if (extension.storage.get('mark_watched_videos')) {
+		if (extension.storage.data.mark_watched_videos) {
 			window.addEventListener('mouseover', this.markWatchedVideos, true);
 		}
 	}
 };
 /*--- TRACK WATCHED VIDEOS -----------------------------------*/
 extension.features.trackWatchedVideos = function () {
-	if (extension.storage.get('track_watched_videos') && document.documentElement.getAttribute('it-pathname').indexOf('/watch') === 0) {
+	if (extension.storage.data.track_watched_videos && document.documentElement.getAttribute('it-pathname').indexOf('/watch') === 0) {
 		const id = extension.functions.getUrlParameter(location.href, 'v');
 
-		if (!extension.storage.watched) {
-			extension.storage.watched = {};
-		}
+		if (!extension.storage.data.watched) extension.storage.data.watched = {};
 
-		extension.storage.get('watched')[id] = {
+		extension.storage.data.watched[id] = {
 			title: document.title
 		};
 
 		chrome.storage.local.set({
-			watched: extension.storage.get('watched')
+			watched: extension.storage.data.watched
 		});
 	}
 };
 /*--- THUMBNAILS QUALITY -------------------------------------*/
 extension.features.thumbnailsQuality = function (anything) {
-	const option = extension.storage.get('thumbnails_quality');
+	const option = extension.storage.data.thumbnails_quality;
 
 	function handler (thumbnail) {
 		if (!thumbnail.dataset.defaultSrc && extension.features.thumbnailsQuality.regex.test(thumbnail.src)) {
@@ -429,7 +412,7 @@ extension.features.thumbnailsQuality = function (anything) {
 				this.src = thumbnail.dataset.defaultSrc;
 			};
 
-			thumbnail.src = thumbnail.src.replace(extension.features.thumbnailsQuality.regex, extension.storage.get('thumbnails_quality') + '.jpg');
+			thumbnail.src = thumbnail.src.replace(extension.features.thumbnailsQuality.regex, extension.storage.data.thumbnails_quality + '.jpg');
 		}
 	};
 
@@ -483,7 +466,7 @@ extension.features.disableThumbnailPlayback = function () {
 		}
 	};
 
-	if (extension.storage.get('disable_thumbnail_playback')) {
+	if (extension.storage.data.disable_thumbnail_playback) {
 		window.addEventListener('mouseenter', handler, true);
 	} else {
 		window.removeEventListener('mouseenter', handler, true);
@@ -491,7 +474,7 @@ extension.features.disableThumbnailPlayback = function () {
 };
 /*--- OPEN VIDEOS IN A NEW TAB -------------------------------*/
 extension.features.openNewTab = function () {
-	if (extension.storage.get("open_new_tab")) {
+	if (extension.storage.data.open_new_tab) {
 		window.onload = function () {
 			const searchButton = document.querySelector("button#search-icon-legacy");
 			const inputField = document.querySelector("input#search");
