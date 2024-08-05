@@ -3,20 +3,16 @@
 ----------------------------------------------------------------
 # Related videos
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# RELATED VIDEOS
---------------------------------------------------------------*/
-
+/*--- RELATED VIDEOS -----------------------------------------*/
 extension.features.relatedVideos = function (anything) {
 	if (anything instanceof Event) {
-		var event = anything;
+		const event = anything;
 
 		if (event.type === 'click') {
-			var target = event.target;
+			const target = event.target;
 
 			if (target.id === 'items' && target.parentNode.nodeName === 'YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER') {
-				var rect = target.getBoundingClientRect();
+				const rect = target.getBoundingClientRect();
 
 				if (
 					event.clientX - rect.left >= 0 &&
@@ -29,7 +25,7 @@ extension.features.relatedVideos = function (anything) {
 			}
 		}
 	} else {
-		if (extension.storage.get('related_videos') === 'collapsed') {
+		if (extension.storage.data.related_videos === 'collapsed') {
 			window.addEventListener('click', this.relatedVideos, true);
 		} else {
 			window.removeEventListener('click', this.relatedVideos, true);
