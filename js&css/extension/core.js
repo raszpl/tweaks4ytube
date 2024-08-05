@@ -12,13 +12,10 @@
 	# Listener
 	# Send
 # Storage
-	# Get
 	# Listener
 	# Load
 --------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# GLOBAL VARIABLE
---------------------------------------------------------------*/
+/*--- GLOBAL VARIABLE ----------------------------------------*/
 const extension = {
 	domReady: false,
 	events: {
@@ -232,24 +229,6 @@ extension.messages.send = function (message) {
 /*--------------------------------------------------------------
 # STORAGE
 --------------------------------------------------------------*/
-/*--- GET ----------------------------------------------------*/
-extension.storage.get = function (key) {
-	if (key.indexOf('/') === -1) {
-		return this.data[key];
-	} else {
-		let target = this.data;
-
-		for (let i = 0, l = key.length; i < l; i++) {
-			const part = key[i];
-
-			if (Object.keys(target).includes(part)) {
-				target = target[part];
-			} else {
-				return undefined;
-			}
-		}
-	}
-};
 /*--- LISTENER -----------------------------------------------*/
 extension.storage.listener = function () {
 	chrome.storage.onChanged.addListener(function (changes) {
