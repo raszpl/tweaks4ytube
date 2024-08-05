@@ -276,17 +276,6 @@ document.addEventListener('it-message-from-extension', function (message) {
 					}
 					break
 
-				case 'playerHamburgerButton':
-					if (ImprovedTube.storage.player_hamburger_button == false) {
-						document.querySelector('.custom-hamburger-menu')?.remove();
-						let rightControls = document.querySelector('.html5-video-player')?.querySelector('.ytp-right-controls');
-						if (rightControls) {
-							rightControls.style.setProperty('padding-right', ''); // Restoring the original padding:
-							rightControls.style.setProperty('display', 'flex');
-						}
-					}
-					break
-
 				case 'belowPlayerPip':
 				case 'belowPlayerScreenshot':
 				case 'belowPlayerLoop':
