@@ -3,20 +3,16 @@
 ----------------------------------------------------------------
 # Collapsed
 --------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# COLLAPSED
---------------------------------------------------------------*/
-
+/*--- COLLAPSED ----------------------------------------------*/
 extension.features.comments = function (anything) {
 	if (anything instanceof Event) {
-		var event = anything;
+		const event = anything;
 
 		if (event.type === 'click') {
-			var target = event.target;
+			const target = event.target;
 
 			if (target.nodeName === 'YTD-COMMENTS-HEADER-RENDERER') {
-				var rect = target.getBoundingClientRect();
+				const rect = target.getBoundingClientRect();
 
 				if (
 					event.clientX - rect.left >= 0 &&
@@ -29,7 +25,7 @@ extension.features.comments = function (anything) {
 			}
 		}
 	} else {
-		if (extension.storage.get('comments') === 'collapsed') {
+		if (extension.storage.data.comments === 'collapsed') {
 			window.addEventListener('click', this.comments, true);
 		} else {
 			window.removeEventListener('click', this.comments, true);
