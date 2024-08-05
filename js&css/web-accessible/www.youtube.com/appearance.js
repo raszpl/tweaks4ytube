@@ -618,3 +618,16 @@ ImprovedTube.channelVideosCount = function () {
 		xhr.send();
 	}
 };
+/*--- RELATED VIDEOS -----------------------------------------*/
+ImprovedTube.relatedVideos = function (node = document.querySelector('#items.ytd-watch-next-secondary-results-renderer')) {
+	function handler (event) {
+		if (event.offsetY < 48) event.target.toggleAttribute('it-activated');
+	};
+	
+	if (this.storage.related_videos === 'collapsed') {
+		ImprovedTube.relatedVideos.handler = handler;
+		node.addEventListener('click', this.relatedVideos.handler, true);
+	} else if (this.relatedVideos.handler && node) {
+		node.removeEventListener('click', this.relatedVideos.handler, true);
+	}
+};
