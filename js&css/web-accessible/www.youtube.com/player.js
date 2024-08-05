@@ -67,9 +67,9 @@ ImprovedTube.playerAutopauseWhenSwitchingTabs = function () {
 };
 /*--- PICTURE IN PICTURE (PIP) -----------------------------------------------*/
 ImprovedTube.enterPip = function (disable) {
-	const video = this.elements.video;
+	const video = ImprovedTube.elements.video;
 
-	if (!disable
+	if ((!disable || disable instanceof Event)
 		&& video
 		&& document.pictureInPictureEnabled
 		&& typeof video.requestPictureInPicture == 'function') {
@@ -92,7 +92,7 @@ ImprovedTube.playerAutoPip = function () {
 
 	if (this.storage.player_autoPip && this.storage.player_autoPip_outside && this.focus) {
 		this.enterPip(true);
-	} else if (this.storage.player_autoPip && !this.focus && !video?.paused) {
+	} else if (this.storage.player_autoPip && !this.focus && video && !video.paused) {
 		this.enterPip();
 	}
 };
@@ -501,7 +501,7 @@ ImprovedTube.playerAds = function (node) {
 			const mutation = mutationList[i];
 
 			if (mutation.type === 'childList') {
-				for (var j = 0, k = mutation.addedNodes.length; j < k; j++) {
+				for (let j = 0, k = mutation.addedNodes.length; j < k; j++) {
 					const node = mutation.addedNodes[j];
 
 					if (node instanceof Element
@@ -690,7 +690,7 @@ ImprovedTube.playerLoudnessNormalization = function () {
 		try {
 			let local_storage = localStorage['yt-player-volume'];
 
-			if (this.isset(Number(this.storage.player_volume)) && this.storage.player_forced_volume === true) {
+			if (this.isset(Number(this.storage.player_volume)) && this.storage.player_forced_volume) {
 				return;
 			} else if (local_storage) {
 				local_storage = JSON.parse(JSON.parse(local_storage).data);
@@ -810,7 +810,7 @@ ImprovedTube.playerRepeatButton = function () {
 		path.setAttributeNS(null, 'd', 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z');
 		svg.appendChild(path);
 		let transparentOrOn = 0.5;
-		if (this.storage.player_always_repeat === true ) transparentOrOn = 1;
+		if (this.storage.player_always_repeat) transparentOrOn = 1;
 		this.createPlayerButton({
 			id: 'it-repeat-button',
 			child: svg,
@@ -890,7 +890,7 @@ ImprovedTube.playerRotateButton = function () {
 };
 /*--- PLAYER FIT-TO-WIN BUTTON -----------------------------------------------*/
 ImprovedTube.playerFitToWinButton = function () {
-	if (this.storage.player_fit_to_win_button === true && (/watch\?/.test(location.href))) {
+	if (this.storage.player_fit_to_win_button && (/watch\?/.test(location.href))) {
 		let tempContainer = document.createElement("div");
 		tempContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="ftw-icon">
 		<path d="M21 3 9 15"/><path d="M12 3H3v18h18v-9"/><path d="M16 3h5v5"/><path d="M14 15H9v-5"/></svg>`;
@@ -999,7 +999,7 @@ ImprovedTube.playerHamburgerButton = function () {
 
 		if (!controlsContainer) return;
 
-		let hamburgerMenu = document.querySelector('.custom-hamburger-menu');
+		let hamburgerMenu = controlsContainer.parentNode.querySelector('.custom-hamburger-menu');
 		if (!hamburgerMenu) {
 			hamburgerMenu = document.createElement('div');
 			hamburgerMenu.className = 'custom-hamburger-menu';
@@ -1022,9 +1022,8 @@ ImprovedTube.playerHamburgerButton = function () {
 			controlsContainer.style.paddingRight = '40px';
 			controlsContainer.parentNode.appendChild(hamburgerMenu);
 
-			let controlsVisible = true;
-			controlsContainer.style.display = controlsVisible ? 'none' : 'flex';
-			controlsVisible = false;
+			let controlsVisible = false;
+			controlsContainer.style.display = 'none';
 
 			hamburgerMenu.addEventListener('click', function () {
 				controlsContainer.style.display = controlsVisible ? 'none' : 'flex';
@@ -1033,6 +1032,13 @@ ImprovedTube.playerHamburgerButton = function () {
 				// Change the opacity of hamburgerMenu based on controls visibility
 				hamburgerMenu.style.opacity = controlsVisible ? '0.85' : '0.65';
 			});
+		}
+	} else if (document.querySelector('.custom-hamburger-menu')) {
+		document.querySelector('.custom-hamburger-menu')?.remove();
+		const rightControls = document.querySelector('.html5-video-player')?.querySelector('.ytp-right-controls');
+		if (rightControls) {
+			rightControls.style.removeProperty('padding-right');
+			rightControls.style.setProperty('display', 'flex');
 		}
 	}
 };
@@ -1169,7 +1175,7 @@ ImprovedTube.miniPlayer_scroll = function () {
 		window.addEventListener('mousemove', ImprovedTube.miniPlayer_cursorUpdate);
 
 		window.dispatchEvent(new Event('resize'));
-	} else if (window.scrollY < 256 && ImprovedTube.mini_player__mode === true || ImprovedTube.elements.player.classList.contains('ytp-player-minimized') === true) {
+	} else if (window.scrollY < 256 && ImprovedTube.mini_player__mode || ImprovedTube.elements.player.classList.contains('ytp-player-minimized')) {
 		ImprovedTube.mini_player__mode = false;
 		ImprovedTube.elements.player.classList.remove('it-mini-player');
 		ImprovedTube.mini_player__move = false;
@@ -1192,7 +1198,7 @@ ImprovedTube.miniPlayer_mouseDown = function (event) {
 		return false;
 	}
 
-	if (ImprovedTube.miniPlayer_resize() === true) {
+	if (ImprovedTube.miniPlayer_resize()) {
 		return false;
 	}
 
@@ -1200,7 +1206,7 @@ ImprovedTube.miniPlayer_mouseDown = function (event) {
 		path = event.composedPath();
 
 	for (let i = 0, l = path.length; i < l; i++) {
-		if ((path[i].classList && path[i].classList.contains('it-mini-player')) === true) {
+		if ((path[i].classList && path[i].classList.contains('it-mini-player'))) {
 			is_player = true;
 		}
 	}
