@@ -665,15 +665,21 @@ html:not([data-page-type=channel]) .ytd-rich-grid-media.it-blocklisted-channel:h
 
 .improvedtube-player-button {
 	position: relative;
-	width: 40px;
-	height: 36px;
-	margin: 0 8px;
-	padding: 6px;
+	width: 48px;
+	min-width: 40px;
+	padding: 0;
+	justify-content: center;
+	align-items: center;
 	cursor: pointer;
 	border: none;
 	outline: none;
 	background: none;
 	fill: var(--yt-spec-icon-inactive);
+}
+
+.improvedtube-player-button>svg {
+	width: 56% !important;
+	height: auto !important;
 }
 
 .improvedtube-player-button:last-of-type {
