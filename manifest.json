@@ -73,7 +73,6 @@
 			"js": [
 				"js&css/extension/core.js",
 				"js&css/extension/www.youtube.com/general/general.js",
-				"js&css/extension/www.youtube.com/appearance/comments/comments.js",
 				"js&css/extension/init.js"
 			],
 			"matches": ["https://www.youtube.com/*"],
