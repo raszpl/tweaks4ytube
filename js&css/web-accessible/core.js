@@ -205,17 +205,6 @@ document.addEventListener('it-message-from-extension', function (message) {
 					message.camelizedKey = 'blocklistInit';
 					break
 
-				case 'playerPlaybackSpeed':
-				case 'playerForcedPlaybackSpeed':
-					if (ImprovedTube.storage.player_forced_playback_speed) {
-						ImprovedTube.elements.player.setPlaybackRate(Number(ImprovedTube.storage.player_playback_speed));
-						ImprovedTube.elements.player.querySelector('video').playbackRate = Number(ImprovedTube.storage.player_playback_speed);
-					} else {
-						ImprovedTube.elements.player.setPlaybackRate(1);
-						ImprovedTube.elements.player.querySelector('video').playbackRate = 1;
-					}
-					break
-
 				case 'theme':
 				case 'themePrimaryColor':
 				case 'themeTextColor':
