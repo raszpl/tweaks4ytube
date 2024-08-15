@@ -125,7 +125,6 @@ ImprovedTube.playbackSpeed = function (newSpeed) {
 ImprovedTube.playerForcedPlaybackSpeed = function () {
 	if (this.storage.player_forced_playback_speed) {
 		const video = this.elements.video,
-			player = this.elements.player,
 			speed = Number(this.storage.player_playback_speed);
 
 		if (!speed) return;
