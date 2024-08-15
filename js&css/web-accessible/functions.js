@@ -165,6 +165,10 @@ ImprovedTube.ytElementsHandler = function (node) {
 			}
 			break
 
+		case 'YTD-COMMENTS-HEADER-RENDERER':
+			ImprovedTube.comments(node);
+			break
+
 		default:
 			--ImprovedTube.perf.elements_handled_name;
 			break
@@ -323,7 +327,7 @@ ImprovedTube.initPlayer = function () {
 		delete ImprovedTube.elements.player.dataset.defaultQuality;
 
 		//ImprovedTube.forcedPlayVideoFromTheBeginning();
-		ImprovedTube.playerPlaybackSpeed();
+		ImprovedTube.playerForcedPlaybackSpeed();
 		ImprovedTube.playerSubtitles();
 		ImprovedTube.subtitlesLanguage();
 		ImprovedTube.subtitlesUserSettings();
