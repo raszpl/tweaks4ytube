@@ -165,6 +165,9 @@ ImprovedTube.playerRemainingDuration = function () {
 		}
 	} else document.querySelector(".ytp-time-remaining-duration")?.remove();
 };
+/*------------------------------------------------------------------------------
+ SIDEBAR
+------------------------------------------------------------------------------*/
 /*--- COMMENTS SIDEBAR SIMPLE ------------------------------------------------*/
 // FIXME never called, only when directly changing option
 ImprovedTube.commentsSidebarSimple = function () {
@@ -322,9 +325,6 @@ ImprovedTube.commentsSidebar = function () {
 		}
 	}
 };
-/*------------------------------------------------------------------------------
- SIDEBAR
-------------------------------------------------------------------------------*/
 /*--- TRANSCRIPT ---------------------------------------------*/
 ImprovedTube.transcript = function (el) {
 	if (ImprovedTube.storage.transcript) {
@@ -355,6 +355,19 @@ ImprovedTube.livechat = function () {
             isCollapsed = false
         }
     } */
+};
+/*--- RELATED VIDEOS -----------------------------------------*/
+ImprovedTube.relatedVideos = function (node = document.querySelector('#items.ytd-watch-next-secondary-results-renderer')) {
+	function handler (event) {
+		if (event.offsetY < 48) event.target.toggleAttribute('it-activated');
+	};
+
+	if (this.storage.related_videos === 'collapsed') {
+		ImprovedTube.relatedVideos.handler = handler;
+		node.addEventListener('click', this.relatedVideos.handler, true);
+	} else if (this.relatedVideos.handler && node) {
+		node.removeEventListener('click', this.relatedVideos.handler, true);
+	}
 };
 /*------------------------------------------------------------------------------
   DETAILS
@@ -618,16 +631,18 @@ ImprovedTube.channelVideosCount = function () {
 		xhr.send();
 	}
 };
-/*--- RELATED VIDEOS -----------------------------------------*/
-ImprovedTube.relatedVideos = function (node = document.querySelector('#items.ytd-watch-next-secondary-results-renderer')) {
+/*--------------------------------------------------------------
+  COMMENTS
+--------------------------------------------------------------*/
+ImprovedTube.comments = function (node = document.querySelector('YTD-COMMENTS-HEADER-RENDERER')) {
 	function handler (event) {
-		if (event.offsetY < 48) event.target.toggleAttribute('it-activated');
+		if (event.target.clientHeight - event.offsetY <= 48) document.querySelector('#below > ytd-comments').toggleAttribute('it-activated');
 	};
-	
-	if (this.storage.related_videos === 'collapsed') {
-		ImprovedTube.relatedVideos.handler = handler;
-		node.addEventListener('click', this.relatedVideos.handler, true);
-	} else if (this.relatedVideos.handler && node) {
-		node.removeEventListener('click', this.relatedVideos.handler, true);
+
+	if (this.storage.comments === 'collapsed') {
+		ImprovedTube.comments.handler = handler;
+		node.addEventListener('click', this.comments.handler, true);
+	} else if (this.comments.handler && node) {
+		node.removeEventListener('click', this.comments.handler, true);
 	}
 };
