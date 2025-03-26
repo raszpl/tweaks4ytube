@@ -1778,75 +1778,73 @@ satus.components.radio = function (component, skeleton) {
 /*--- SLIDER ---------------------------------------------------*/
 satus.components.slider = function (component, skeleton) {
 	const content = component.createChildElement('div', 'content'),
-		childrenContainer = content.createChildElement('div', 'children-container'),
-		textInput = content.createChildElement('input'),
-		track_container = component.createChildElement('div', 'track-container'),
-		input = track_container.createChildElement('input', 'input');
+		track_container = component.createChildElement('div', 'track-container');
 
-	component.childrenContainer = childrenContainer;
-	component.textInput = textInput;
-	component.input = input;
+	component.childrenContainer = content.createChildElement('div', 'children-container');
+	component.number = content.createChildElement('input');
 	component.track = track_container.createChildElement('div', 'track');
+	component.bar = track_container.createChildElement('input', 'input');
 
-	input.type = 'range';
-	input.min = skeleton.min || 0;
-	input.max = skeleton.max || 1;
-	input.step = skeleton.step || 1;
-	input.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || 0;
+	component.number.type = 'number';
+	component.number.min = skeleton.min || 0;
+	component.number.max = skeleton.max || 1;
+	component.number.step = skeleton.step || 1;
 
-	textInput.type = 'text';
+	component.number.addEventListener('blur', function () {
+		component.value = this.value;
+	});
+	component.number.addEventListener('input', function (event) {
+		component.value = this.value;
+	});
+	component.number.addEventListener('wheel', function (event) {
+		event.preventDefault();
+		event.stopPropagation();
 
-	textInput.addEventListener('blur', function () {
-		const component = this.parentNode.parentNode;
-
-		component.input.value = Number(this.value.replace(/[^0-9.]/g, ''));
-
-		component.update();
+		component.value += (event.deltaY > 0) ? -Number(this.step) : Number(this.step);
 	});
 
-	textInput.addEventListener('keydown', function (event) {
-		if (event.key === 'Enter') {
-			const component = this.parentNode.parentNode;
+	component.bar.type = 'range';
+	component.bar.min = skeleton.min || 0;
+	component.bar.max = skeleton.max || 1;
+	component.bar.step = skeleton.step || 1;
 
-			component.input.value = Number(this.value.replace(/[^0-9.]/g, ''));
-
-			component.update();
-		}
+	component.bar.addEventListener('input', function () {
+		component.value = this.value;
 	});
-
-	input.addEventListener('input', function () {
-		const component = this.parentNode.parentNode;
-
-		component.value = Number(this.value);
-
-		component.update();
-	});
-
-	component.update = function () {
-		const input = this.input;
-
-		this.textInput.value = input.value;
-
-		if (component.storage) {
-			if (component.skeleton.value == Number(input.value)) {
-				component.storage.remove();
-			} else {
-				component.storage.value = Number(input.value);
-			}
-		}
-
-		this.track.style.width = 100 / (input.max - input.min) * (input.value - input.min) + '%';
-	};
-
-	component.update();
 
 	if (skeleton.on) {
 		for (const type in skeleton.on) {
-			input.addEventListener(type, function (event) {
+			component.number.addEventListener(type, function (event) {
 				this.parentNode.parentNode.dispatchEvent(new Event(event.type));
 			});
 		}
 	}
+
+	Object.defineProperties(component, {
+		default: {
+			get () {
+				let value = 0;
+				if (Object.hasOwn(this.skeleton, 'value')) {
+					value = this.skeleton.value;
+					if (satus.isFunction(value)) value = value();
+				}
+				return value;
+			}
+		},
+		value: {
+			get () {
+				return Number(this.number.value);
+			},
+			set (val) {
+				val = Math.min(Math.max(Number(val), this.number.min), this.number.max);
+				this.number.value = val;
+				this.bar.value = val;
+				this.track.style.width = 100 / (this.number.max - this.number.min) * (val - this.number.min) + '%';
+			},
+			enumerable: true,
+			configurable: true
+		}
+	});
 };
 /*--- TABS -----------------------------------------------------*/
 satus.components.tabs = function (component, skeleton) {
