@@ -571,6 +571,8 @@ satus.remove = function (child, parent) {
 satus.render = function (skeleton, container, property, childrenOnly, prepend, skip_children) {
 	let element;
 
+	if (property === 'layers') skip_children = true;
+
 	if (skeleton.component && childrenOnly !== true) {
 		const tagName = skeleton.component,
 			camelizedTagName = this.camelize(tagName);
@@ -616,78 +618,84 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 			if (container.layersProvider) element.layersProvider = container.layersProvider;
 		}
 
-		this.attr(element, skeleton.attr);
-		this.style(element, skeleton.style);
-		this.data(element, skeleton.data);
-		this.class(element, skeleton.class);
-		this.on(element, skeleton.on);
+		if (skeleton.attr) this.attr(element, skeleton.attr);
+		if (skeleton.style) this.style(element, skeleton.style);
+		if (skeleton.data) this.data(element, skeleton.data);
+		if (skeleton.class) this.class(element, skeleton.class);
 
-		// no storage for (storage: false), 'base', 'header', 'layers', 'section' elements
-		if (skeleton.storage != false && !['base', 'header', 'layers', 'section'].includes(tagName)) {
-			element.storage = (function () {
-				let parent = element,
-					// default storage is same as element name (property)
-					key = skeleton.storage || property || false,
-					value;
+		// create component (slider, checkbox, section etc)
+		if (this.components[camelizedTagName]) this.components[camelizedTagName](element, skeleton);
 
-				if (satus.isFunction(key)) key = key();
+		// skeleton listeners go after component listeners. Do not move this code above component creation!
+		if (skeleton.on) this.on(element, skeleton.on);
 
-				if (skeleton.storage !== false) {
-					if (key) {
-						value = satus.storage.get(key);
+		// storage available only for appropriate elements
+		if (['text-field', 'select', 'color-picker', 'radio', 'slider', 'shortcut', 'checkbox', 'switch'].includes(tagName) && skeleton.storage != false) {
+			element.storage = {};
+			element.storage.remove = function () {
+				satus.storage.remove(key);
+				element.dispatchEvent(new CustomEvent('change'));
+			};
+			// default storage key fallback is element name (property)
+			let key = skeleton.storage || property;
+			// key can also be function(), afaik yet unused capability
+			if (satus.isFunction(key)) key = key();
+
+			Object.defineProperties(element.storage, {
+				key: {
+					get() {
+						return key;
+					},
+					set(string) {
+						key = string;
 					}
-
-					if (value === undefined && Object.keys(skeleton).includes('value')) {
-						value = skeleton.value;
-
-						// default value can also be function()
-						if (satus.isFunction(value)) value = value();
-					}
-				}
-
-				return Object.defineProperties({}, {
-					key: {
-						get: function () {
-							return key;
-						},
-						set: function (string) {
-							key = string;
+				},
+				value: {
+					get() {
+						// return if stored, otherwise try .default
+						if (Object.hasOwn(satus.storage.data, key)) {
+							return satus.storage.data[key];
+						} else if (Object.hasOwn(element, 'default')) {
+							return element.default;
 						}
 					},
-					value: {
-						get: function () {
-							return value;
-						},
-						set: function (val) {
-							value = val;
-
-							if (val === satus.storage.get(key)) return;
-							if (val === undefined) {
-								satus.storage.remove(key);
-							} else {
-								// only store if actually different value
-								satus.storage.set(key, val);
-							}
-
-							parent.dispatchEvent(new CustomEvent('change'));
+					set(val) {
+						if (val === satus.storage.data[key]
+							|| (!Object.hasOwn(satus.storage.data, key) && val === element.default)) return;
+						if (val === undefined
+							// Special case 'theme', Need to save first regardless of .default to send Light theme changes up the chain
+							// ImprovedTube.setTheme will delete it for us
+							|| (val === element.default && key != 'theme')) {
+							satus.storage.remove(key);
+						} else {
+							// only store if actually different value
+							satus.storage.set(key, val);
 						}
+
+						element.dispatchEvent(new CustomEvent('change'));
+					}
+				}
+			});
+
+			// initialize element
+			element.value = element.storage.value;
+
+			// redefine element setter to automatically save to storage
+			if (Object.getOwnPropertyDescriptor(element, 'value')?.enumerable) {
+				const setter = Object.getOwnPropertyDescriptor(element, 'value').set.bind(element);
+				Object.defineProperty(element, 'value', {
+					set(val) {
+						setter(val);
+						this.storage.value = val;
 					}
 				});
-			}());
-			element.storage.remove = function () {
-				satus.storage.remove(element.storage.key);
-
-				element.dispatchEvent(new CustomEvent('change'));
 			}
 		}
+		// initialize element lacking storage
+		if (!element.storage && Object.hasOwn(element, 'default')) element.value = element.default;
 
-		if (this.components[camelizedTagName]) {
-			this.components[camelizedTagName](element, skeleton);
-		}
-
-		// this needs work!!!
-		// make element name (property) the default text
-		this.text(element.childrenContainer, skeleton.text);
+		// FIXME - make element name (property) the default text
+		if (skeleton.text) this.text(element.childrenContainer, skeleton.text);
 		this.prepend(skeleton.before, element.childrenContainer);
 
 		if (prepend) {
@@ -696,7 +704,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 			this.append(element, container);
 		}
 
-		if (!Object.keys(skeleton).includes('parentSkeleton') && container) {
+		if (!Object.hasOwn(skeleton, 'parentSkeleton') && container) {
 			skeleton.parentSkeleton = container.skeleton;
 		}
 
@@ -707,7 +715,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 		container = element.childrenContainer || element;
 	}
 
-	if ((!element || element.renderChildren !== false) & skip_children !== true) {
+	if (!element || !skip_children) {
 		// special keywords that cant be their own elements
 		const excluded = [
 			'attr',
