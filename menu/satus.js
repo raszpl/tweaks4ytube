@@ -1793,7 +1793,7 @@ satus.components.slider = function (component, skeleton) {
 	component.number.addEventListener('blur', function () {
 		component.value = this.value;
 	});
-	component.number.addEventListener('input', function (event) {
+	component.number.addEventListener('input', function () {
 		component.value = this.value;
 	});
 	component.number.addEventListener('wheel', function (event) {
