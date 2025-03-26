@@ -860,37 +860,6 @@ satus.storage.set = function (key, value, callback) {
 		if (callback) callback();
 	});
 };
-/*--- DEFAULT --------------------------------------------------*/
-satus.storage.default = function (skeleton, target) {
-	let value;
-	switch (skeleton.component) {
-		case 'select':
-			// default is either in order: .value | .index | first options element
-			value = satus.isFunction(skeleton.options) ? skeleton.options() : skeleton.options || [];
-			value = [skeleton.value, value[skeleton.index]?.value, value[0]?.value].find(e => satus.isset(e));
-			break
-
-		case 'radio':
-			// determine default value for whole radio section
-			for (const key in skeleton.parentSkeleton.parentSkeleton) {
-				let item = skeleton.parentSkeleton.parentSkeleton[key];
-
-				// components can be functions
-				if (satus.isFunction(item)) item = item();
-
-				if (!value && item?.radio) {
-					// start with first element in case checked: is not defined
-					value = item.radio.value;
-				} else if (item?.radio?.checked) {
-					value = item.radio.value;
-				}
-			}
-			break
-	}
-	// save to skeleton.rendered.storage.value
-	if (target) target = value;
-	return value;
-};
 /*--- ON CHANGED -----------------------------------------------*/
 satus.storage.onchanged = function (callback) {
 	chrome.storage.onChanged.addListener(function (changes) {
