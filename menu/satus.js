@@ -1723,31 +1723,52 @@ satus.components.colorPicker = function (component) {
 };
 /*--- RADIO ----------------------------------------------------*/
 satus.components.radio = function (component, skeleton) {
-	const defValue = satus.storage.default(component.skeleton),
-		value = satus.isset(component.storage?.key) ? satus.storage.get(component.storage.key) : undefined;
-
-	component.nativeControl = component.createChildElement('input', 'input');
-	component.createChildElement('i');
 	component.childrenContainer = component.createChildElement('div', 'content');
 
-	component.nativeControl.type = 'radio';
-	component.nativeControl.name = skeleton.storage;
+	component.input = component.createChildElement('input', 'input');
+	component.createChildElement('i');
 
-	if (skeleton.value) component.nativeControl.value = skeleton.value;
+	component.input.type = 'radio';
+	component.input.name = skeleton.storage;
 
-	if (value) {
-		component.nativeControl.checked = (value === skeleton.value);
-	} else if (skeleton.checked) {
-		component.nativeControl.checked = true;
-	}
+	component.input.addEventListener('change', function () {
+		component.value = component.skeleton.value;
+	});
 
-	component.nativeControl.addEventListener('change', function () {
-		// Need to save first to sent Light theme changes up the chain
-		// ImprovedTube.setTheme will delete it for us
-		component.storage.value = this.value;
-		if (this.value == defValue) {
-			// we dont store defaults
-			component.storage.remove();
+	Object.defineProperties(component, {
+		default: {
+			get () {
+				const excluded = [
+					'class',
+					'component',
+					'parentObject',
+					'parentSkeleton',
+					'rendered'];
+				let value;
+
+				for (let [key, item] of Object.entries(this.skeleton.parentSkeleton)) {
+					if (excluded.includes(key)) continue;
+					if (satus.isFunction(item)) item = item();
+					if (item.component != 'radio') continue;
+
+					if (item.value
+						&& (!value || item.checked)) {
+						// first element or checked
+						value = item.value;
+					}
+				}
+				return value;
+			}
+		},
+		value: {
+			get () {
+				return this.skeleton.value;
+			},
+			set (val) {
+				if (val === this.skeleton.value) this.input.checked = true;
+			},
+			enumerable: true,
+			configurable: true
 		}
 	});
 };
