@@ -2179,35 +2179,34 @@ satus.components.shortcut = function (component, skeleton) {
 };
 /*--- CHECKBOX -------------------------------------------------*/
 satus.components.checkbox = function (component, skeleton) {
+	component.childrenContainer = component.createChildElement('div', 'content');
+
 	component.input = component.createChildElement('input');
 	component.input.type = 'checkbox';
 
 	component.checkmark = component.createChildElement('div', 'checkmark');
 
-	component.childrenContainer = component.createChildElement('div', 'content');
-
-	component.dataset.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || false;
-	component.input.checked = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || false;
-
 	component.input.addEventListener('change', function () {
-		const component = this.parentNode;
+		component.value = this.checked;
+	});
 
-		if (this.checked) {
-			component.dataset.value = true;
-			if (component.skeleton.value) {
-				// skeleton.value: true makes this a default true checkbox where the only active state we save is false
-				component.storage.remove();
-			} else {
-				component.storage.value = true;
+	Object.defineProperties(component, {
+		default: {
+			get() {
+				// default is true if any .value present
+				return !!this.skeleton.value;
 			}
-		} else {
-			component.dataset.value = false;
-			if (component.skeleton.value) {
-				// skeleton.value: true makes this a default true checkbox where the only active state we save is false
-				component.storage.value = false;
-			} else {
-				component.storage.remove();
-			}
+		},
+		value: {
+			get() {
+				return this.input.checked;
+			},
+			set(val) {
+				this.input.checked = val;
+				this.dataset.value = val;
+			},
+			enumerable: true,
+			configurable: true
 		}
 	});
 };
