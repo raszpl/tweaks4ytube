@@ -151,7 +151,7 @@ extension.skeleton.main = {
 		component: 'layers',
 		on: {
 			open: function () {
-				const skeleton = satus.last(this.path),
+				const skeleton = this.path.last,
 					section = this.baseProvider.skeleton.header.sectionStart;
 				let	title;
 
