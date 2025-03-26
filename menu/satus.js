@@ -1535,7 +1535,7 @@ satus.components.list = function (component, skeleton) {
 	}
 };
 /*--- COLOR PICKER ---------------------------------------------*/
-satus.components.colorPicker = function (component, skeleton) {
+satus.components.colorPicker = function (component) {
 	component.childrenContainer = component.createChildElement('div', 'content');
 	component.color = component.createChildElement('span', 'value');
 
