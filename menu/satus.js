@@ -293,17 +293,17 @@ satus.toIndex = function (index, child, parent) {
 // much easier to use .last property for Array HTMLCollection NodeList
 Object.defineProperty(Array.prototype, 'last', {
   get () {
-    return this.at(-1);
+	return this.at(-1);
   }
 });
 Object.defineProperty(HTMLCollection.prototype, 'last', {
   get () {
-    return this[this.length - 1];
+	return this[this.length - 1];
   }
 });
 Object.defineProperty(NodeList.prototype, 'last', {
   get () {
-    return this[this.length - 1];
+	return this[this.length - 1];
   }
 });
 /*--------------------------------------------------------------
