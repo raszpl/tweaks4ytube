@@ -1537,25 +1537,14 @@ satus.components.list = function (component, skeleton) {
 /*--- COLOR PICKER ---------------------------------------------*/
 satus.components.colorPicker = function (component, skeleton) {
 	component.childrenContainer = component.createChildElement('div', 'content');
+	component.color = component.createChildElement('span', 'value');
 
-	component.color = (function (element) {
-		let array;
+	function render () {
+		this.color.style.backgroundColor = 'rgb(' + this.value.join(',') + ')';
+	};
 
-		Object.defineProperty(element, 'value', {
-			get: function () {
-				return array;
-			},
-			set: function (value) {
-				array = value;
-
-				element.style.backgroundColor = 'rgb(' + value.join(',') + ')';
-			}
-		});
-
-		element.value = satus.isset(component.storage?.value) ? component.storage.value : skeleton.value || [0, 0, 0];
-
-		return element;
-	})(component.createChildElement('span', 'value'));
+	component.addEventListener('change', render);
+	component.addEventListener('render', render);
 
 	component.addEventListener('click', function () {
 		let hsl = satus.color.rgbToHsl(this.color.value),
@@ -1674,8 +1663,7 @@ satus.components.colorPicker = function (component, skeleton) {
 							const modal = this.skeleton.parentSkeleton.parentSkeleton,
 								component = modal.parentElement;
 
-							component.color.value = component.skeleton.value || [0, 0, 0];
-							component.storage?.remove();
+							component.value = component.default;
 
 							modal.rendered.close();
 						}
@@ -1686,7 +1674,9 @@ satus.components.colorPicker = function (component, skeleton) {
 					text: 'cancel',
 					on: {
 						click: function () {
-							this.skeleton.parentSkeleton.parentSkeleton.rendered.close();
+							const modal = this.skeleton.parentSkeleton.parentSkeleton;
+
+							modal.rendered.close();
 						}
 					}
 				},
@@ -1698,10 +1688,7 @@ satus.components.colorPicker = function (component, skeleton) {
 							const modal = this.skeleton.parentSkeleton.parentSkeleton,
 								component = modal.parentElement;
 
-							component.color.value = satus.color.hslToRgb(modal.value);
-							if (component.storage) {
-								component.storage.value = component.color.value;
-							}
+							component.value = satus.color.hslToRgb(modal.value);
 
 							modal.rendered.close();
 						}
@@ -1709,6 +1696,29 @@ satus.components.colorPicker = function (component, skeleton) {
 				}
 			}
 		}, this.baseProvider);
+	});
+
+	Object.defineProperties(component, {
+		default: {
+			get () {
+				let value = [0, 0, 0];
+				if (Object.hasOwn(this.skeleton, 'value')) {
+					value = this.skeleton.value;
+					if (satus.isFunction(value)) value = value();
+				}
+				return value;
+			}
+		},
+		value: {
+			get () {
+				return this.color.value;
+			},
+			set (val) {
+				this.color.value = val;
+			},
+			enumerable: true,
+			configurable: true
+		}
 	});
 };
 /*--- RADIO ----------------------------------------------------*/
