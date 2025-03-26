@@ -643,23 +643,23 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 
 			Object.defineProperties(element.storage, {
 				key: {
-					get() {
+					get () {
 						return key;
 					},
-					set(string) {
+					set (string) {
 						key = string;
 					}
 				},
 				value: {
-					get() {
+					get () {
 						// return if stored, otherwise try .default
 						if (Object.hasOwn(satus.storage.data, key)) {
 							return satus.storage.data[key];
 						} else if (Object.hasOwn(element, 'default')) {
 							return element.default;
-						}
+						} else return undefined;
 					},
-					set(val) {
+					set (val) {
 						if (val === satus.storage.data[key]
 							|| (!Object.hasOwn(satus.storage.data, key) && val === element.default)) return;
 						if (val === undefined
@@ -684,7 +684,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 			if (Object.getOwnPropertyDescriptor(element, 'value')?.enumerable) {
 				const setter = Object.getOwnPropertyDescriptor(element, 'value').set.bind(element);
 				Object.defineProperty(element, 'value', {
-					set(val) {
+					set (val) {
 						setter(val);
 						this.storage.value = val;
 					}
@@ -2186,7 +2186,7 @@ satus.components.shortcut = function (component, skeleton) {
 	component.render(component.valueElement);
 };
 /*--- CHECKBOX -------------------------------------------------*/
-satus.components.checkbox = function (component, skeleton) {
+satus.components.checkbox = function (component) {
 	component.childrenContainer = component.createChildElement('div', 'content');
 
 	component.input = component.createChildElement('input');
@@ -2200,16 +2200,16 @@ satus.components.checkbox = function (component, skeleton) {
 
 	Object.defineProperties(component, {
 		default: {
-			get() {
+			get () {
 				// default is true if any .value present
 				return !!this.skeleton.value;
 			}
 		},
 		value: {
-			get() {
+			get () {
 				return this.input.checked;
 			},
-			set(val) {
+			set (val) {
 				this.input.checked = val;
 				this.dataset.value = val;
 			},
@@ -2233,7 +2233,7 @@ satus.components.switch = function (component, skeleton) {
 
 	Object.defineProperties(component, {
 		default: {
-			get() {
+			get () {
 				let value = false;
 				if (Object.hasOwn(this.skeleton, 'value')) {
 					value = this.skeleton.value;
@@ -2245,10 +2245,10 @@ satus.components.switch = function (component, skeleton) {
 			}
 		},
 		value: {
-			get() {
+			get () {
 				return (this.dataset.value === 'true') ? true : false;
 			},
-			set(val) {
+			set (val) {
 				this.dataset.value = val;
 
 				this.dispatchEvent(new CustomEvent('change'));
