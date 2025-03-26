@@ -11,7 +11,7 @@
 			getProperty(object, string)
 			indexOf(child, parent)
 			toIndex(index, child, parent)
-			last(variable)
+			Array.last HTMLCollection.last NodeList.last
 
 # DOM:		append(child, parent)
 			attr(element, attributes)
@@ -290,11 +290,22 @@ satus.toIndex = function (index, child, parent) {
 	}
 };
 /*--- LAST -----------------------------------------------------*/
-satus.last = function (variable) {
-	if (this.isArray(variable) || this.isNodeList(variable) || variable instanceof HTMLCollection) {
-		return variable[variable.length - 1];
-	}
-};
+// much easier to use .last property for Array HTMLCollection NodeList
+Object.defineProperty(Array.prototype, 'last', {
+  get () {
+    return this.at(-1);
+  }
+});
+Object.defineProperty(HTMLCollection.prototype, 'last', {
+  get () {
+    return this[this.length - 1];
+  }
+});
+Object.defineProperty(NodeList.prototype, 'last', {
+  get () {
+    return this[this.length - 1];
+  }
+});
 /*--------------------------------------------------------------
 # DOM
 --------------------------------------------------------------*/
@@ -372,7 +383,7 @@ satus.createElement = function (tagName, componentName, namespaceURI) {
 	}
 
 	if (match && match.length > 1) {
-		className = className.slice(0, className.indexOf('__')) + match[match.length - 1];
+		className = className.slice(0, className.indexOf('__')) + match.last;
 	}
 
 	element.componentName = componentName;
@@ -1226,7 +1237,7 @@ satus.components.textField = function (component, skeleton) {
 
 		top = hiddenValue.offsetHeight;
 
-		hiddenValue.textContent = satus.last(rows);
+		hiddenValue.textContent = rows.last;
 
 		top -= hiddenValue.offsetHeight;
 
@@ -1475,12 +1486,12 @@ satus.components.layers = function (component, skeleton) {
 		if (this.path.length > 1) {
 			this.path.pop();
 
-			this.open(this.path[this.path.length - 1], false);
+			this.open(this.path.last, false);
 		}
 	};
 
 	component.open = function (skeleton, history) {
-		const previous_layer = satus.last(this.querySelectorAll('.satus-layers__layer')),
+		const previous_layer = this.querySelector('.satus-layers__layer:last-child'),
 			layer = this.createChildElement('div', 'layer');
 
 		if (history !== false) {
@@ -1896,8 +1907,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.ctrl) {
-			// .classList.contains(
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
@@ -1905,7 +1915,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.shift) {
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
@@ -1917,7 +1927,7 @@ satus.components.shortcut = function (component, skeleton) {
 				arrows = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
 				index = arrows.indexOf(key);
 
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
@@ -1931,7 +1941,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.wheel) {
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
@@ -1944,7 +1954,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.click) {
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
@@ -1957,7 +1967,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.middle) {
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
@@ -1970,7 +1980,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.context) {
-			if (children.length && !children[children.length - 1].className.endsWith('plus')) {
+			if (children.length && !children.last.className.endsWith('plus')) {
 				createElement('plus');
 			}
 
