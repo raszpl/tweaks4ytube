@@ -1387,8 +1387,6 @@ satus.components.chart.bar = function (component, skeleton) {
 };
 /*--- SELECT ---------------------------------------------------*/
 satus.components.select = function (component, skeleton) {
-	const defValue = satus.storage.default(skeleton);
-
 	component.childrenContainer = component.createChildElement('div', 'content');
 	component.valueElement = document.createElement('span');
 	component.valueElement.className = 'satus-select__value';
@@ -1407,41 +1405,40 @@ satus.components.select = function (component, skeleton) {
 		component.selectElement.appendChild(option);
 	}
 
-	Object.defineProperty(component, 'value', {
-		get () {
-			return this.selectElement.value;
-		},
-		set (value) {
-			this.selectElement.value = value;
-		}
+	component.selectElement.addEventListener('change', function () {
+		component.value = this.value;
 	});
-	component.value = satus.isset(component.storage?.value) ? component.storage.value : defValue;
 
-	component.render = function () {
+	function render () {
 		satus.empty(this.valueElement);
 
 		if (this.selectElement.options[this.selectElement.selectedIndex]) {
 			satus.text(this.valueElement, this.selectElement.options[this.selectElement.selectedIndex].text);
 		}
-
-		this.dataset.value = this.value;
-
-		this.dispatchEvent(new CustomEvent('render'));
 	};
 
-	component.selectElement.addEventListener('change', function () {
-		// compare selection against default
-		if (this.value == defValue) {
-			// we dont store defaults
-			component.storage.remove();
-		} else {
-			component.storage.value = this.value;
+	component.addEventListener('change', render);
+	component.addEventListener('render', render);
+
+	Object.defineProperties(component, {
+		default: {
+			get () {
+				// default is either in order: .value | .index | first options element
+				return [this.skeleton.value, this.options[this.skeleton.index]?.value, this.options[0]?.value].find(e => satus.isset(e));
+			}
+		},
+		value: {
+			get () {
+				return this.selectElement.value;
+			},
+			set (val) {
+				this.selectElement.value = val;
+				this.dataset.value = val;
+			},
+			enumerable: true,
+			configurable: true
 		}
-
-		component.render();
 	});
-
-	component.render();
 };
 /*--- SECTION --------------------------------------------------*/
 satus.components.section = function (component, skeleton) {
