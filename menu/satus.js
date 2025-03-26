@@ -2220,15 +2220,8 @@ satus.components.checkbox = function (component, skeleton) {
 };
 /*--- SWITCH ---------------------------------------------------*/
 satus.components.switch = function (component, skeleton) {
-	let value = satus.isset(component.storage.value) ? component.storage.value : skeleton.value || false;
-
-	if (satus.isFunction(value)) value = value();
-
 	component.childrenContainer = component.createChildElement('div', 'content');
-
 	component.createChildElement('i');
-
-	component.dataset.value = value;
 	component.flip = satus.components.switch.flip;
 
 	// variant: 'manual' disables default onclick, user provided function should handle this functionality manually
@@ -2237,45 +2230,37 @@ satus.components.switch = function (component, skeleton) {
 			this.flip();
 		}, true);
 	}
+
+	Object.defineProperties(component, {
+		default: {
+			get() {
+				let value = false;
+				if (Object.hasOwn(this.skeleton, 'value')) {
+					value = this.skeleton.value;
+					// default value can also be function()
+					if (satus.isFunction(value)) value = value();
+					value = satus.locale.get(value);
+				}
+				return value;
+			}
+		},
+		value: {
+			get() {
+				return (this.dataset.value === 'true') ? true : false;
+			},
+			set(val) {
+				this.dataset.value = val;
+
+				this.dispatchEvent(new CustomEvent('change'));
+			},
+			enumerable: true,
+			configurable: true
+		}
+	});
 };
 /*--- SWITCH FLIP ----------------------------------------------*/
-satus.components.switch.flip = function (val) {
-	let where = this;
-
-	function flipTrue () {
-		where.dataset.value = 'true';
-		if (where.skeleton.value == true) {
-			// skeleton.value: true makes this a default true flip switch where the only active state we save is false
-			where.storage.remove();
-		} else {
-			where.storage.value = true;
-		}
-	};
-	function flipFalse () {
-		where.dataset.value = 'false';
-		if (where.skeleton.value == true) {
-			// skeleton.value: true makes this a default true flip switch where the only active state we save is false
-			where.storage.value = false;
-		} else {
-			where.storage.remove();
-		}
-	};
-
-	switch (val) {
-		case true:
-			flipTrue();
-			break;
-		case false:
-			flipFalse();
-			break;
-		case undefined:
-			if (this.dataset.value === 'false') {
-				flipTrue();
-			} else {
-				flipFalse();
-			}
-			break;
-	}
+satus.components.switch.flip = function (val = (this.dataset.value === 'true') ? false : true) {
+	this.value = val;
 };
 /*--- COUNT ----------------------------------------------------*/
 satus.components.countComponent = function (component) {
