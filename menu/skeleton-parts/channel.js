@@ -8,6 +8,27 @@ extension.skeleton.main.layers.section.channel = {
 			component: 'section',
 			variant: 'card',
 
+			channel_thumbs: {
+				component: 'select',
+				text: 'Videos per row',
+				options: [{
+					text: 'default (4)',
+					value: 4
+				}, {
+					text: '5',
+					value: 5
+				}, {
+					text: '6',
+					value: 6
+				}, {
+					text: '7',
+					value: 7
+				}, {
+					text: '8',
+					value: 8
+				}],
+				tags: 'icons,columns'
+			},
 			channel_default_tab: {
 				component: 'select',
 				text: 'defaultChannelTab',
