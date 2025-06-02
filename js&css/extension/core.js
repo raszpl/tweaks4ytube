@@ -126,7 +126,9 @@ const htmlAttributes = [
 	"thumbnails_right",
 	"transcript",
 	"youtube_home_page",
-	"youtubeDetailButtons"
+	"youtubeDetailButtons",
+	"subscription_thumbs",
+	"channel_thumbs"
 ];
 /*--- CAMELIZE -----------------------------------------------*/
 extension.camelize = function (string) {
