@@ -31,6 +31,10 @@ ImprovedTube.ytElementsHandler = function (node) {
 		case 'A':
 			if (node.href) {
 				ImprovedTube.channelDefaultTab(node);
+
+				if (node.href.startsWith('https://www.youtube.com/redirect?')) {
+					node.href = decodeURIComponent(node.href.match(/.*(\?|&)q=(.*?)(&|$)/)[2]);
+				}
 			}
 			if (ImprovedTube.storage.blocklist_activate
 				&& ((node.href && node.classList.contains('ytd-thumbnail')) || node.classList.contains('ytd-video-preview'))
