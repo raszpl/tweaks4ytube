@@ -6,7 +6,7 @@
 			sort(array, order, property)
 			data(element, data)
 			isset(target, is_object)
-			is_________target) Function Array Object Boolean Element NodeList Number String
+			is___(target) Function Array String Number Object Element NodeList Boolean
 			log()
 			getProperty(object, string)
 			indexOf(child, parent)
@@ -55,9 +55,9 @@
 ----------------------------------------------------------------
 >>> 2. COMPONENTS
 ----------------------------------------------------------------
-			modal
-			modal.confirm
-// modal variant: 'confirm' supports two forms: Full with user providing own skeleton.buttons
+			popup
+			popup.confirm
+// popup variant: 'confirm' supports two forms: Full with user providing own skeleton.buttons
 // and simplified with only function declarations for optional ok() and cancel().
 // Simplified takes care of closing popup on its own.
 			grid
@@ -475,9 +475,7 @@ satus.events.trigger = function (type, data) {
 satus.on = function (element, listeners) {
 	if (listeners) {
 		for (const type in listeners) {
-			if (type === 'parentObject') {
-				continue;
-			}
+			if (type === 'parentObject') continue;
 
 			const listener = listeners[type];
 
@@ -501,7 +499,7 @@ satus.on = function (element, listeners) {
 
 					if (target.prepend) {
 						satus.prepend(target, this.parentNode);
-					} else if (layers && target.component !== 'modal') {
+					} else if (layers && target.component !== 'popup') {
 						layers.open(target);
 					} else {
 						satus.render(target, this.baseProvider);
@@ -752,8 +750,8 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 			if (excluded.includes(key)) continue;
 			let item = skeleton[key];
 
-			// sections can be functions, but ignore modals because that would call all the button functions
-			if (satus.isFunction(item) && skeleton.component != "modal") item = item();
+			// sections can be functions, but ignore popups because that would call all the button functions
+			if (satus.isFunction(item) && skeleton.component != 'popup') item = item();
 
 			if (item && item.component) {
 				item.parentSkeleton = skeleton;
@@ -771,7 +769,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 };
 /*--- SEARCH ---------------------------------------------------*/
 satus.search = function (query, object, callback) {
-	const included = ['switch', 'select', 'slider', 'shortcut', 'radio', 'color-picker', 'label', 'button'],
+	const included = ['text-field', 'select', 'color-picker', 'radio', 'slider', 'shortcut', 'checkbox', 'switch', 'label', 'button'],
 		excluded = [
 			'baseProvider',
 			'layersProvider',
@@ -789,6 +787,7 @@ satus.search = function (query, object, callback) {
 
 	function parse (items) {
 		threads++;
+		console.log(items);
 
 		for (const [key, item] of Object.entries(items)) {
 			if (excluded.includes(key)) continue;
@@ -797,8 +796,8 @@ satus.search = function (query, object, callback) {
 				&& included.includes(item.component)
 				// only pass buttons whose parents are variant: 'card' or special case 'appearance' (this one abuses variant tag for CSS)
 				&& (item.component != 'button' || item.parentObject?.variant == "card" || item.parentObject?.variant == "appearance")
-				// try to match query against localized description, fallback on component name
-				&& satus.locale.get(item.text).toLowerCase().includes(query)) {
+				// try to match query against localized description, (maybe add fallback on component name?)
+				&& (query === '*' || satus.locale.get(item.text).toLowerCase().includes(query))) {
 
 				// plop matching results in object - this means we cant have two elements with same name in whole Menu
 				results[key] = Object.assign({}, item);
@@ -940,7 +939,124 @@ satus.text = function (element, value) {
 /*--------------------------------------------------------------
 >>> 2. COMPONENTS
 --------------------------------------------------------------*/
-/*--- MODAL ----------------------------------------------------*/
+/*--- POPUP ----------------------------------------------------*/
+satus.components.popup = function (component, skeleton) {
+	let content = skeleton.content;
+
+	component.scrim = component.createChildElement('div', 'scrim');
+	component.surface = component.createChildElement('div', 'surface');
+
+	component.close = function () {
+		this.classList.add('satus-popup--closing');
+
+		setTimeout(function () {
+			component.remove();
+
+			component.dispatchEvent(new CustomEvent('close'));
+		}, Number(satus.css(this.surface, 'animation-duration').replace(/[^0-9.]/g, '')) * 1000);
+	};
+
+	component.scrim.addEventListener('click', function () {
+		// this is someone clicking outside of popup dialog
+		switch (skeleton.variant) {
+			case 'confirm':
+				if (skeleton.buttons?.cancel) {
+					// popup.confirm.buttons variant have own closing mechanism, lets try to click cancel button
+					if (satus.isFunction(skeleton.buttons.cancel?.rendered?.click)) {
+						skeleton.buttons.cancel.rendered.click();
+					} else {
+						// cant find cancel button, just force close it
+						this.parentNode.close();
+					}
+				} else {
+					// popup.confirm simplified variant, try optional cancel() then close()
+					if (satus.isFunction(skeleton.cancel)) {
+						skeleton.cancel();
+					}
+					this.parentNode.close();
+				}
+				break;
+
+			case 'vertical-menu':
+				this.parentNode.close();
+				break;
+
+			case 'shortcut':
+			case 'color-picker':
+				// click cancel button
+				skeleton.actions.cancel.rendered.click();
+				break;
+		}
+	});
+
+	if (satus.isset(content)) {
+		component.surface.content = component.surface.createChildElement('p', 'content');
+
+		//popup 'content' can be a function
+		if (satus.isFunction(content)) content = content();
+		if (satus.isObject(content)) {
+			satus.render(content, component.surface.content);
+		} else {
+			component.surface.content.textContent = satus.locale.get(content);
+		}
+	} else {
+		component.childrenContainer = component.surface;
+	}
+
+	if (satus.components.popup[skeleton.variant]) {
+		satus.components.popup[skeleton.variant](component, skeleton);
+	}
+};
+/*--- CONFIRM --------------------------------------------------*/
+satus.components.popup.confirm = function (component, skeleton) {
+	component.surface.actions = satus.render({
+		component: 'section',
+		variant: 'align-end'
+	}, component.surface);
+
+	if (skeleton.buttons) {
+		for (const key in skeleton.buttons) {
+			const button = skeleton.buttons[key];
+
+			if (button?.component === 'button') {
+				satus.render(button, component.surface.actions).popupProvider = component;
+			}
+		}
+	} else {
+		// IIFE (Immediately Invoked Function Expression) to bind component inside closure
+		(function () {
+			satus.render({
+				cancel: {
+					component: 'button',
+					text: 'cancel',
+					on: {
+						click: function () {
+							// cancel() is optional in popup.confirm simplified variant
+							if (satus.isFunction(component.skeleton.cancel)) {
+								component.skeleton.cancel();
+							}
+							component.close();
+						}
+					}
+				},
+				ok: {
+					component: 'button',
+					text: 'ok',
+					on: {
+						click: function () {
+							// ok() is optional in popup.confirm simplified variant
+							if (satus.isFunction(component.skeleton.ok)) {
+								component.skeleton.ok();
+							}
+							component.close();
+						}
+					}
+				}
+			}, component.surface.actions)
+		})(component);
+	}
+};
+//_________________________________________________________________________________________________________________________________________________________
 satus.components.modal = function (component, skeleton) {
 	let content = skeleton.content;
 
@@ -1057,35 +1173,29 @@ satus.components.modal.confirm = function (component, skeleton) {
 		})(component);
 	}
 };
+//_________________________________________________________________________________________________________________________________________________________
 /*--- GRID -----------------------------------------------------*/
 satus.components.grid = function (component, skeleton) {
 	console.log(component, skeleton);
 };
 /*--- TEXT FIELD -----------------------------------------------*/
 satus.components.textField = function (component, skeleton) {
-	const container = component.createChildElement('div', 'container'),
-		input = container.createChildElement(skeleton.rows === 1 ? 'input' : 'textarea'),
-		display = container.createChildElement('div', 'display'),
-		lineNumbers = display.createChildElement('div', 'line-numbers'),
-		pre = display.createChildElement('pre'),
-		selection = display.createChildElement('div', 'selection'),
-		cursor = display.createChildElement('div', 'cursor'),
-		hiddenValue = container.createChildElement('pre', 'hidden-value');
+	const container = component.createChildElement('div', 'container');
 
 	if (skeleton.rows === 1) {
 		component.setAttribute('multiline', 'false');
 		component.multiline = false;
 	}
 
-	component.placeholder = skeleton.placeholder;
-	component.input = input;
-	component.display = display;
-	component.lineNumbers = lineNumbers;
-	component.pre = pre;
-	component.hiddenValue = hiddenValue;
-	component.selection = selection;
-	component.cursor = cursor;
-	component.syntax = {
+	component.input = container.createChildElement(skeleton.rows === 1 ? 'input' : 'textarea');
+	component.display = container.createChildElement('div', 'display');
+	component.lineNumbers = component.display.createChildElement('div', 'line-numbers');
+	component.pre = component.display.createChildElement('pre');
+	component.cursor = component.display.createChildElement('div', 'cursor');
+	component.hiddenValue = container.createChildElement('pre', 'hidden-value');
+	component.selection = component.display.createChildElement('div', 'selection');
+	component.selection.setAttribute('disabled', '');
+	component.syntax = { // unused, do we need it? do we want it?
 		current: 'text',
 		handlers: {
 			regex: function (value, target) {
@@ -1134,50 +1244,12 @@ satus.components.textField = function (component, skeleton) {
 				this.current = 'text';
 			}
 
-			pre.update();
+			component.pre.update();
 		}
 	};
 
-	if (skeleton.syntax) {
-		component.syntax.set(skeleton.syntax);
-	}
-
-	component.focus = function () {
-		this.autofocus = true;
-		this.input.focus();
-	};
-
-	if (skeleton.lineNumbers === false) {
-		component.setAttribute('line-numbers', 'false');
-
-		component.lineNumbers.setAttribute('hidden', '');
-	}
-
-	if (satus.isset(skeleton.cols)) input.cols = skeleton.cols;
-	if (satus.isset(skeleton.rows)) input.rows = skeleton.rows;
-
-	Object.defineProperty(component, 'value', {
-		get: function () {
-			return this.input.value;
-		},
-		set: function (value) {
-			this.input.value = value;
-
-			this.dispatchEvent(new CustomEvent('change'));
-		}
-	});
-
-	if (skeleton.syntax) {
-		component.syntax.set(skeleton.syntax);
-	}
-
-	component.value = component.storage?.value || '';
-
-	selection.setAttribute('disabled', '');
-
-	lineNumbers.update = function () {
-		const component = this.parentNode.parentNode.parentNode,
-			count = component.input.value.split('\n').length;
+	component.lineNumbers.update = function () {
+		const count = component.input.value.split('\n').length;
 
 		if (count !== this.children.length) {
 			satus.empty(this);
@@ -1194,9 +1266,8 @@ satus.components.textField = function (component, skeleton) {
 		component.input.style.paddingLeft = this.offsetWidth + 'px';
 	};
 
-	pre.update = function () {
-		const component = this.parentNode.parentNode.parentNode,
-			handler = component.syntax.handlers[component.syntax.current],
+	component.pre.update = function () {
+		const handler = component.syntax.handlers[component.syntax.current],
 			value = component.value || '';
 
 		satus.empty(this);
@@ -1208,17 +1279,14 @@ satus.components.textField = function (component, skeleton) {
 		}
 
 		if (value.length === 0) {
-			let placeholder = component.placeholder;
-
+			let placeholder = component.skeleton.placeholder;
 			if (satus.isFunction(placeholder)) placeholder = placeholder();
-
 			this.textContent = satus.locale.get(placeholder);
 		}
 	};
 
-	cursor.update = function () {
-		const component = this.parentNode.parentNode.parentNode,
-			hiddenValue = component.hiddenValue,
+	component.cursor.update = function () {
+		const hiddenValue = component.hiddenValue,
 			selection = component.selection,
 			input = component.input,
 			value = input.value,
@@ -1245,7 +1313,7 @@ satus.components.textField = function (component, skeleton) {
 			this.style.top = top + 'px';
 		}
 
-		this.style.left = hiddenValue.offsetWidth + component.lineNumbers.offsetWidth + 'px';
+		this.style.left = hiddenValue.offsetWidth + (component.lineNumbers?.offsetWidth ? component.lineNumbers?.offsetWidth : 0) + 'px';
 
 		if (start === end) {
 			selection.setAttribute('disabled', '');
@@ -1263,57 +1331,77 @@ satus.components.textField = function (component, skeleton) {
 		hiddenValue.textContent = '';
 	};
 
+	if (skeleton.syntax) component.syntax.set(skeleton.syntax);
+	if (satus.isset(skeleton.cols)) component.input.cols = skeleton.cols;
+	if (satus.isset(skeleton.rows)) component.input.rows = skeleton.rows;
+
+	component.focus = function () {
+		this.autofocus = true;
+		this.input.focus();
+	};
+
+	function updateLinePreCursor () {
+		if (component.lineNumbers) component.lineNumbers.update();
+		component.pre.update();
+		component.cursor.update();
+	};
+
+	//component.addEventListener('change', updateLinePreCursor);
+	//component.addEventListener('render', updateLinePreCursor);
+
 	// global listener, make sure we remove when element no longer exists
 	function selectionchange () {
 		if (!document.body.contains(component)) {
 			document.removeEventListener('selectionchange', selectionchange);
 			return;
 		}
-		component.lineNumbers.update();
-		component.pre.update();
-		component.cursor.update();
+
+		updateLinePreCursor();
 	};
 
 	document.addEventListener('selectionchange', selectionchange);
 
-	input.addEventListener('input', function () {
-		const component = this.parentNode.parentNode;
-
-		if (component.storage) component.storage.value = this.value;
-
-		component.lineNumbers.update();
-		component.pre.update();
-		component.cursor.update();
-	});
-
-	input.addEventListener('scroll', function () {
-		const component = this.parentNode.parentNode;
-
+	component.input.addEventListener('scroll', function () {
 		component.display.style.top = -this.scrollTop + 'px';
 		component.display.style.left = -this.scrollLeft + 'px';
 
-		component.lineNumbers.update();
-		component.pre.update();
-		component.cursor.update();
+		updateLinePreCursor();
 	});
+	component.input.addEventListener('input', function () {
+		component.value = this.value;
 
-	component.addEventListener('change', function () {
-		this.lineNumbers.update();
-		this.pre.update();
-		this.cursor.update();
-	});
-
-	component.addEventListener('render', function () {
-		this.lineNumbers.update();
-		this.pre.update();
-		this.cursor.update();
+		updateLinePreCursor();
 	});
 
 	if (skeleton.on?.blur) {
-		input.addEventListener('blur', function (event) {
+		component.input.addEventListener('blur', function (event) {
 			this.parentNode.parentNode.dispatchEvent(new Event(event.type));
 		});
 	}
+
+	Object.defineProperties(component, {
+		default: {
+			get () {
+				let value = '';
+				if (Object.hasOwn(this.skeleton, 'value')) {
+					value = this.skeleton.value;
+					if (satus.isFunction(value)) value = value();
+					value = satus.locale.get(value);
+				}
+				return value;
+			}
+		},
+		value: {
+			get () {
+				return this.input.value;
+			},
+			set (val) {
+				this.input.value = val;
+			},
+			enumerable: true,
+			configurable: true
+		}
+	});
 };
 /*--- CHART ----------------------------------------------------*/
 satus.components.chart = function (component, skeleton) {
@@ -1386,7 +1474,8 @@ satus.components.select = function (component, skeleton) {
 	}
 
 	component.selectElement.addEventListener('change', function () {
-		component.value = this.value;
+		// Option value property in HTML DOM is always DOMString, try to detect and convert integers
+		component.value = (this.value === parseInt(this.value).toString()) ? parseInt(this.value) : this.value;
 	});
 
 	function render () {
@@ -1409,7 +1498,8 @@ satus.components.select = function (component, skeleton) {
 		},
 		value: {
 			get () {
-				return this.selectElement.value;
+				// Option value property in HTML DOM is always DOMString, try to detect and convert integers
+				return (this.selectElement.value === parseInt(this.selectElement.value).toString()) ? parseInt(this.selectElement.value) : this.selectElement.value;
 			},
 			set (val) {
 				this.selectElement.value = val;
@@ -1478,7 +1568,6 @@ satus.components.time = function (component, skeleton) {
 /*--- LAYERS ---------------------------------------------------*/
 satus.components.layers = function (component, skeleton) {
 	component.path = [];
-	component.renderChildren = false;
 	component.baseProvider.layers.push(component);
 	component.layersProvider = component;
 
@@ -1486,24 +1575,27 @@ satus.components.layers = function (component, skeleton) {
 		if (this.path.length > 1) {
 			this.path.pop();
 
-			this.open(this.path.last, false);
+			this.open(this.path.last, true);
 		}
 	};
 
-	component.open = function (skeleton, history) {
+	component.open = function (skeleton, back) {
+		// dont add duplicates to layer history, reopen last layer instead
+		if (!back && this.path.last === skeleton) {
+			this.dispatchEvent(new Event('open'));
+			return;
+		}
+
 		const previous_layer = this.querySelector('.satus-layers__layer:last-child'),
 			layer = this.createChildElement('div', 'layer');
 
-		if (history !== false) {
-			if (previous_layer) {
-				previous_layer.style.animation = 'fadeOut 100ms ease forwards';
-				layer.style.animation = 'fadeInLeft 300ms ease forwards';
-			}
+		if (previous_layer) previous_layer.style.animation = 'fadeOut 100ms ease forwards';
 
-			this.path.push(skeleton);
-		} else {
-			previous_layer.style.animation = 'fadeOut 100ms ease forwards';
+		if (back) {
 			layer.style.animation = 'fadeInRight 150ms ease forwards';
+		} else {
+			layer.style.animation = 'fadeInLeft 300ms ease forwards';
+			this.path.push(skeleton);
 		}
 
 		if (previous_layer) {
@@ -1528,6 +1620,7 @@ satus.components.layers = function (component, skeleton) {
 	};
 
 	component.open(skeleton);
+	component.addEventListener('render', function () {this.dispatchEvent(new Event('open'))});
 };
 /*--- LIST -----------------------------------------------------*/
 satus.components.list = function (component, skeleton) {
@@ -1811,6 +1904,14 @@ satus.components.slider = function (component, skeleton) {
 		component.value += (event.deltaY > 0) ? -Number(this.step) : Number(this.step);
 	});
 
+	if (skeleton.on) {
+		for (const type in skeleton.on) {
+			component.number.addEventListener(type, function (event) {
+				component.dispatchEvent(new Event(event.type));
+			});
+		}
+	}
+
 	component.bar.type = 'range';
 	component.bar.min = skeleton.min || 0;
 	component.bar.max = skeleton.max || 1;
@@ -1819,14 +1920,6 @@ satus.components.slider = function (component, skeleton) {
 	component.bar.addEventListener('input', function () {
 		component.value = this.value;
 	});
-
-	if (skeleton.on) {
-		for (const type in skeleton.on) {
-			component.number.addEventListener(type, function (event) {
-				this.parentNode.parentNode.dispatchEvent(new Event(event.type));
-			});
-		}
-	}
 
 	Object.defineProperties(component, {
 		default: {
@@ -1907,17 +2000,13 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.ctrl) {
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			createElement('key').textContent = 'Ctrl';
 		}
 
 		if (this.data.shift) {
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			createElement('key').textContent = 'Shift';
 		}
@@ -1927,9 +2016,7 @@ satus.components.shortcut = function (component, skeleton) {
 				arrows = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
 				index = arrows.indexOf(key);
 
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			if (index !== -1) {
 				createElement('key').textContent = ['↑', '→', '↓', '←'][index];
@@ -1941,9 +2028,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.wheel) {
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			const mouse = createElement('mouse'),
 				div = document.createElement('div');
@@ -1954,9 +2039,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.click) {
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			const mouse = createElement('mouse'),
 				div = document.createElement('div');
@@ -1967,9 +2050,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.middle) {
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			const mouse = createElement('mouse'),
 				div = document.createElement('div');
@@ -1980,9 +2061,7 @@ satus.components.shortcut = function (component, skeleton) {
 		}
 
 		if (this.data.context) {
-			if (children.length && !children.last.className.endsWith('plus')) {
-				createElement('plus');
-			}
+			if (children.length && !children.last.className.endsWith('plus')) createElement('plus');
 
 			const mouse = createElement('mouse'),
 				div = document.createElement('div');
@@ -2180,13 +2259,38 @@ satus.components.shortcut = function (component, skeleton) {
 		window.addEventListener('wheel', this.mousewheel);
 	});
 
-	component.data = component.storage?.value || {
-		alt: false,
-		ctrl: false,
-		shift: false,
-		keys: {},
-		wheel: 0
-	};
+	Object.defineProperties(component, {
+		default: {
+			get () {
+				return this.skeleton.value || {};
+			}
+		},
+		value: {
+			get () {
+				//return Number(this.input.value);
+			},
+			set (val) {
+				/*this.input.value = val;
+
+				if (this.storage) {
+					if (val === this.default) {
+						this.storage.remove();
+					} else {
+						this.storage.value = val;
+					}
+				}
+
+				this.dispatchEvent(new CustomEvent('change'));
+				*/
+			},
+			enumerable: true,
+			configurable: true
+		}
+	});
+
+	component.data = component.storage ? component.storage.value : component.default;
+
+	//component.value = component.storage ? component.storage.value : component.default;
 
 	component.render(component.valueElement);
 };
@@ -2201,6 +2305,10 @@ satus.components.checkbox = function (component) {
 
 	component.input.addEventListener('change', function () {
 		component.value = this.checked;
+	});
+	
+	component.addEventListener('click', function () {
+		component.input.click();
 	});
 
 	Object.defineProperties(component, {
@@ -2244,7 +2352,6 @@ satus.components.switch = function (component, skeleton) {
 					value = this.skeleton.value;
 					// default value can also be function()
 					if (satus.isFunction(value)) value = value();
-					value = satus.locale.get(value);
 				}
 				return value;
 			}
