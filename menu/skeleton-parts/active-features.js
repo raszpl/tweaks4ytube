@@ -14,13 +14,10 @@ extension.skeleton.header.sectionEnd.menu.on.click.activeFeatures = {
 
 						for (const [key, feature] of Object.entries(features)) {
 							// search returns buttons now, skip those
-							if (feature.component === 'button') {
-								continue;
-							}
+							if (feature.component === 'button') continue;
 
 							let default_value = feature.value,
 								value = feature.storage && satus.storage.get(feature.storage)
-									|| feature.radio && satus.storage.get(feature.radio.group) == feature.radio.value
 									|| satus.storage.get(key),
 								parent_object = feature;
 
@@ -34,7 +31,8 @@ extension.skeleton.header.sectionEnd.menu.on.click.activeFeatures = {
 								}
 							}
 
-							if (satus.isset(value) && value != default_value) {
+							if ((feature.component !== 'radio' && satus.isset(value) && value != default_value)
+								|| (feature.component === 'radio' && satus.isset(value) && value === default_value)) {
 								while (
 									parent_object.parentObject &&
 									!parent_object.parentObject.category
