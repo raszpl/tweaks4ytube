@@ -1,6 +1,4 @@
-/*--------------------------------------------------------------
->>> APPEARANCE
-----------------------------------------------------------------
+/*--- APPEARANCE -----------------------------------------------
 # Header
 # Player
 # Details
@@ -178,7 +176,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 
 				custom_player_size_width: {
 					component: 'text-field',
-					placeholder: '1280',
+					value: 1280,
 					rows: 1,
 					lineNumbers: false
 				},
@@ -188,7 +186,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 				},
 				custom_player_size_height: {
 					component: 'text-field',
-					placeholder: '720',
+					value: 720,
 					rows: 1,
 					lineNumbers: false
 				}
@@ -811,6 +809,10 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 			thumbnails_hide: {
 				component: 'switch',
 				text: 'hideThumbnails'
+			},
+			sidebar_thumb_title_max: {
+				component: 'switch',
+				text: 'Show whole video title'
 			},
 			transcript: {
 				component: 'switch',
