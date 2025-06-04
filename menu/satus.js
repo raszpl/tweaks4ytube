@@ -2265,7 +2265,7 @@ satus.components.shortcut = function (component, skeleton) {
 				return this.skeleton.value || {};
 			}
 		},
-/*		value: {
+		/*		value: {
 			get () {
 				//return Number(this.input.value);
 			},
@@ -2282,7 +2282,7 @@ satus.components.shortcut = function (component, skeleton) {
 
 				this.dispatchEvent(new CustomEvent('change'));
 				*/
-/*			},
+		/*			},
 			enumerable: true,
 			configurable: true
 		}*/
