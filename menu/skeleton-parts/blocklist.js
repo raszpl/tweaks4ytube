@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> BLOCKLIST
---------------------------------------------------------------*/
-
+/*--- BLOCKLIST ----------------------------------------------*/
 extension.skeleton.main.layers.section.blocklist = {
 	component: 'button',
 	variant: 'blocklist',
@@ -37,7 +34,7 @@ extension.skeleton.main.layers.section.blocklist = {
 									var3: '',
 									on: {
 										click: {
-											component: 'modal',
+											component: 'popup',
 											variant: 'confirm',
 											content: function () {return '11234'}
 										}
