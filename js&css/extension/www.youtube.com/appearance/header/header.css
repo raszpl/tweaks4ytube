@@ -1,6 +1,4 @@
-/*--------------------------------------------------------------
->>> HEADER:
-----------------------------------------------------------------
+/*--- HEADER ---------------------------------------------------
 # Position
 # Improve logo
 # Hide right buttons
@@ -10,7 +8,7 @@
 html[it-header_transparent=true] ytd-masthead#masthead {background: transparent !important;}
 html[it-header_transparent=true] #background.ytd-masthead {background-color: rgba(230, 230, 230, 0.1) !important;}
 html[it-header_transparent=true] ytd-masthead[frosted-glass] #background.ytd-masthead {backdrop-filter: blur(1px) !important;}
-html[it-header_transparent=true] {  --ytd-searchbox-background: rgba(var(--ytd-searchbox-background), 0.5) !important;}
+html[it-header_transparent=true] {--ytd-searchbox-background: rgba(var(--ytd-searchbox-background), 0.5) !important;}
 
 /* Header-transparent alternative by @joaolscosta */
 /* Change opacity when scrolling down */
@@ -19,11 +17,19 @@ html[it-header_transparent_alternative=true] ytd-masthead #logo-icon,
 /* Hide country code when scrolling down */
 html[it-header_transparent_alternative=true][data-scroll-direction=down] #country-code,
 /* Hide the filter chips*/
-html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-feed-filter-chip-bar-renderer {display: none !important;}
+html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-feed-filter-chip-bar-renderer {
+	display: none !important;
+}
 /* Define opacity for the icons */
-html[it-header_transparent_alternative=true] ytd-masthead #end {opacity: 1 !important; transition: opacity 2s ease;}	
+html[it-header_transparent_alternative=true] ytd-masthead #end {
+	opacity: 1 !important;
+	transition: opacity 2s ease;
+}	
 /* Show the voice search button when scrolled to the top */
-html[it-header_transparent_alternative=true] #voice-search-button {display: block !important; background-color: black !important;}
+html[it-header_transparent_alternative=true] #voice-search-button {
+	display: block !important;
+	background-color: black !important;
+}
 /* TURN TOP BAR SEARCH BUTTONS BARELY VISIBLE */
 /* Make top header bar transparent */
 html[it-header_transparent_alternative=true] ytd-masthead,
@@ -31,24 +37,32 @@ html[it-header_transparent_alternative=true] ytd-masthead #masthead,
 html[it-header_transparent_alternative=true] ytd-masthead #background,
 html[it-header_transparent_alternative=true] ytd-masthead #search-input.ytd-searchbox-spt,
 html[it-header_transparent_alternative=true] ytd-masthead #search-input.ytd-searchbox-spt-container,
-html[it-header_transparent_alternative=true] ytd-masthead #search-input input {opacity: 0.7 !important; background: transparent; box-shadow: none; border: none;}
+html[it-header_transparent_alternative=true] ytd-masthead #search-input input {
+	opacity: 0.7 !important;
+	background: transparent;
+	box-shadow: none;
+	border: none;
+}
 html[it-header_transparent_alternative=true] ytd-masthead #search-input.ytd-searchbox-spt-container {background-color: transparent !important;}
 html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-masthead #search-input input,
 /* Make other icons barely visible */
-html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-masthead #end {opacity: 0.7 !important;}
+html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-masthead #end {
+	opacity: 0.7 !important;
+}
 /* Make the entire search bar transparent with transparent border */
-html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-masthead #search-input.ytd-searchbox-spt-container {background-color: rgba(255, 255, 255, 0.5) !important; opacity: 0.7 !important;}
+html[it-header_transparent_alternative=true][data-scroll-direction=down] ytd-masthead #search-input.ytd-searchbox-spt-container {
+	background-color: rgba(255, 255, 255, 0.5) !important;
+	opacity: 0.7 !important;
+}
 /* Fill search button with black */
-html[it-header_transparent_alternative=true] ytd-masthead #search-icon-legacy {background-color: black !important; opacity: 1 !important;}
+html[it-header_transparent_alternative=true] ytd-masthead #search-icon-legacy {
+	background-color: black !important;
+	opacity: 1 !important;
+}
 /* Make chips filter bar barely visible */
 html[it-header_transparent_alternative=true] #chips-wrapper {opacity: 0.7 !important;}
 
-
-
-/*--------------------------------------------------------------
-# POSITION
---------------------------------------------------------------*/
-
+/*--- POSITION -----------------------------------------------*/
 html[it-header_position=hidden] #masthead-container:not([it-search_focus=true]),
 html[it-header_position=hidden_on_video_page][data-page-type=video] #masthead-container:not([it-search_focus=true]) {
 	transform: translateY(-100%);
@@ -64,34 +78,34 @@ html[it-header_position=static] tp-yt-app-drawer:not([opened]) #header ytd-topba
 html[it-header_position=static] tp-yt-app-drawer:not([opened]) #header .it-button,
 html[it-header_position=hidden_on_video_page][data-page-type=video] tp-yt-app-drawer#guide #guide-spacer,
 html[it-header_position=hover_on_video_page][data-page-type=video] tp-yt-app-drawer#guide #guide-spacer {
-	display:none;
+	display: none;
 }
 
 html[it-header_position=hover] #masthead-container,
 html[it-header_position=hover] tp-yt-app-drawer,
 html[it-header_position=hover] ytd-mini-guide-renderer,
-html[it-header_position=hover_on_video_page][data-page-type='video'] #masthead-container,
-html[it-header_position=hover_on_video_page][data-page-type='video'] tp-yt-app-drawer,
-html[it-header_position=hover_on_video_page][data-page-type='video'] ytd-mini-guide-renderer,
+html[it-header_position=hover_on_video_page][data-page-type=video] #masthead-container,
+html[it-header_position=hover_on_video_page][data-page-type=video] tp-yt-app-drawer,
+html[it-header_position=hover_on_video_page][data-page-type=video] ytd-mini-guide-renderer,
 html[it-header_position=static] tp-yt-app-drawer,
 html[it-header_position=static] ytd-mini-guide-renderer {
 	z-index: 7 !important;
 }
 
 html[it-header_position=hidden] ytd-page-manager#page-manager,
-html[it-header_position=hidden_on_video_page][data-page-type='video'] ytd-page-manager#page-manager,
+html[it-header_position=hidden_on_video_page][data-page-type=video] ytd-page-manager#page-manager,
 html[it-header_position=hover] ytd-page-manager#page-manager,
-html[it-header_position=hover_on_video_page][data-page-type='video'] ytd-page-manager#page-manager,
-html[it-header_position=hidden][data-page-type='channel'] tp-yt-app-header#header,
-html[it-header_position=hidden_on_video_page][data-page-type='channel'] tp-yt-app-header#header,
-html[it-header_position=hover][data-page-type='channel'] tp-yt-app-header#header,
-html[it-header_position=hover_on_video_page][data-page-type='channel'] tp-yt-app-header#header,
+html[it-header_position=hover_on_video_page][data-page-type=video] ytd-page-manager#page-manager,
+html[it-header_position=hidden][data-page-type=channel] tp-yt-app-header#header,
+html[it-header_position=hidden_on_video_page][data-page-type=channel] tp-yt-app-header#header,
+html[it-header_position=hover][data-page-type=channel] tp-yt-app-header#header,
+html[it-header_position=hover_on_video_page][data-page-type=channel] tp-yt-app-header#header,
 html[it-header_position=static] ytd-page-manager#page-manager {
 	margin-top: 0;
 }
 
 html[it-header_position=hover]:not([it-improvedtube_search=true]) #masthead-container,
-html[it-header_position=hover_on_video_page][data-page-type='video']:not([it-improvedtube_search=true]) #masthead-container {
+html[it-header_position=hover_on_video_page][data-page-type=video]:not([it-improvedtube_search=true]) #masthead-container {
 	transition: all 320ms ease-in-out;
 	transform: translateY(-38%);
 	height: 68px;
@@ -103,15 +117,15 @@ html[it-header_position=hidden_on_video_page][data-page-type=video] #masthead-co
 html[it-header_position=hover] #masthead-container:hover,
 html[it-header_position=hover] #masthead-container:focus-within,
 html[it-header_position=hover][it-search_focus=true] #masthead-container,
-html[it-header_position=hover_on_video_page][data-page-type='video'] #masthead-container:hover,
-html[it-header_position=hover_on_video_page][data-page-type='video'] #masthead-container:focus-within,
-html[it-header_position=hover_on_video_page][data-page-type='video'][it-search_focus=true] #masthead-container,
+html[it-header_position=hover_on_video_page][data-page-type=video] #masthead-container:hover,
+html[it-header_position=hover_on_video_page][data-page-type=video] #masthead-container:focus-within,
+html[it-header_position=hover_on_video_page][data-page-type=video][it-search_focus=true] #masthead-container,
 html[it-header_position=hover] #masthead-container:hover #background,
 html[it-header_position=hover] #masthead-container:focus-within #background,
 html[it-header_position=hover][it-search_focus=true] #masthead-container #background,
-html[it-header_position=hover_on_video_page][data-page-type='video'] #masthead-container:hover #background,
-html[it-header_position=hover_on_video_page][data-page-type='video'] #masthead-container:focus-within #background,
-html[it-header_position=hover_on_video_page][data-page-type='video'][it-search_focus=true] #masthead-container #background {
+html[it-header_position=hover_on_video_page][data-page-type=video] #masthead-container:hover #background,
+html[it-header_position=hover_on_video_page][data-page-type=video] #masthead-container:focus-within #background,
+html[it-header_position=hover_on_video_page][data-page-type=video][it-search_focus=true] #masthead-container #background {
 	transform: translateY(0%);
 	opacity: 1 !important;
 }
@@ -145,31 +159,26 @@ html[it-header_position=hidden] #chips-wrapper.ytd-feed-filter-chip-bar-renderer
 html[it-header_position=static] #chips-wrapper.ytd-feed-filter-chip-bar-renderer {
 	top: 9px !important;
 }*/
-/*--------------------------------------------------------------
-# WEBSITE LOGO
---------------------------------------------------------------*/
-html[it-header_hide_logo='true'] #logo-icon yt-icon-shape,
-html[it-header_hide_logo='true'] #logo-icon .yt-icon-shape {
-	visibility:hidden;
+/*--- WEBSITE LOGO -------------------------------------------*/
+html[it-header_hide_logo=true] #logo-icon yt-icon-shape,
+html[it-header_hide_logo=true] #logo-icon .yt-icon-shape {
+	visibility: hidden;
 }
-html[it-header_improve_logo='true'] ytd-topbar-logo-renderer path[fill='#FF0000'],
-html[it-header_improve_logo='true'] ytd-topbar-logo-renderer polygon[fill='#FFFFFF'] {
+html[it-header_improve_logo=true] ytd-topbar-logo-renderer path[fill='#FF0000'],
+html[it-header_improve_logo=true] ytd-topbar-logo-renderer polygon[fill='#FFFFFF'] {
 	fill: rgb(44, 44, 44) !important;
 }
-html[it-header_improve_logo='true'][dark] ytd-topbar-logo-renderer path[fill='#FF0000'] {
+html[it-header_improve_logo=true][dark] ytd-topbar-logo-renderer path[fill='#FF0000'] {
 	fill: rgb(70, 70, 70) !important;
 }
-/*--------------------------------------------------------------
-# HIDE RIGHT BUTTONS
---------------------------------------------------------------*/
-html[it-header_hide_right_buttons='true'] #masthead #container #end {visibility: hidden !important; pointer-events: none !important;}
-/*--------------------------------------------------------------
-# HIDE COUNTRY CODE
---------------------------------------------------------------*/
-html[it-header_hide_country_code='true'] #logo #country-code,
-/*--------------------------------------------------------------
-# HIDE VOICE SEARCH BUTTON
---------------------------------------------------------------*/
-html[it-hide_voice_search_button='true'] #voice-search-button  {
+/*--- HIDE RIGHT BUTTONS -------------------------------------*/
+html[it-header_hide_right_buttons=true] #masthead #container #end {
+	visibility: hidden !important;
+	pointer-events: none !important;
+}
+/*--- HIDE COUNTRY CODE --------------------------------------*/
+html[it-header_hide_country_code=true] #logo #country-code,
+/*--- HIDE VOICE SEARCH BUTTON -------------------------------*/
+html[it-hide_voice_search_button=true] #voice-search-button  {
 	display: none !important;
 }

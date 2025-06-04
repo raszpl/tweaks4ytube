@@ -1,6 +1,4 @@
-/*--------------------------------------------------------------
->>> PLAYER
-----------------------------------------------------------------
+/*--- PLAYER ---------------------------------------------------
 # Hide shadow around player bar
 # Always show progress bar
 # Transparent background
@@ -12,10 +10,7 @@
 # Player Size
 --------------------------------------------------------------*/
 html[it-ambient_lighting=false] #cinematics {display: none !important;}
-/*--------------------------------------------------------------
-# ALWAYS SHOW PROGRESS BAR
---------------------------------------------------------------*/
-
+/*--- ALWAYS SHOW PROGRESS BAR -------------------------------*/
 html[it-always_show_progress_bar=true] .html5-video-player:not(.it-mini-player).ytp-autohide .ytp-chrome-bottom {
 	opacity: 1 !important;
 }
@@ -32,10 +27,7 @@ html[it-always_show_progress_bar=true] .DesktopShortsPlayerControlsHostHideProgr
     visibility: visible;
 }
 
-/*--------------------------------------------------------------
-# COLOR
---------------------------------------------------------------*/
-
+/*--- COLOR --------------------------------------------------*/
 html[it-player_color=pink] {
 	--it-player-color: #e91e63;
 }
@@ -119,11 +111,7 @@ html[it-player-color]:not([it-player_color=red]):not([it-player_color=normal]) .
 	color: var(--it-player-color) !important;
 }
 
-
-/*--------------------------------------------------------------
-# TRANSPARENT BACKGROUND
---------------------------------------------------------------*/
-
+/*--- TRANSPARENT BACKGROUND ---------------------------------*/
 html[it-player_transparent_background=true] #player-theater-container,
 html[it-player_transparent_background=true] #theater-background,
 html[it-player_transparent_background=true] #player-api,
@@ -134,18 +122,11 @@ html[it-player_transparent_background=true] #movie_player video {
 	background-color: transparent !important;
 }
 
-
-/*--------------------------------------------------------------
-# VIDEO TITLE IN FULLSCREEN
---------------------------------------------------------------*/
+/*--- VIDEO TITLE IN FULLSCREEN ------------------------------*/
 html[it-hide_video_title_fullScreen=true] .ytp-title-text > a,
-/*--------------------------------------------------------------
-# SHADOW AROUND PLAYER BAR
---------------------------------------------------------------*/
+/*--- SHADOW AROUND PLAYER BAR -------------------------------*/
 html[it-hide_gradient_bottom=true] .ytp-gradient-bottom,
-/*------------------------------------------------------------------------------
-# CONTROLS 
-------------------------------------------------------------------------------*/
+/*--- CONTROLS ---------------------------------------------------------------*/
 html[it-player_play_button=true] .ytp-play-button,
 html[it-player_previous_button=true] .ytp-prev-button,
 html[it-player_next_button=true] .ytp-next-button,
@@ -157,26 +138,18 @@ html[it-player_miniplayer_button=true] .ytp-miniplayer-button,
 html[it-player_view_button=true] .ytp-size-button,
 html[it-player_screen_button=true] .ytp-fullscreen-button,
 html[it-player_remote_button=true] .ytp-remote-button,
-/*--------------------------------------------------------------
-# HIDE ANNOTATIONS
---------------------------------------------------------------*/
+/*--- HIDE ANNOTATIONS ---------------------------------------*/
 html[it-player_hide_annotations=true] .annotation,
 html[it-player_hide_annotations=true] .annotation-type-text,
 html[it-player_hide_annotations=true] .annotation-shape,
-/*--------------------------------------------------------------
-# HIDE ENDSCREEN
---------------------------------------------------------------*/
+/*--- HIDE ENDSCREEN -----------------------------------------*/
 html[it-player_hide_endscreen=true] .html5-endscreen,
-/*--------------------------------------------------------------
-# HIDE CARDS
---------------------------------------------------------------*/
+/*--- HIDE CARDS ---------------------------------------------*/
 html[it-player_hide_cards=true] .ytp-ce-element,
 html[it-player_hide_cards=true] .ytp-ce-video,
 html[it-player_hide_cards=true] .ytp-cards-button,
 html[it-player_hide_cards=true] .ytp-cards-teaser,
-/*--------------------------------------------------------------
-# SHOW CARDS ON MOUSE HOVER
---------------------------------------------------------------*/
+/*--- SHOW CARDS ON MOUSE HOVER ------------------------------*/
 html[it-player_show_cards_on_mouse_hover=true] .html5-video-player:not(:hover) .ytp-ce-element,
 html[it-player_show_cards_on_mouse_hover=true] .html5-video-player:not(:hover) .ytp-ce-video,
 html[it-player_show_cards_on_mouse_hover=true] .html5-video-player:not(:hover) .ytp-cards-button,
@@ -191,10 +164,7 @@ html[it-player_show_cards_on_mouse_hover=true] .html5-video-player:hover .ytp-ca
 	display: block !important;
 }
 
-/*--------------------------------------------------------------
-# HIDE "SCROLL FOR DETAILS"
---------------------------------------------------------------*/
-
+/*--- HIDE "SCROLL FOR DETAILS" ------------------------------*/
 html[it-hide_scroll_for_details=true] button.ytp-fullerscreen-edu-button {
 	display: none !important;
 }
@@ -203,16 +173,11 @@ html[it-hide_scroll_for_details=true] ytd-app[scrolling_] {
 	overflow: hidden !important;
 }
 
-/*--------------------------------------------------------------
-# Player Size
---------------------------------------------------------------*/
+/*--- Player Size --------------------------------------------*/
 /*required for firefox autoplay:off only: */
 html[data-page-type=video][it-player-size]:not([it-player_size=do_not_change]) #movie-player .ytp-cued-thumbnail-overlay {z-index:10}
 
- /*--------------------------------------------------------------
-# NORMAL
---------------------------------------------------------------*/
-
+ /*--- NORMAL ------------------------------------------------*/
 html[data-page-type=video]:not([it-header-position]) ytd-app,
 html[data-page-type=video][it-header_position=normal] ytd-app,
 html[data-page-type=video][it-header_position=static] ytd-app {
@@ -238,10 +203,7 @@ html[data-page-type=video][it-header_position=static] div#page:not(.watch-wide) 
 } */
 
 
-/*--------------------------------------------------------------
-# HIDDEN
---------------------------------------------------------------*/
-
+/*--- HIDDEN -------------------------------------------------*/
 html[data-page-type=video][it-header_position=hidden],
 html[data-page-type=video][it-header_position=hidden_on_video_page] {
 	--it-header-size: 0px;
@@ -262,11 +224,7 @@ html[data-page-type=video][it-header_position=hidden_on_video_page] div#page:not
 	--it-header-size: 20px;
 }
 
-
-/*--------------------------------------------------------------
-# HOVER
---------------------------------------------------------------*/
-
+/*--- HOVER --------------------------------------------------*/
 html[data-page-type=video][it-header_position=hover],
 html[data-page-type=video][it-header_position=hover_on_video_page] {
 	--it-header-size: 14px;
@@ -302,10 +260,7 @@ html[data-page-type=video][it-header_position=hover_on_video_page] ytd-app:not([
 	margin-top: 14px;
 }
 
- /*--------------------------------------------------------------
-# FIXED PLAYER SIZE
---------------------------------------------------------------*/
-
+/*--- FIXED PLAYER SIZE --------------------------------------*/
 html[data-page-type=video][it-player_size='240p'],
 html[data-page-type=video][it-player_size='360p'],
 html[data-page-type=video][it-player_size='480p'],
@@ -349,9 +304,7 @@ html[data-page-type=video][it-player_size='2160p'] {
 	--it-player-size: 2160px;
 }
 
-/*--------------------------------------------------------------
-# MAX WIDTH ON PAGE
---------------------------------------------------------------*/
+/*--- MAX WIDTH ON PAGE --------------------------------------*/
 html[data-page-type=video][it-player_size=max_width] ytd-browse > ytd-two-column-browse-results-renderer:not([page-subtype=subscriptions]) {
 	width: auto !important;
 	max-width: none !important;
@@ -365,7 +318,7 @@ html[data-page-type=video][it-player_size=max_width] ytd-watch-flexy:not([fullsc
 
 html[data-page-type=video][it-player_size=max_width] ytd-watch-flexy:not([fullscreen]) #below {
 	margin-left: max(18px, calc(21vw - 230px)) !important;
-	margin-right:max(18px, calc(13vw - 130px)) !important;
+	margin-right: max(18px, calc(13vw - 130px)) !important;
 	max-width: 1600px !important;
 	} 
 
@@ -403,10 +356,7 @@ html[data-page-type=video][it-player_size=max_width] .ytp-fit-cover-video .html5
 	object-fit: contain !important;
 }
 	
-/*--------------------------------------------------------------
-# FULL HEIGHT  "Full window"
---------------------------------------------------------------*/
-
+/*--- FULL HEIGHT  "Full window" -----------------------------*/
 /*outdated line?*/ html[data-page-type=video][it-player_size=full_window] ytd-watch-flexy[theater]:not([fullscreen]) #player-wide-container, 
 html[data-page-type=video][it-player_size=fit_to_window] ytd-watch-flexy[full-bleed-player]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy,
 html[data-page-type=video][it-player_size=full_window] ytd-watch-flexy[full-bleed-player]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy {
@@ -437,25 +387,19 @@ html[data-page-type=video][it-player_size=full_window] .html5-video-player {
     top: unset !important;*/
 }
 
-/*--------------------------------------------------------------
-#  "FIT TO WINDOW"  (needs update)
---------------------------------------------------------------*/
-
+/*--- "FIT TO WINDOW"  (needs update) ------------------------*/
 html[data-page-type=video][it-player_size=fit_to_window] {
 	--it-player-size: 100vh;
 }
 html[data-page-type=video][it-player_size=fit_to_window] ytd-watch-flexy[default-layout]:not([no-top-margin]):not([reduced-top-margin]) #primary {
-	padding-top:0
+	padding-top: 0;	
 }
 
 html[data-page-type=video][it-player_size=fit_to_window] .ytp-fit-cover-video .html5-main-video {
 	object-fit: contain !important;
 }
 	
-/*--------------------------------------------------------------
-# ELEMENTS
---------------------------------------------------------------*/
-
+/*--- ELEMENTS -----------------------------------------------*/
 html[data-page-type=video][it-player-size]:not([it-player_size=do_not_change]):not([it-player_size=custom]):not([it-player_size=normal]):not([it-player_size=fit_to_window]) ytd-app:not([player-fullscreen_]) ytd-watch-flexy:not([fullscreen]) #player-container-inner {
 	padding-top: calc(var(--it-player-size, 100vh) - var(--it-header-size, 0)) !important;
 }
@@ -491,10 +435,7 @@ html[data-page-type=video][it-player-size]:not([it-player_size=do_not_change]):n
 }
 
 
-/*--------------------------------------------------------------
-# THEATER: ON
---------------------------------------------------------------*/
-
+/*--- THEATER: ON --------------------------------------------*/
 html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-fullscreen_]) ytd-watch-flexy[theater]:not([fullscreen]) #player-theater-container {
 	height: auto !important;
 	min-height: 0 !important;
@@ -518,7 +459,6 @@ html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-ful
 	align-items: center !important;
 }
 
-
 html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-fullscreen_]) ytd-watch-flexy[theater]:not([fullscreen]) video {
 	position: static !important;
 /*	width: auto !important;
@@ -536,10 +476,7 @@ html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-ful
 	--width: calc(var(--height) * var(--ratio));
 }
 
-/*--------------------------------------------------------------
-# THEATER: OFF
---------------------------------------------------------------*/
-
+/*--- THEATER: OFF -------------------------------------------*/
 html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-fullscreen_]) ytd-watch-flexy:not([theater]):not([fullscreen]) #player-container-inner {
 	padding-top: 0 !important;
 }
@@ -547,7 +484,6 @@ html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-ful
 html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-fullscreen_]) ytd-watch-flexy:not([theater]):not([fullscreen]) #player-container {
 	position: static !important;
 }
-
 
 html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-fullscreen_]) ytd-watch-flexy:not([theater]):not([fullscreen]) .html5-video-player {
 	width: auto;
@@ -562,10 +498,7 @@ html[data-page-type=video][it-player_size=fit_to_window] ytd-app:not([player-ful
 	max-height: none !important;
 }
 
-/*--------------------------------------------------------------
-# CUSTOM PLAYER SIZE
---------------------------------------------------------------*/
-
+/*--- CUSTOM PLAYER SIZE -------------------------------------*/
 html[data-page-type=video][it-player_size=custom] ytd-app:not([player-fullscreen_]) ytd-watch-flexy:not([theater]):not([fullscreen]) #player-container,
 html[data-page-type=video][it-player_size=custom] ytd-app:not([player-fullscreen_]) ytd-watch-flexy[theater]:not([fullscreen]) #player-theater-container {
 	width: var(--it-player-width, 64vw) !important;
@@ -579,19 +512,13 @@ html[data-page-type=video][it-player_size=custom] ytd-app:not([player-fullscreen
 	padding-top: var(--it-player-height) !important;
 }
 
-/*--------------------------------------------------------------
-# SKIP OVERLAY
---------------------------------------------------------------*/
-
+/*--- SKIP OVERLAY -------------------------------------------*/
 html[it-player_hide_skip_overlay=true] .ytp-doubletap-ui,
 html[it-player_hide_skip_overlay=true] .ytp-doubletap-ui-legacy {
     visibility: hidden;
 }
 
-/*--------------------------------------------------------------
-# REMOVE BLACK BARS IN FULL SCREEN MODE
---------------------------------------------------------------*/
-
+/*--- REMOVE BLACK BARS IN FULL SCREEN MODE ------------------*/
 html[data-page-type=video][it-remove_black_bars=true] ytd-watch-flexy[fullscreen] .html5-video-container {
 	height: 100%;
 	width: 100%;

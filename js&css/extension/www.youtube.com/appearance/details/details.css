@@ -1,156 +1,139 @@
-/*--------------------------------------------------------------
->>> DETAILS  
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# General
---------------------------------------------------------------*/
-#info #info-text {max-height: 6rem; display: block;}
-html:not([it-below_player_screenshot='false']) #above-the-fold  #channel-name,
-html:not([it-below_player_pip='false']) #above-the-fold  #channel-name,
-html[it-below_player_loop='true'] #above-the-fold  #channel-name { max-height: max(25px, 1.5vw) }
- /*--------------------------------------------------------------
-YouTube's Detail Buttons
---------------------------------------------------------------*/
-html[it-youtubeDetailButtons='hide_labels'] #subscribe-button .yt-spec-button-shape-next__button-text-content,
-html[it-youtubeDetailButtons='hide_labels']  #menu button div:nth-child(2) {visibility:hidden}
-html[it-youtubeDetailButtons='half_transparent'] #subscribe-button button,
-html[it-youtubeDetailButtons='half_transparent'] #menu button {opacity:0.5;}
-html[it-youtubeDetailButtons='transparent_background'] #subscribe-button button,
-html[it-youtubeDetailButtons='transparent_background'] #menu button {background-color:rgba(0, 0, 0, 0.2) !important;}  
-html[it-youtubeDetailButtons='transparent_background'] #subscribe-button button {color:#111 !important;}
-	/*------SHOW my DISLIKE in RED------*/  
-html[it-red_dislike_button='true'] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer *[aria-pressed='true'] yt-icon {color: #f02200 !important;}
-	/*------SUBSCRIBE BUTTON------*/  
-html[it-subscribe='grey'] #subscribe-button button {background-color: #DDD !important; color:#111 !important;}
-html[it-subscribe='transparent'] #subscribe-button button {background-color:rgba(0, 0, 0, 0.4) !important; color:#111 !important;}
-	/*  DISPLAY: NONE;*/
-html[it-subscribe='remove_label'] #subscribe-button button .yt-spec-button-shape-next__button-text-content,
-html[it-subscribe='hidden'] #subscribe-button,
-html[it-join='remove_label'] #sponsor-button button .yt-spec-button-shape-next__button-text-content,
-html[it-join='hidden'] #sponsor-button,
-html[it-purchase='remove_label'] #purchase-button button .yt-spec-button-shape-next__button-text-content,
-html[it-purchase='hidden'] #purchase-button,
-html[it-youtubeDetailButtons='remove_labels'] #menu button div:nth-child(2), 
-html[it-youtubeDetailButtons='remove_labels'] #menu button .yt-spec-button-shape-next__button-text-content, 
-html[it-youtubeDetailButtons='remove_labels'] #subscribe-button .yt-spec-button-shape-next__button-text-content,
-html[it-youtubeDetailButtons='remove'] #menu button,
-html[it-youtubeDetailButtons='remove'] #subscribe-button button,
-html[it-youtubeDetailButtons='remove_icons']  #menu button div:first-child,
+/*--- DETAILS ------------------------------------------------*/
+
+/*--- General ------------------------------------------------*/
+#info #info-text {
+	max-height: 6rem;
+	display: block;
+}
+html:not([it-below_player_screenshot=false]) #above-the-fold #channel-name,
+html:not([it-below_player_pip=false]) #above-the-fold #channel-name,
+html[it-below_player_loop=true] #above-the-fold #channel-name {
+	max-height: max(25px, 1.5vw);
+}
+ /*--- YouTube's Detail Buttons ------------------------------*/
+html[it-youtubeDetailButtons=hide_labels] #subscribe-button .yt-spec-button-shape-next__button-text-content,
+html[it-youtubeDetailButtons=hide_labels] #menu button div:nth-child(2) {
+	visibility:hidden;
+}
+html[it-youtubeDetailButtons=half_transparent] #subscribe-button button,
+html[it-youtubeDetailButtons=half_transparent] #menu button {
+	opacity:0.5;
+}
+html[it-youtubeDetailButtons=transparent_background] #subscribe-button button,
+html[it-youtubeDetailButtons=transparent_background] #menu button {
+	background-color:rgba(0, 0, 0, 0.2) !important;
+}
+html[it-youtubeDetailButtons=transparent_background] #subscribe-button button {color:#111 !important;}
+	/*------SHOW my DISLIKE in RED------*/
+html[it-red_dislike_button=true] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer *[aria-pressed=true] yt-icon {color: #f02200 !important;}
+	/*------SUBSCRIBE BUTTON------*/
+html[it-subscribe=grey] #subscribe-button button {
+	background-color: #DDD !important;
+	color:#111 !important;
+}
+html[it-subscribe=transparent] #subscribe-button button {
+	background-color:rgba(0, 0, 0, 0.4) !important;
+	color:#111 !important;
+}
+	/* DISPLAY: NONE;*/
+html[it-subscribe=remove_label] #subscribe-button button .yt-spec-button-shape-next__button-text-content,
+html[it-subscribe=hidden] #subscribe-button,
+html[it-join=remove_label] #sponsor-button button .yt-spec-button-shape-next__button-text-content,
+html[it-join=hidden] #sponsor-button,
+html[it-purchase=remove_label] #purchase-button button .yt-spec-button-shape-next__button-text-content,
+html[it-purchase=hidden] #purchase-button,
+html[it-youtubeDetailButtons=remove_labels] #menu button div:nth-child(2),
+html[it-youtubeDetailButtons=remove_labels] #menu button .yt-spec-button-shape-next__button-text-content,
+html[it-youtubeDetailButtons=remove_labels] #subscribe-button .yt-spec-button-shape-next__button-text-content,
+html[it-youtubeDetailButtons=remove] #menu button,
+html[it-youtubeDetailButtons=remove] #subscribe-button button,
+html[it-youtubeDetailButtons=remove_icons] #menu button div:first-child,
 	/*------HIDE LIKE BUTTON------*/
-html[it-likes='hidden']	like-button-view-model,
-html[it-likes='icons_only'] like-button-view-model .yt-spec-button-shape-next__button-text-content,
+html[it-likes=hidden]	like-button-view-model,
+html[it-likes=icons_only] like-button-view-model .yt-spec-button-shape-next__button-text-content,
 	/*------HIDE DISLIKE BUTTON------*/
-html[it-hide_dislike_button='hidden']	dislike-button-view-model,
-html[it-hide_dislike_button='icons_only'] dislike-button-view-model .yt-spec-button-shape-next__button-text-content,
+html[it-hide_dislike_button=hidden]	dislike-button-view-model,
+html[it-hide_dislike_button=icons_only] dislike-button-view-model .yt-spec-button-shape-next__button-text-content,
 /*previous:*/
-html[it-likes='hidden'] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer,
-html[it-likes='icons_only'] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer div.yt-spec-button-shape-next__button-text-content,
-html[it-likes='icons_only'] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer yt-animated-rolling-number,
-html[it-likes='icons_only'] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer .yt-spec-button-shape-next__button-text-content,
-html[it-hide_dislike_button='hidden'] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer,
-html[it-hide_dislike_button='icons_only'] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer div.yt-spec-button-shape-next__button-text-content,
-html[it-hide_dislike_button='icons_only'] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer yt-animated-rolling-number,
-html[it-hide_dislike_button='icons_only'] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer .yt-spec-button-shape-next__button-text-content,
+html[it-likes=hidden] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer,
+html[it-likes=icons_only] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer div.yt-spec-button-shape-next__button-text-content,
+html[it-likes=icons_only] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer yt-animated-rolling-number,
+html[it-likes=icons_only] #top-level-buttons-computed #segmented-like-button ytd-toggle-button-renderer .yt-spec-button-shape-next__button-text-content,
+html[it-hide_dislike_button=hidden] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer,
+html[it-hide_dislike_button=icons_only] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer div.yt-spec-button-shape-next__button-text-content,
+html[it-hide_dislike_button=icons_only] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer yt-animated-rolling-number,
+html[it-hide_dislike_button=icons_only] #top-level-buttons-computed #segmented-dislike-button ytd-toggle-button-renderer .yt-spec-button-shape-next__button-text-content,
 	/*------# HIDE SHARE BUTTON------*/
-html[it-hide_share_button='hidden'] #menu button:has(svg path[d^="M15 5.63 20.66"]),
-html[it-hide_share_button='hidden'] #flexible-item-buttons button:has(svg path[d^="M15 5.63 20.66"]),
-html[it-hide_share_button='icons_only'] #menu button:has(svg path[d^="M15 5.63 20.66"]) div:nth-child(2),
-html[it-hide_share_button='icons_only'] #menu button:has(svg path[d^="M15 5.63 20.66"]) .yt-spec-button-shape-next__button-text-content, 
+html[it-hide_share_button=hidden] #menu button:has(svg path[d^="M15 5.63 20.66"]),
+html[it-hide_share_button=hidden] #flexible-item-buttons button:has(svg path[d^="M15 5.63 20.66"]),
+html[it-hide_share_button=icons_only] #menu button:has(svg path[d^="M15 5.63 20.66"]) div:nth-child(2),
+html[it-hide_share_button=icons_only] #menu button:has(svg path[d^="M15 5.63 20.66"]) .yt-spec-button-shape-next__button-text-content,
 	/*------# HIDE DOWNLOAD BUTTON------*/
-html[it-hide_download_button='hidden']	ytd-download-button-renderer,
-html[it-hide_download_button='icons_only'] ytd-download-button-renderer #text,
-html[it-hide_download_button='hidden'] #menu button:has(svg path[d^="M17 18v1H6v-1h11"]),
-html[it-hide_download_button='hidden'] #flexible-item-buttons button:has(svg path[d^="M17 18v1H6v-1h11"]),
-html[it-hide_download_button='icons_only'] #menu button:has(svg path[d^="M17 18v1H6v-1h11"]) div:nth-child(2),
-html[it-hide_download_button='icons_only'] #menu button:has(svg path[d^="M17 18v1H6v-1h11"]) .yt-spec-button-shape-next__button-text-content, 
+html[it-hide_download_button=hidden]	ytd-download-button-renderer,
+html[it-hide_download_button=icons_only] ytd-download-button-renderer #text,
+html[it-hide_download_button=hidden] #menu button:has(svg path[d^="M17 18v1H6v-1h11"]),
+html[it-hide_download_button=hidden] #flexible-item-buttons button:has(svg path[d^="M17 18v1H6v-1h11"]),
+html[it-hide_download_button=icons_only] #menu button:has(svg path[d^="M17 18v1H6v-1h11"]) div:nth-child(2),
+html[it-hide_download_button=icons_only] #menu button:has(svg path[d^="M17 18v1H6v-1h11"]) .yt-spec-button-shape-next__button-text-content,
 	/*------# HIDE THANKS BUTTON------*/
-html[it-hide_thanks_button='hidden'] #menu button:has(svg path[d^="M11 17h2v-1h1c.55 0"]),
-html[it-hide_thanks_button='hidden'] #flexible-item-buttons button:has(svg path[d^="M11 17h2v-1h1c.55 0"]),
-html[it-hide_thanks_button='hidden'] ytd-menu-service-item-renderer:has(svg path[d^="M11 17h2v-1h1c.55 0"]),
-html[it-hide_thanks_button='icons_only'] #menu button:has(svg path[d^="M11 17h2v-1h1c.55 0"]) div:nth-child(2),
-html[it-hide_thanks_button='icons_only'] #menu button:has(svg path[d^="M11 17h2v-1h1c.55 0"]) .yt-spec-button-shape-next__button-text-content,
+html[it-hide_thanks_button=hidden] #menu button:has(svg path[d^="M11 17h2v-1h1c.55 0"]),
+html[it-hide_thanks_button=hidden] #flexible-item-buttons button:has(svg path[d^="M11 17h2v-1h1c.55 0"]),
+html[it-hide_thanks_button=hidden] ytd-menu-service-item-renderer:has(svg path[d^="M11 17h2v-1h1c.55 0"]),
+html[it-hide_thanks_button=icons_only] #menu button:has(svg path[d^="M11 17h2v-1h1c.55 0"]) div:nth-child(2),
+html[it-hide_thanks_button=icons_only] #menu button:has(svg path[d^="M11 17h2v-1h1c.55 0"]) .yt-spec-button-shape-next__button-text-content,
 	/*------# HIDE CLIP BUTTON------*/
-html[it-hide_clip_button='hidden'] #menu button:has(svg path[d^="M8 7c0 .55-.45 1-1"]),
-html[it-hide_clip_button='hidden'] #flexible-item-buttons button:has(svg path[d^="M8 7c0 .55-.45 1-1"]),
-html[it-hide_clip_button='icons_only'] #menu button:has(svg path[d^="M8 7c0 .55-.45 1-1"]) div:nth-child(2),
-html[it-hide_clip_button='icons_only'] #menu button:has(svg path[d^="M8 7c0 .55-.45 1-1"]) .yt-spec-button-shape-next__button-text-content,
+html[it-hide_clip_button=hidden] #menu button:has(svg path[d^="M8 7c0 .55-.45 1-1"]),
+html[it-hide_clip_button=hidden] #flexible-item-buttons button:has(svg path[d^="M8 7c0 .55-.45 1-1"]),
+html[it-hide_clip_button=icons_only] #menu button:has(svg path[d^="M8 7c0 .55-.45 1-1"]) div:nth-child(2),
+html[it-hide_clip_button=icons_only] #menu button:has(svg path[d^="M8 7c0 .55-.45 1-1"]) .yt-spec-button-shape-next__button-text-content,
 	/*------# HIDE SAVE BUTTON------*/
-html[it-hide_save_button='hidden'] #menu button:has(svg path[d^="M22 13h-4v4h-2v-4h"]),
-html[it-hide_save_button='hidden'] #flexible-item-buttons button:has(svg path[d^="M22 13h-4v4h-2v-4h"]),
-html[it-hide_save_button='icons_only'] #menu button:has(svg path[d^="M22 13h-4v4h-2v-4h"]) div:nth-child(2),
-html[it-hide_save_button='icons_only'] #menu button:has(svg path[d^="M22 13h-4v4h-2v-4h"]) .yt-spec-button-shape-next__button-text-content,
+html[it-hide_save_button=hidden] #menu button:has(svg path[d^="M22 13h-4v4h-2v-4h"]),
+html[it-hide_save_button=hidden] #flexible-item-buttons button:has(svg path[d^="M22 13h-4v4h-2v-4h"]),
+html[it-hide_save_button=icons_only] #menu button:has(svg path[d^="M22 13h-4v4h-2v-4h"]) div:nth-child(2),
+html[it-hide_save_button=icons_only] #menu button:has(svg path[d^="M22 13h-4v4h-2v-4h"]) .yt-spec-button-shape-next__button-text-content,
 	/*------HIDE REPORT BUTTON------*/
-html[it-hide_report_button='true'] #top-level-buttons-computed button#Report-button,
-html[it-hide_report_button='true'] #menu button:has(svg path[d^="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14"]),
-html[it-hide_report_button='true'] #flexible-item-buttons button:has(svg path[d^="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14"]), 
+html[it-hide_report_button=true] #top-level-buttons-computed button#Report-button,
+html[it-hide_report_button=true] #menu button:has(svg path[d^="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14"]),
+html[it-hide_report_button=true] #flexible-item-buttons button:has(svg path[d^="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14"]),
 	/*------HIDE MORE BUTTON------*/
-html[it-hide_more_button='true'] #menu #button [class*="dropdown"],
-html[it-hide_more_button='true'] #menu button:has(svg path[d^="M7.5 12c0 .83-.67 1.5-1. 1."]), 
-   /* previous "more"-svg and dom: */
-html[it-hide_more_button='true'] #menu yt-button-shape#button-shape,
-html[it-hide_more_button='true'] #menu button:has(svg path[d^="M7.5,12c0,0.83-0.67,1.5-1.5"]), 
-html[it-hide_more_button='true'] #flexible-item-buttons button:has(svg path[d^="M7.5,12c0,0.83-0.67,1.5-1.5"]),
+html[it-hide_more_button=true] #menu #button [class*="dropdown"],
+html[it-hide_more_button=true] #menu button:has(svg path[d^="M7.5 12c0 .83-.67 1.5-1. 1."]),
+	/* previous "more"-svg and dom: */
+html[it-hide_more_button=true] #menu yt-button-shape#button-shape,
+html[it-hide_more_button=true] #menu button:has(svg path[d^="M7.5,12c0,0.83-0.67,1.5-1.5"]),
+html[it-hide_more_button=true] #flexible-item-buttons button:has(svg path[d^="M7.5,12c0,0.83-0.67,1.5-1.5"]),
 	/*------# HIDE DETAILS-------------*/
-html[it-hide_details='true'] ytd-video-primary-info-renderer,
-html[it-hide_details='true'] ytd-video-secondary-info-renderer,
-html[it-hide_details='true'] ytd-watch-metadata,
+html[it-hide_details=true] ytd-video-primary-info-renderer,
+html[it-hide_details=true] ytd-video-secondary-info-renderer,
+html[it-hide_details=true] ytd-watch-metadata,
 	/*------# HIDE VIEWS COUNT-----*/
-html[it-hide_views_count='true'] #info #count,
-html[it-hide_views_count='true'] #info #count + #info-strings>#dot,
-html[it-hide_views_count='true'] ytd-watch-metadata #info>span:first-child,
+html[it-hide_views_count=true] #info #count,
+html[it-hide_views_count=true] #info #count + #info-strings>#dot,
+html[it-hide_views_count=true] ytd-watch-metadata #info>span:first-child,
 	/*------# HIDE COMMENTS COUNT---*/
-html[it-hide_comments_count='true'] #comments #count,
+html[it-hide_comments_count=true] #comments #count,
 	/*------# HIDE DATE-------------*/
-html[it-hide_date='true'] #info span:nth-child(3),
-html[it-hide_date='true'] #info #count + #info-strings>yt-formatted-string,
-html[it-hide_date='true'] #info #count + #info-strings>#dot,
-html[it-hide_date='true'] ytd-watch-metadata #info>span:last-child,
+html[it-hide_date=true] #info span:nth-child(3),
+html[it-hide_date=true] #info #count + #info-strings>yt-formatted-string,
+html[it-hide_date=true] #info #count + #info-strings>#dot,
+html[it-hide_date=true] ytd-watch-metadata #info>span:last-child,
 /*------# DESCRIPTION--------------*/
-html[it-description='hidden'] ytd-video-secondary-info-renderer ytd-expander.ytd-video-secondary-info-renderer,
-html[it-description='hidden'] div#action-panel-details,
-html[it-description='hidden'] ytd-expander.ytd-video-secondary-info-renderer,
-html[it-description='hidden'] #description-inline-expander,
+html[it-description=hidden] ytd-video-secondary-info-renderer ytd-expander.ytd-video-secondary-info-renderer,
+html[it-description=hidden] div#action-panel-details,
+html[it-description=hidden] ytd-expander.ytd-video-secondary-info-renderer,
+html[it-description=hidden] #description-inline-expander,
 /*----->>> FOOTER: # Hide --------*/
-html[it-popup_ad='true'] ytd-guide-renderer #footer,
-html[it-popup_ad='true'] yt-mealbar-promo-renderer  
- /*=================================*/
-        {display: none !important;}  
- /*---------------------------------*/
-/*  Dated:
-html[it-description='classic'] .ytd-watch-flexy #info-contents, 
-html[it-description='classic'] .ytd-watch-flexy #meta-contents { display: block !important; } 
-html[it-description='classic'] #below.ytd-watch-flexy { top:-20px; }
-html[it-description='classic'] ytd-menu-renderer[has-flexible-items] { overflow-y: unset !important; }
-html[it-description='classic'] ytd-video-primary-info-renderer { padding-bottom: 14px !important; }
-
-html[it-description='classic_expanded'] .ytd-watch-flexy #info-contents,
-html[it-description='classic_expanded'] .ytd-watch-flexy #meta-contents { display: block !important; } 
-html[it-description='classic_expanded'] #below.ytd-watch-flexy { top:-20px; }
-html[it-description='classic_expanded'] ytd-menu-renderer[has-flexible-items] { overflow-y: unset !important; }
-html[it-description='classic_expanded'] ytd-video-primary-info-renderer { padding-bottom: 14px !important; }
-
-html[it-description='classic_hidden'] .ytd-watch-flexy #info-contents { display: block !important; } 
-html[it-description='classic_hidden'] #below.ytd-watch-flexy { top:-20px; }
-html[it-description='classic_hidden'] ytd-menu-renderer[has-flexible-items] { overflow-y: unset !important; }
-html[it-description='classic_hidden'] ytd-video-primary-info-renderer { padding-bottom: 14px !important; }
-
-html[it-description='classic'] div.style-scope.ytd-watch-flexy + ytd-watch-metadata,
-html[it-description='classic_expanded'] div.style-scope.ytd-watch-flexy + ytd-watch-metadata,
-html[it-description='classic_hidden'] div.style-scope.ytd-watch-flexy + ytd-watch-metadata {
+html[it-popup_ad=true] ytd-guide-renderer #footer,
+html[it-popup_ad=true] yt-mealbar-promo-renderer {
 	display: none !important;
 }
-*/
-/*--------------------------------------------------------------
-# HOW LONG AGO THE VIDEO WAS UPLOADED
---------------------------------------------------------------*/
+/*--- HOW LONG AGO THE VIDEO WAS UPLOADED --------------------*/
 .it-how-long-ago-the-video-was-uploaded {
 	float: right !important;
 	margin-left: 4px !important;
 	color: var(--yt-spec-text-secondary) !important;
 }
-/*--------------------------------------------------------------
-# SHOW CHANNEL VIDEOS COUNT
---------------------------------------------------------------*/
+/*--- SHOW CHANNEL VIDEOS COUNT ------------------------------*/
 .it-channel-videos-count {
 	display: inline-block !important;
 	margin-left: 4px !important;
