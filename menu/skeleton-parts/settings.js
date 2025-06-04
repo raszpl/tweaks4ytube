@@ -1,6 +1,4 @@
-/*--------------------------------------------------------------
->>> SETTINGS:
-----------------------------------------------------------------
+/*--- SETTINGS -------------------------------------------------
 # Button
 # Appearance
 # Language
@@ -9,6 +7,7 @@
 # Developer options
 # About
 --------------------------------------------------------------*/
+
 /*--- BUTTON -------------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings = {
 	component: 'button',
@@ -360,7 +359,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'importSettings',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'areYouSureYouWantToImportTheData',
 							ok: function () {
@@ -401,7 +400,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'exportSettings',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'areYouSureYouWantToExportTheData',
 							ok: function () {
@@ -443,7 +442,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'pushSyncSettings',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'areYouSureYouWantToSyncTheData',
 							ok: function () {
@@ -462,7 +461,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'pullSyncSettings',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'areYouSureYouWantToImportTheData',
 							ok: function () {
@@ -485,7 +484,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'deleteYoutubeCookies',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'thisWillRemoveAllYouTubeCookies',
 							ok: function () {
@@ -508,7 +507,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'resetAllSettings',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'allYourSettingsWillBeErasedAndCanTBeRecovered',
 							ok: function () {
@@ -522,7 +521,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					text: 'resetAllShortcuts',
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'allYourShortcutsWillBeErasedAndCanTBeRecovered',
 							ok: function () {
