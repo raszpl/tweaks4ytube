@@ -15,7 +15,7 @@ extension.skeleton.header.sectionSearch = {
 	},
 	on: {
 		render: function () {
-			this.focus();
+			this.input.focus();
 			if (this.skeleton.search) {
 				this.value = this.skeleton.search;
 				this.dispatchEvent(new CustomEvent('input'));
@@ -23,13 +23,7 @@ extension.skeleton.header.sectionSearch = {
 		},
 		blur: function () {
 			if (this.value.length === 0) {
-				let search_results = document.querySelector('.search-results');
-
-				if (search_results) {
-					search_results.close();
-				}
-
-				//this.remove();
+				document.querySelector('.search-results')?.close();
 				this.hidden = true;
 			}
 		},
@@ -43,77 +37,49 @@ extension.skeleton.header.sectionSearch = {
 				satus.search(value, extension.skeleton, function (results) {
 					let search_results = document.querySelector('.search-results'),
 						skeleton = {
-							component: 'modal',
+							component: 'popup',
 							class: 'search-results'
 						};
 
-					for (let key in results) {
-						let result = results[key],
-							parent = result,
+					for (const [key, result] of Object.entries(results)) {
+						let parent = result,
 							category,
 							subcategory,
 							text;
 
 						while (parent.parentObject && !parent.parentObject.category) {
-
 							parent = parent.parentObject;
+							subcategory = '';
+							
+							if (parent.component == 'button') {
+								subcategory = satus.locale.get(parent.text);
+							} else if (parent.title) {
+								subcategory = satus.locale.get(parent.title);
+							}
+							text = !subcategory ? text : (!text ? subcategory : subcategory + ' > ' + text);
+							category = !category ? subcategory : (!subcategory ? category : subcategory + category);
 						}
 
-						if (parent.parentObject && parent.parentObject.label && parent.parentObject.label.text) {
-							category = parent.parentObject.label.text;
+						if (parent.parentObject?.label?.text) {
+							subcategory = satus.locale.get(parent.parentObject.label.text);
+							text = subcategory + (!text ? '' : ' > ' + text);
+							category = (!category ? subcategory : subcategory + category).replace(/[^a-zA-Z]/g, '');
+						}
+						
+						skeleton[category + '_label'] = {
+							component: 'span',
+							class: 'satus-section--label',
+							text: text
 						}
 
-						parent = result;
-
-						while (parent.parentObject && parent.parentObject.component !== 'button') {
-							parent = parent.parentObject;
+						if (!skeleton[category]) {
+							skeleton[category] = {
+								component: 'section',
+								variant: 'card'
+							}
 						}
 
-						parent = parent.parentObject;
-
-						if (parent) {
-							if (parent.label) {
-								subcategory = parent.label.text;
-							} else {
-								subcategory = parent.text;
-							}
-
-							if (category === subcategory) {
-								text = satus.locale.get(category);
-							} else {
-								text = satus.locale.get(category) + ' > ' + satus.locale.get(subcategory);
-							}
-
-							skeleton[category + subcategory + '_label'] = {
-								component: 'span',
-								class: 'satus-section--label',
-								text: text
-							};
-
-							if (!skeleton[category + subcategory]) {
-								skeleton[category + subcategory] = {
-									component: 'section',
-									variant: 'card'
-								};
-							}
-
-							skeleton[category + subcategory][key] = result;
-						} else {
-							skeleton[category + '_label'] = {
-								component: 'span',
-								class: 'satus-section--label',
-								text: category
-							};
-
-							if (!skeleton[category]) {
-								skeleton[category] = {
-									component: 'section',
-									variant: 'card'
-								};
-							}
-
-							skeleton[category][key] = result;
-						}
+						skeleton[category][key] = result;
 					}
 
 					if (Object.keys(results).length === 0) {
@@ -124,7 +90,7 @@ extension.skeleton.header.sectionSearch = {
 						}
 					} else {
 						if (search_results) {
-							let surface = document.querySelector('.search-results .satus-modal__surface');
+							let surface = document.querySelector('.search-results .satus-popup__surface');
 
 							satus.empty(surface);
 
@@ -142,13 +108,13 @@ extension.skeleton.header.sectionSearch = {
 								}
 								// hide search results when clicking on result that is a 'button' inside search results
 								if (search_results.contains(event.target) && event.target.className.includes('satus-button')
-									// dont close on modal popups
-									&& !(event.target.skeleton?.on?.click?.component == "modal")
-									// shortcut are also modal popups
-									&& !(event.target.skeleton?.component == "shortcut")) {
+									// dont close on popups
+									&& !(event.target.skeleton?.on?.click?.component == 'popup')
+									// shortcut are also popups
+									&& !(event.target.skeleton?.component == 'shortcut')) {
 									search_results.close();
 									self.skeleton.close.rendered.click();
-								} else if (event.target.closest('.satus-modal.satus-modal--vertical-menu') && event.target.closest('.satus-button')) {
+								} else if (event.target.closest('.satus-popup.satus-popup--vertical-menu') && event.target.closest('.satus-button')) {
 									// hide search results when clicking on vertical-menu button
 									search_results.close();
 									self.skeleton.close.rendered.click();
@@ -161,7 +127,7 @@ extension.skeleton.header.sectionSearch = {
 								search_results.childNodes[1].scrollTop = self.skeleton.searchPosition;
 							}
 
-							document.querySelector('.search-results .satus-modal__scrim').addEventListener('click', function () {
+							document.querySelector('.search-results .satus-popup__scrim').addEventListener('click', function () {
 								// this is someone clicking outside of Search results window
 								let search_results = document.querySelector('.search-results');
 
