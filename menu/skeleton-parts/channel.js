@@ -67,6 +67,10 @@ extension.skeleton.main.layers.section.channel = {
 			channel_hide_featured_content: {
 				component: 'switch',
 				text: 'hideFeaturedContent'
+			},
+			thumb_title_max: {
+				component: 'switch',
+				text: 'Show whole video title under thumbnail'
 			}
 		}
 	},
