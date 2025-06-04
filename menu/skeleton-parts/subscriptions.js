@@ -31,7 +31,11 @@ extension.skeleton.main.layers.section.subscriptions = {
 					component: 'switch',
 					text: 'Remove Shorts'
 				},
-			},
+				thumb_title_max: {
+					component: 'switch',
+					text: 'Show whole video title under thumbnail'
+				}
+			}
 		}
 	},
 	icon: {
