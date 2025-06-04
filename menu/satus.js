@@ -2265,12 +2265,12 @@ satus.components.shortcut = function (component, skeleton) {
 				return this.skeleton.value || {};
 			}
 		},
-		value: {
+/*		value: {
 			get () {
 				//return Number(this.input.value);
 			},
 			set (val) {
-				/*this.input.value = val;
+*/				/*this.input.value = val;
 
 				if (this.storage) {
 					if (val === this.default) {
@@ -2282,10 +2282,10 @@ satus.components.shortcut = function (component, skeleton) {
 
 				this.dispatchEvent(new CustomEvent('change'));
 				*/
-			},
+/*			},
 			enumerable: true,
 			configurable: true
-		}
+		}*/
 	});
 
 	component.data = component.storage ? component.storage.value : component.default;
@@ -2306,7 +2306,7 @@ satus.components.checkbox = function (component) {
 	component.input.addEventListener('change', function () {
 		component.value = this.checked;
 	});
-	
+
 	component.addEventListener('click', function () {
 		component.input.click();
 	});
