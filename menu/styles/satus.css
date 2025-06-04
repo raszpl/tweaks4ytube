@@ -1,33 +1,41 @@
 .satus-section--card, .satus-select, .satus-switch, .satus-switch__content {transition: background-color 0.8s ease-out !important;}
-.satus-section--card:hover, .satus-select:hover, .satus-switch:hover,  .satus-switch__content:hover  {transition: background-color 0.08s ease-out !important;}
+.satus-section--card:hover, .satus-select:hover, .satus-switch:hover, .satus-switch__content:hover {transition: background-color 0.08s ease-out !important;}
 
-*[data-value][data-value="false"] {margin-bottom: 0; margin-top: 0; transition: margin 0.14s linear !important;}  
-*[data-value][data-value="true"] {margin-bottom: -4.5px !important; margin-top: -3.5px; transition: margin 0.2s linear !important;}
+*[data-value][data-value=false] {
+	margin-bottom: 0;
+	margin-top: 0;
+	transition: margin 0.14s linear !important;
+}
+*[data-value][data-value=true] {
+	margin-bottom: -4.5px !important;
+	margin-top: -3.5px;
+	transition: margin 0.2s linear !important;
+}
 
 .satus-button--general, .satus-button--appearance, .satus-button--player {
 	margin-left: 9px !important;
 	margin-right: -18px !important;
 	max-width: 272px !important;
 }
-div:not([improvedtube-home=list]) .satus-button--themes, div:not([improvedtube-home=list]) .satus-button--playlist,div:not([improvedtube-home=list])  .satus-button--channel, div:not([improvedtube-home=list]) .satus-button--shortcuts {
+div:not([improvedtube-home=list]) .satus-button--themes, div:not([improvedtube-home=list]) .satus-button--playlist,div:not([improvedtube-home=list]) .satus-button--channel, div:not([improvedtube-home=list]) .satus-button--shortcuts {
 	transform: scale(0.91);
-	margin-top: -10px !important;
+/*	margin-top: -10px !important;
 	margin-left: -5px !important;
-	margin-right: -28px !important;
+	margin-right: -28px !important;*/
 }
 div:not([improvedtube-home=list]) .satus-button--blocklist, div:not([improvedtube-home=list]) .satus-button--analyzer {
 	transform: scale(0.78);
-	margin-top: -22px !important;
+/*	margin-top: -22px !important;
 	margin-left: 110px !important;
-	margin-right: -150px !important;
+	margin-right: -150px !important;*/
 }
 
-div[improvedtube-home=list] .satus-button--themes, div[improvedtube-home=list] .satus-button--playlist,div[improvedtube-home=list]  .satus-button--channel, div[improvedtube-home=list] .satus-button--shortcuts {
+div[improvedtube-home=list] .satus-button--themes, div[improvedtube-home=list] .satus-button--playlist,div[improvedtube-home=list] .satus-button--channel, div[improvedtube-home=list] .satus-button--shortcuts {
 	transform: scale(0.92);
 	margin-bottom: -17px !important;
-	margin-left:3px !important;
+	margin-left: 3px !important;
 	max-width: 197px !important;
-	margin-top:2px !important;
+	margin-top: 2px !important;
 }
 div[improvedtube-home=list] .satus-button--blocklist, div[improvedtube-home=list] .satus-button--analyzer {
 	transform: scale(0.75);
@@ -38,17 +46,10 @@ div[improvedtube-home=list] .satus-button--blocklist, div[improvedtube-home=list
 div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !important;}
 
 
-/*--------------------------------------------------------------
-# SCROLLBAR
---------------------------------------------------------------*/
-:where([class^='satus'])::-webkit-scrollbar {width: 5px;}
-:where([class^='satus']):hover {scrollbar-width: 9px;}
-:where([class^='satus'])::-webkit-scrollbar:hover {width: 9px;}  
-:where([class^='satus'])::-webkit-scrollbar-thumb {background: rgba(var(--satus-light), .2);}
-:where([class^='satus'])::-webkit-scrollbar-thumb:hover {background: rgba(var(--satus-light), .4);}
-/*--------------------------------------------------------------
-# ANIMATIONS
---------------------------------------------------------------*/
+/*--- SCROLLBAR ----------------------------------------------*/
+:where([class^=satus])::-webkit-scrollbar {width: 10px;}
+:where([class^=satus])::-webkit-scrollbar-thumb {background: rgba(var(--satus-light), .2);}
+/*--- ANIMATIONS ---------------------------------------------*/
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeOut{from{opacity:1}to{opacity:0}}
 @keyframes fadeInLeft{from{opacity:0.4;transform:translateX(-2%)}to{opacity:1;transform:translateX(0)}}
@@ -58,12 +59,10 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 @keyframes fadeOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(4%)}}
 @keyframes zoomIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes zoomOut{from{transform:scale(1);opacity:1}to{transform:scale(.8);opacity:0}}
-/*--------------------------------------------------------------
->>> THEMES
---------------------------------------------------------------*/
+/*--- THEMES -------------------------------------------------*/
 .satus-base {
 	--satus-light: 0, 20, 82;
-	--satus-primary: #ff4148; 
+	--satus-primary: #ff4148;
 	--satus-alert-background--error: #501616;
 	--satus-alert-border--error: 1px solid #6f1f1f;
 	--satus-alert-foreground--error: #d77070;
@@ -83,13 +82,13 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	--satus-layers-foreground: inherit;
 	--satus-section-background: #FEfEfE;
 	--satus-section-border: #dcdee5;
-	--satus-section-foreground:  inherit;
+	--satus-section-foreground: inherit;
 	--satus-sidebar-background: #fff;
 	--satus-sidebar-foreground: inherit;
 	--satus-sidebar-shadow: #dcdee5;
-	--satus-modal-foreground: inherit;
-	--satus-modal-background: #fff;
-	--satus-modal-shadow: 0 1px 4px #7d86a1;
+	--satus-popup-foreground: inherit;
+	--satus-popup-background: #fff;
+	--satus-popup-shadow: 0 1px 4px #7d86a1;
 	--satus-tabs-background: rgba(var(--satus-light), .04);
 	--satus-tabs-foreground: #fff;
 	--satus-text-field-background: #edf0f2;
@@ -121,29 +120,23 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	--satus-header-shadow: transparent;
 	--satus-section-background: #232343;
 	--satus-section-border: #232343;
-	--satus-modal-background: #313172;
-	--satus-modal-shadow: 0 1px 4px #22222f;
+	--satus-popup-background: #313172;
+	--satus-popup-shadow: 0 1px 4px #22222f;
 	--satus-switch-track: #52527a;
 }
-/*--------------------------------------------------------------
->>> NORMALIZE
---------------------------------------------------------------*/
-:where([class^='satus']) {box-sizing: border-box;}
-:where([class^='satus'])[hidden]:not([hidden='false']) {display: none;}
-:where([class^='satus'])[transparent] {opacity:0;}
-/*--------------------------------------------------------------
->>> MODAL
-----------------------------------------------------------------
+/*--- NORMALIZE ----------------------------------------------*/
+:where([class^=satus]) {box-sizing: border-box;}
+:where([class^=satus])[hidden]:not([hidden=false]) {display: none;}
+:where([class^=satus])[transparent] {opacity:0;}
+/*--- POPUP ----------------------------------------------------
 # Container
 # Scrim
 # Surface
 # Variants
 	# Vertical menu
 --------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# CONTAINER
---------------------------------------------------------------*/
-.satus-modal {
+/*--- CONTAINER ----------------------------------------------*/
+.satus-popup {
 	position: fixed;
 	z-index: 9;
 	top: 0;
@@ -156,10 +149,8 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	cursor: default;
 }
 
-/*--------------------------------------------------------------
-# SCRIM
---------------------------------------------------------------*/
-.satus-modal__scrim {
+/*--- SCRIM --------------------------------------------------*/
+.satus-popup__scrim {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -171,14 +162,12 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	backdrop-filter: blur(8px);
 }
 
-.satus-modal--closing .satus-modal__scrim {
+.satus-popup--closing .satus-popup__scrim {
 	animation: fadeOut 70ms linear forwards;
 }
 
-/*--------------------------------------------------------------
-# SURFACE
---------------------------------------------------------------*/
-.satus-modal__surface {
+/*--- SURFACE ------------------------------------------------*/
+.satus-popup__surface {
 	display: flex;
 	overflow-y: auto;
 	flex-direction: column;
@@ -193,17 +182,17 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	animation: zoomIn 150ms linear forwards;
 	animation-delay: 20ms;
 	opacity: 0;
-	color: var(--satus-modal-foreground);
+	color: var(--satus-popup-foreground);
 	border-radius: 3px;
-	background-color: var(--satus-modal-background);
-	box-shadow: var(--satus-modal-shadow);
+	background-color: var(--satus-popup-background);
+	box-shadow: var(--satus-popup-shadow);
 }
 
-.satus-modal--closing .satus-modal__surface {
+.satus-popup--closing .satus-popup__surface {
 	animation: zoomOut 70ms linear forwards;
 }
 
-.satus-modal__content {
+.satus-popup__content {
 	margin: 6px 0 12px;
 }
 
@@ -214,14 +203,9 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	margin-left: 8px;
 }
 
-/*--------------------------------------------------------------
-# VARIANTS
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# VERTICAL MENU
---------------------------------------------------------------*/
-
-.satus-modal--vertical-menu .satus-modal__surface {
+/*--- VARIANTS -----------------------------------------------*/
+/*--- VERTICAL MENU ------------------------------------------*/
+.satus-popup--vertical-menu .satus-popup__surface {
 	position: absolute;
 	top: 8px;
 	right: 8px;
@@ -233,13 +217,13 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	transform-origin: right top;
 }
 
-.satus-modal--vertical-menu .satus-modal__surface>[class^='satus']:where(:not(.satus-divider)) {
+.satus-popup--vertical-menu .satus-popup__surface>[class^=satus]:where(:not(.satus-divider)) {
 	height: 36px;
 	padding: 0 16px;
 	border-radius: 0;
 }
 
-.satus-modal--vertical-menu .satus-modal__surface>.satus-span {
+.satus-popup--vertical-menu .satus-popup__surface>.satus-span {
 	font-size: 13px;
 	font-weight: 500;
 	margin: 6px 0;
@@ -247,55 +231,49 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	height: auto;
 }
 
-.satus-modal--vertical-menu .satus-modal__surface>.satus-tabs {
+.satus-popup--vertical-menu .satus-popup__surface>.satus-tabs {
 	margin: 0 12px;
 	border-radius: 3px;
 	height: 26px;
 	padding: 0;
 }
 
-.satus-modal--vertical-menu .satus-select svg,
-.satus-modal--vertical-menu .satus-button svg {
+.satus-popup--vertical-menu .satus-select svg,
+.satus-popup--vertical-menu .satus-button svg {
 	margin: 0 14px 0 0;
 	opacity: .64;
 	flex: 0 0 18px;
 }
 
-.satus-modal--vertical-menu .satus-button .satus-span {
+.satus-popup--vertical-menu .satus-button .satus-span {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 
-.satus-modal--vertical-menu .satus-switch:hover {
+.satus-popup--vertical-menu .satus-switch:hover {
 	cursor: pointer;
 	background-color: rgba(var(--satus-light), .06);
 }
 
-.satus-modal--vertical-menu .satus-switch:focus {
+.satus-popup--vertical-menu .satus-switch:focus {
 	background-color: rgba(var(--satus-light), .08);
 }
-/*--------------------------------------------------------------
->>> GRID
---------------------------------------------------------------*/
-
+/*--- GRID ---------------------------------------------------*/
 .satus-grid {
 	display: flex;
 	align-items: stretch;
 	height: 100%;
 	padding: 8px;
 }
-/*--------------------------------------------------------------
->>> TEXT FIELD
-----------------------------------------------------------------
+/*--- TEXT FIELD -----------------------------------------------
 # Parts
-    # Container
-    # Input
-    # 
+  # Container
+  # Input
+  #
 # Syntax highlighting
-    # Regular expression
+  # Regular expression
 --------------------------------------------------------------*/
-
 .satus-text-field {
 	display: flex;
 
@@ -321,7 +299,7 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 	flex: 1;
 }
 
-.satus-text-field[line-numbers=false] .satus-text-field__container {
+.satus-text-field--search .satus-text-field__container {
 	margin-left: 8px;
 }
 
@@ -345,23 +323,27 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 
 	white-space: pre;
 	color: inherit;
+	background: transparent;
 	border: none;
 	border-radius: 4px;
 	outline: none;
 	overflow-wrap: normal;
-/* 
+/*
 As our Syntax markup isnt read for <textarea>, is it?
 	opacity: 0;
 	max-width: none;
 	max-height: none;
-	appearance: none;  */
+	appearance: none; */
 }
-.satus-text-field__input
-{	opacity: 0;
+.satus-text-field__input {
+	opacity: 0;
 	max-width: none;
 	max-height: none;
-	appearance: none; }
-
+	appearance: none;
+}
+.satus-text-field--search .satus-text-field__input {
+	padding-left: 0px;
+}
 .satus-text-field__display {
 	position: absolute;
 	top: 0;
@@ -375,7 +357,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 .satus-text-field__line-numbers {
 	padding: 0 12px 0 0;
-    z-index: 10;
+  z-index: 10;
 	opacity: .5;
 }
 
@@ -421,7 +403,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	width: 0;
 	height: 22px;
-	margin: 6px -1px; 
+	margin: 6px -1px;
 
 	border: 1px solid var(--satus-text-field-selection);
 	border-radius: 3px;
@@ -452,7 +434,6 @@ As our Syntax markup isnt read for <textarea>, is it?
 }
 
 @keyframes blink {
-
 	from,
 	to {
 		opacity: 1;
@@ -463,9 +444,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	}
 }
 
-/*--------------------------------------------------------------
-# MULTILINE: FALSE
---------------------------------------------------------------*/
+/*--- MULTILINE: FALSE ---------------------------------------*/
 .satus-text-field[multiline=false] .satus-text-field__pre {
 	align-items: center;
 }
@@ -474,13 +453,8 @@ As our Syntax markup isnt read for <textarea>, is it?
 	top: calc(50% - 9px);
 }
 
-/*--------------------------------------------------------------
-# SYNTAX HIGHLIGHTING
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# REGULAR EXPRESSION
---------------------------------------------------------------*/
-
+/*--- SYNTAX HIGHLIGHTING ------------------------------------*/
+/*--- REGULAR EXPRESSION -------------------------------------*/
 .satus-text-field__pre>.group {
 	color: #47ff47;
 	background-color: rgb(71, 255, 71, .16);
@@ -510,10 +484,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	color: #c4c4d4;
 	background-color: rgb(196, 196, 212, .16);
 }
-/*--------------------------------------------------------------
->>> CHART
---------------------------------------------------------------*/
-
+/*--- CHART --------------------------------------------------*/
 .satus-chart {
 	font-size: 90%;
 
@@ -587,10 +558,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 }
-/*--------------------------------------------------------------
->>> SELECT
---------------------------------------------------------------*/
-
+/*--- SELECT -------------------------------------------------*/
 .satus-select {
 	position: relative;
 
@@ -694,36 +662,26 @@ As our Syntax markup isnt read for <textarea>, is it?
 	color: var(--satus-select-text);
 	background: var(--satus-select-background);
 }
-/*--------------------------------------------------------------
->>> DIVIDER
---------------------------------------------------------------*/
-
+/*--- DIVIDER ------------------------------------------------*/
 .satus-divider {
 	height: 1px;
 	margin: 16px 0 12px;
 	background: var(--satus-divider);
 }
-/*--------------------------------------------------------------
->>> SECTION
-----------------------------------------------------------------
+/*--- SECTION --------------------------------------------------
 # Variants
 	# Align start
 	# Align end
 	# Card
 # Media
 --------------------------------------------------------------*/
-
 .satus-section {
 	display: flex;
 
 	flex-wrap: wrap;
 }
 
-
-/*--------------------------------------------------------------
-# ALIGN START
---------------------------------------------------------------*/
-
+/*--- ALIGN START --------------------------------------------*/
 .satus-section--align-start {
 	align-items: center;
 }
@@ -732,11 +690,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	margin-right: 8px;
 }
 
-
-/*--------------------------------------------------------------
-# ALIGN END
---------------------------------------------------------------*/
-
+/*--- ALIGN END ----------------------------------------------*/
 .satus-section--align-end {
 	align-items: center;
 	justify-content: flex-end;
@@ -746,11 +700,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	margin-left: 8px;
 }
 
-
-/*--------------------------------------------------------------
-# CARD
---------------------------------------------------------------*/
-
+/*--- CARD ---------------------------------------------------*/
 .satus-section--card {
 	flex-direction: column;
 
@@ -788,12 +738,11 @@ As our Syntax markup isnt read for <textarea>, is it?
 	transform: translateY(-100%);
 }
 
-
-.satus-section--transparent-card > [class^='satus'] {
+.satus-section--transparent-card > [class^=satus] {
 	width: 100%;
 }
 
-.satus-section--card>[class^='satus']:not(.satus-list):not(.satus-section) {
+.satus-section--card>[class^=satus]:not(.satus-list):not(.satus-section) {
 	display: flex;
 
 	min-height: 48px;
@@ -807,11 +756,11 @@ As our Syntax markup isnt read for <textarea>, is it?
 	align-items: center;
 }
 
-.satus-section--card>[class^='satus']:not(.satus-list):not(.satus-section):not(.satus-chart) {
+.satus-section--card>[class^=satus]:not(.satus-list):not(.satus-section):not(.satus-chart) {
 	width: 100%;
 }
 
-.satus-section--card>[class^='satus']:not(.satus-chart):not(.satus-list):not(.satus-span):hover {
+.satus-section--card>[class^=satus]:not(.satus-chart):not(.satus-list):not(.satus-span):hover {
 	background-color: rgba(var(--satus-light), .06);
 }
 
@@ -834,17 +783,13 @@ As our Syntax markup isnt read for <textarea>, is it?
 }
 
 .satus-section--transparent {
-    background: unset;
-    border: unset;
-    padding: 0;
-    border-radius: unset;
+  background: unset;
+  border: unset;
+  padding: 0;
+  border-radius: unset;
 }
 
-
-/*--------------------------------------------------------------
-# MEDIA
---------------------------------------------------------------*/
-
+/*--- MEDIA --------------------------------------------------*/
 @media (min-width: 901px) {
 	.satus-section--card,
 	.satus-section--transparent-card {
@@ -852,10 +797,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 		margin-right: auto;
 	}
 }
-/*--------------------------------------------------------------
->>> BASE
---------------------------------------------------------------*/
-
+/*--- BASE ---------------------------------------------------*/
 .satus-base {
 	display: flex;
 	flex-direction: column;
@@ -866,12 +808,9 @@ As our Syntax markup isnt read for <textarea>, is it?
 	color: var(--satus-base-foreground);
 	background: var(--satus-base-background);
 }
-/*--------------------------------------------------------------
->>> ALERT
-----------------------------------------------------------------
+/*--- ALERT ----------------------------------------------------
 # Media
 --------------------------------------------------------------*/
-
 .satus-alert {
 	display: flex;
 
@@ -897,21 +836,14 @@ As our Syntax markup isnt read for <textarea>, is it?
 	background: var(--satus-alert-background--success);
 }
 
-
-/*--------------------------------------------------------------
-# MEDIA
---------------------------------------------------------------*/
-
+/*--- MEDIA --------------------------------------------------*/
 @media (min-width: 901px) {
 	.satus-alert {
 		margin-right: auto;
 		margin-left: auto;
 	}
 }
-/*--------------------------------------------------------------
->>> INPUT
---------------------------------------------------------------*/
-
+/*--- INPUT --------------------------------------------------*/
 .satus-input[type=text],
 .satus-input[type=password] {
 	font: inherit;
@@ -939,33 +871,24 @@ As our Syntax markup isnt read for <textarea>, is it?
 .satus-input--error[type=password] {
 	outline: 2px solid rgba(255, 0, 0, .32);
 }
-/*--------------------------------------------------------------
->>> MAIN
---------------------------------------------------------------*/
-
+/*--- MAIN ---------------------------------------------------*/
 .satus-main {
 	display: flex;
-										  
+
 	flex: 1
 }
-/*--------------------------------------------------------------
->>> SIDEBAR
---------------------------------------------------------------*/
-
+/*--- SIDEBAR ------------------------------------------------*/
 .satus-sidebar {
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    width: 56px;
-    padding: 12px 0;
-    color: var(--satus-sidebar-foreground);
-    background: var(--satus-sidebar-background);
-    box-shadow: 1px 0 0 var(--satus-sidebar-shadow)
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 56px;
+  padding: 12px 0;
+  color: var(--satus-sidebar-foreground);
+  background: var(--satus-sidebar-background);
+  box-shadow: 1px 0 0 var(--satus-sidebar-shadow)
 }
-/*--------------------------------------------------------------
->>> LAYERS
---------------------------------------------------------------*/
-
+/*--- LAYERS -------------------------------------------------*/
 .satus-layers {
 	position: relative;
 
@@ -987,10 +910,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	color: var(--satus-layers-foreground);
 	background: var(--satus-layers-background);
 }
-/*--------------------------------------------------------------
->>> LIST
---------------------------------------------------------------*/
-
+/*--- LIST ---------------------------------------------------*/
 .satus-list {
 	margin: 0;
 
@@ -1018,156 +938,140 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	opacity: .64;
 }
-/*--------------------------------------------------------------
->>> COLOR PICKER:
-----------------------------------------------------------------
+/*--- COLOR PICKER: --------------------------------------------
 # Button
-# Modal
+# Popup
 --------------------------------------------------------------*/
 
-
-/*--------------------------------------------------------------
-# BUTTON
---------------------------------------------------------------*/
-
+/*--- BUTTON -------------------------------------------------*/
 .satus-color-picker {
-    font-size: inherit;
+  font-size: inherit;
 
-    position: relative;
+  position: relative;
 
-    display: flex;
+  display: flex;
 
-    box-sizing: border-box;
-    margin: 0;
+  box-sizing: border-box;
+  margin: 0;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    color: inherit;
-    border: none;
-    outline: none;
-    background-color: var(--satus-theme-button);
+  color: inherit;
+  border: none;
+  outline: none;
+  background-color: var(--satus-theme-button);
 
-    justify-content: space-between;
-    -webkit-tap-highlight-color: transparent;
-    align-items: center;
-    -webkit-appearance: none;
+  justify-content: space-between;
+  -webkit-tap-highlight-color: transparent;
+  align-items: center;
+  -webkit-appearance: none;
 }
 
 .satus-color-picker__value {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 
-    border: 2px solid rgba(0, 0, 0, .16);
-    border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, .16);
+  border-radius: 50%;
 }
 
-
-/*--------------------------------------------------------------
-# MODAL
---------------------------------------------------------------*/
-
-.satus-modal--color-picker .satus-modal__surface {
-    padding: 8px;
+/*--- POPUP --------------------------------------------------*/
+.satus-popup--color-picker .satus-popup__surface {
+  padding: 8px;
 }
 
 .satus-color-picker__palette {
-    position: relative;
+  position: relative;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    width: 100%;
-    height: 256px;
-    margin: 0 0 4px;
+  width: 100%;
+  height: 256px;
+  margin: 0 0 4px;
 
-    border-radius: 5px;
-    background-color: #f00;
+  border-radius: 5px;
+  background-color: #f00;
 }
 
 .satus-color-picker__palette:before {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    content: '';
+  content: '';
 
-    background-image: linear-gradient(0deg, black, transparent), linear-gradient(90deg, white, transparent);
+  background-image: linear-gradient(0deg, black, transparent), linear-gradient(90deg, white, transparent);
 }
 
 .satus-color-picker__cursor {
-    position: absolute;
+  position: absolute;
 
-    width: 5px;
-    height: 5px;
+  width: 5px;
+  height: 5px;
 
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 
-    border: 1px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px #000;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #000;
 }
 
-.satus-modal--color-picker .satus-modal__surface .satus-section--color {
-    margin: 8px 4px;
+.satus-popup--color-picker .satus-popup__surface .satus-section--color {
+  margin: 8px 4px;
 
-    align-items: center;
+  align-items: center;
 }
 
 .satus-color-picker__color {
-    width: 32px;
-    height: 32px;
-    margin: 0 16px 0 0;
+  width: 32px;
+  height: 32px;
+  margin: 0 16px 0 0;
 
-    border: 2px solid rgba(0, 0, 0, .16);
-    border-radius: 50%;
-    background: #f00;
+  border: 2px solid rgba(0, 0, 0, .16);
+  border-radius: 50%;
+  background: #f00;
 }
 
 .satus-slider.satus-color-picker__hue {
-    padding: 0;
+  padding: 0;
 
-    flex: 1;
+  flex: 1;
 }
 
 .satus-color-picker__hue .satus-slider__track-container {
-    height: 16px;
-    margin: 0;
+  height: 16px;
+  margin: 0;
 
-    border-radius: 4px;
-    background-image: linear-gradient(90deg, #f00, #ff2a00, #f50, #ff7f00, #fa0, #ffd400, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2b, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d4ff, #0af, #007fff, #05f, #002bff, #00f, #2a00ff, #50f, #7f00ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
+  border-radius: 4px;
+  background-image: linear-gradient(90deg, #f00, #ff2a00, #f50, #ff7f00, #fa0, #ffd400, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2b, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d4ff, #0af, #007fff, #05f, #002bff, #00f, #2a00ff, #50f, #7f00ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
 }
 
 .satus-color-picker__hue .satus-slider__track-container::before {
-    display: none;
+  display: none;
 }
 
 .satus-color-picker__hue .satus-slider__track {
-    background: transparent;
+  background: transparent;
 }
 
 .satus-color-picker__hue .satus-slider__track::after {
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
 
-    background: #fff;
-    box-shadow: 0 0 4px rgb(0, 0, 0, .64);
+  background: #fff;
+  box-shadow: 0 0 4px rgb(0, 0, 0, .64);
 }
-/*--------------------------------------------------------------
->>> BUTTON
-----------------------------------------------------------------
+/*--- BUTTON---------------------------------------------------
 # Base
 # Basic
 # Icon
 --------------------------------------------------------------*/
 
-
-/*--------------------------------------------------------------
-# BASE
---------------------------------------------------------------*/
-
+/*--- BASE ---------------------------------------------------*/
 .satus-button {
 	font: inherit;
 
@@ -1208,15 +1112,9 @@ As our Syntax markup isnt read for <textarea>, is it?
 	max-height: 24px;
 }
 
+/*--- BASIC --------------------------------------------------*/
 
-/*--------------------------------------------------------------
-# BASIC
---------------------------------------------------------------*/
-
-/*--------------------------------------------------------------
-# ICON
---------------------------------------------------------------*/
-
+/*--- ICON ---------------------------------------------------*/
 .satus-button--icon {
 	width: 40px;
 	height: 40px;
@@ -1228,10 +1126,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	width: 24px;
 	height: 24px;
 }
-/*--------------------------------------------------------------
->>> HEADER
---------------------------------------------------------------*/
-
+/*--- HEADER -------------------------------------------------*/
 .satus-header {
 	z-index: 1;
 
@@ -1247,10 +1142,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	justify-content: space-between;
 	align-items: center;
 }
-/*--------------------------------------------------------------
->>> RADIO
---------------------------------------------------------------*/
-
+/*--- RADIO --------------------------------------------------*/
 .satus-radio {
 	position: relative;
 	display: flex;
@@ -1300,10 +1192,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	background: var(--satus-primary);
 	transform: scale(1);
 }
-/*--------------------------------------------------------------
->>> SLIDER
---------------------------------------------------------------*/
-
+/*--- SLIDER -------------------------------------------------*/
 .satus-slider {
 	display: flex;
 
@@ -1316,7 +1205,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	justify-content: space-between;
 }
 
-.satus-slider__input[type='text'] {
+.satus-slider__input[type=number] {
 	appearance: none;
 	background: transparent;
 	border: 1px solid var(--satus-input-text-border);
@@ -1352,7 +1241,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	background: var(--satus-primary);
 }
 
-.satus-slider__input[type='range'] {
+.satus-slider__input[type=range] {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1390,7 +1279,6 @@ As our Syntax markup isnt read for <textarea>, is it?
 	border-radius: 50%;
 	background: var(--satus-primary);
 }
-
 
 .satus-slider__input:focus + .satus-slider__track::before {
 	width: 24px;
@@ -1435,10 +1323,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	margin: 0 0 -2px 12px;
 	max-width: 50%;
 }
-/*--------------------------------------------------------------
->>> TABS
---------------------------------------------------------------*/
-
+/*--- TABS ---------------------------------------------------*/
 .satus-tabs {
 	position: relative;
 
@@ -1486,12 +1371,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	flex: 1;
 	appearance: none;
 }
-/*--------------------------------------------------------------
->>> SHORTCUT:
-----------------------------------------------------------------
-# 
---------------------------------------------------------------*/
-
+/*--- SHORTCUT -----------------------------------------------*/
 .satus-shortcut__value {
 	font-size: 11px;
 
@@ -1544,7 +1424,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	height: 32px;
 	padding: 4px 8px;
 
-				   
+
 	border-radius: 4px;
 	background: #fff;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, .15), inset 0 -3px 0 rgba(0, 0, 0, .1);
@@ -1740,35 +1620,25 @@ As our Syntax markup isnt read for <textarea>, is it?
 	color: #f96754;
 	border-radius: 4px;
 }
-/*--------------------------------------------------------------
->>> CHECKBOX
---------------------------------------------------------------*/
-
+/*--- CHECKBOX -----------------------------------------------*/
 .satus-checkbox {
-	position: relative;
-
 	display: flex;
+
+	transition: background-color 75ms;
+
+	color: inherit;
+	border: none;
+	outline: none;
+	background-color: transparent;
 
 	cursor: pointer;
 
+	justify-content: space-between;
 	align-items: center;
 }
 
 .satus-checkbox__input {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-
-	opacity: 0;
-	border: none;
-
-	appearance: none;
-	z-index: 1;
+	display: none;
 }
 
 .satus-checkbox__checkmark {
@@ -1809,19 +1679,13 @@ As our Syntax markup isnt read for <textarea>, is it?
 	border-top: none;
 	border-right: none;
 }
-/*--------------------------------------------------------------
->>> SWITCH
-----------------------------------------------------------------
+/*--- SWITCH ---------------------------------------------------
 # Container
 # Track
 # Thumb
 --------------------------------------------------------------*/
 
-
-/*--------------------------------------------------------------
-# CONTAINER
---------------------------------------------------------------*/
-
+/*--- CONTAINER ----------------------------------------------*/
 .satus-switch {
 	font: inherit;
 
@@ -1856,15 +1720,12 @@ As our Syntax markup isnt read for <textarea>, is it?
 	opacity: .64;
 }
 
-.satus-switch, .satus-select, .satus-button, .satus-Buttons, .satus-label { 
+.satus-switch, .satus-select, .satus-button, .satus-Buttons, .satus-label {
 /*no blinking cursor when focused:*/
-	caret-color: transparent; 
+	caret-color: transparent;
 }
 
-/*--------------------------------------------------------------
-# TRACK
---------------------------------------------------------------*/
-
+/*--- TRACK --------------------------------------------------*/
 .satus-switch>i {
 	width: 32px;
 	height: 18px;
@@ -1881,15 +1742,11 @@ As our Syntax markup isnt read for <textarea>, is it?
 	margin-left: 16px;
 }
 
-.satus-switch[data-value='true']>i {
+.satus-switch[data-value=true]>i {
 	background-color: var(--satus-switch-track--checked);
 }
 
-
-/*--------------------------------------------------------------
-# THUMB
---------------------------------------------------------------*/
-
+/*--- THUMB --------------------------------------------------*/
 .satus-switch>i::before {
 	display: block;
 
@@ -1906,14 +1763,11 @@ As our Syntax markup isnt read for <textarea>, is it?
 	will-change: transform;
 }
 
-.satus-switch[data-value='true']>i::before {
+.satus-switch[data-value=true]>i::before {
 	transform: translateX(14px);
 }
-/*--------------------------------------------------------------
->>> CONTEXT MENU
---------------------------------------------------------------*/
-
-.satus-modal--contextmenu .satus-modal__scrim {
+/*--- CONTEXT MENU -------------------------------------------*/
+.satus-popup--contextmenu .satus-popup__scrim {
 	visibility: visible;
 
 	transform: none;
@@ -1925,7 +1779,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	backdrop-filter: none;
 }
 
-.satus-modal--contextmenu .satus-modal__surface {
+.satus-popup--contextmenu .satus-popup__surface {
 	position: absolute;
 
 	visibility: visible;
@@ -1943,7 +1797,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	box-shadow: 0 0 0 1px rgba(var(--satus-light), .1);
 }
 
-.satus-modal--contextmenu .satus-modal__surface>* {
+.satus-popup--contextmenu .satus-popup__surface>* {
 	display: flex;
 
 	height: 32px;
@@ -1952,7 +1806,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	align-items: center;
 }
 
-.satus-modal--contextmenu .satus-modal__surface .satus-button svg {
+.satus-popup--contextmenu .satus-popup__surface .satus-button svg {
 	width: 20px;
 	height: 18px;
 	margin: 0 14px 0 0;
@@ -1964,16 +1818,13 @@ As our Syntax markup isnt read for <textarea>, is it?
 	flex: 0 0 20px;
 }
 
-.satus-modal--contextmenu .satus-modal__surface .satus-button .satus-span {
+.satus-popup--contextmenu .satus-popup__surface .satus-button .satus-span {
 	overflow: hidden;
 
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
-/*--------------------------------------------------------------
->>> SORTABLE
---------------------------------------------------------------*/
-
+/*--- SORTABLE -----------------------------------------------*/
 .satus-sortable__chosen {
 	color: var(--satus-sortable-text) !important;
 	background-color: var(--satus-sortable-background) !important;
@@ -1992,5 +1843,3 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	will-change: transform !important;
 }
-
-
