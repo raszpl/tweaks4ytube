@@ -1,14 +1,11 @@
-/*--------------------------------------------------------------
->>> THEMES:
-----------------------------------------------------------------
-/*--------------------------------------------------------------
-# DEFAULT
---------------------------------------------------------------*/
+/*--- THEMES -------------------------------------------------*/
+
+/*--- DEFAULT ------------------------------------------------*/
 .satus-base {
 	--satus-bubble-foreground: rgba(255, 255, 255, .90);
 	/* --satus-bubble-background: linear-gradient(135deg, #c05030, #FF4A4F  );
 	--satus-bubble-shadow-raised: 0 2px 1px 2px #EED, 0 7px 7px 1px rgb(61, 152, 200, .4);
-	--satus-bubble-shadow-unelevated: 0px 0px 2px 3px #FFB, 0 0px 3px 4px rgb(61, 152, 200, .4); 
+	--satus-bubble-shadow-unelevated: 0px 0px 2px 3px #FFB, 0 0px 3px 4px rgb(61, 152, 200, .4);
 	--satus-bubble-background: linear-gradient(135deg, #ff4766, #f50029);	*/
 	--satus-bubble-background: linear-gradient(135deg, #ff5075, #C02020);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #EDC, 0 4px 4px 1px rgb(30, 50, 110, .37);
@@ -16,7 +13,7 @@
 	--it-appearance-shadow-color: #dfdfdf;
 }
 
-.satus-base[theme='dark'] {
+.satus-base[theme=dark] {
 	--satus-light: 255, 255, 255;
 	--satus-base-background: #131316;
 	--satus-base-foreground: #e0e0e0;
@@ -28,9 +25,9 @@
 	--satus-section-background: #1c1d21;
 	--satus-section-border: #212121;
 	--satus-switch-track: #e1e4ea;
-	--satus-modal-background: #2a2b32;
-	--satus-modal-foreground: #e0e0e0;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #2a2b32;
+	--satus-popup-foreground: #e0e0e0;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-tabs-background: #1c1d21;
 	--satus-tabs-foreground: #33343d;
 	--satus-text-field-background: #1e1e1e;
@@ -38,7 +35,7 @@
 	--satus-shortcut-key-text: #131316;
 }
 
-.satus-base[theme='night'] {
+.satus-base[theme=night] {
 	--satus-bubble-foreground: rgba(255, 255, 255, .75);
 	--satus-bubble-background: linear-gradient(135deg, #3a48b4, #5663c8);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #2f3b92, 0 4px 4px rgb(82, 0, 14, .32);
@@ -56,9 +53,9 @@
 	--satus-section-background: #28327b;
 	--satus-section-border: #2f3b92;
 	--satus-switch-track: #e1e4ea;
-	--satus-modal-background: #3a48b4;
-	--satus-modal-foreground: #f5f5f5;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #3a48b4;
+	--satus-popup-foreground: #f5f5f5;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-text-field-background: #3a48b4;
 	--satus-text-field-foreground: #f5f5f5;
 	--satus-text-field-border: #5d6acb;
@@ -66,7 +63,7 @@
 
 }
 
-.satus-base[theme='dawn'] {
+.satus-base[theme=dawn] {
 	--satus-bubble-foreground: rgba(255, 255, 255, .75);
 	--satus-bubble-background: linear-gradient(145deg, #ed5a97 46%, #ffa77a);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #de357c, 0 4px 4px rgb(82, 0, 14, .32);
@@ -84,16 +81,16 @@
 	--satus-section-background: rgb(221, 75, 136, .6);
 	--satus-section-border: rgb(224, 92, 147, .8);
 	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-modal-background: #e45892;
-	--satus-modal-foreground: #fff;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #e45892;
+	--satus-popup-foreground: #fff;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-text-field-background: #ed74a9;
 	--satus-text-field-foreground: #f5f5f5;
 	--satus-text-field-border: #e53883;
 	--satus-shortcut-key-text: #de357c;
 }
 
-.satus-base[theme='sunset'] {
+.satus-base[theme=sunset] {
 	--satus-bubble-foreground: rgba(255, 255, 255, .75);
 	--satus-bubble-background: linear-gradient(145deg, #ef4d5a 46%, #fa7965);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #e14749, 0 4px 4px rgb(82, 0, 14, .32);
@@ -111,16 +108,16 @@
 	--satus-section-background: rgb(62, 67, 121, .6);
 	--satus-section-border: #313668;
 	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-modal-background: #313668;
-	--satus-modal-foreground: #fff;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #313668;
+	--satus-popup-foreground: #fff;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-text-field-background: #313668;
 	--satus-text-field-foreground: #f5f5f5;
 	--satus-text-field-border: #313668;
 	--satus-shortcut-key-text: #2f3364;
 }
 
-.satus-base[theme='desert'] {
+.satus-base[theme=desert] {
 	--satus-bubble-foreground: rgba(255, 255, 255, .75);
 	--satus-bubble-background: linear-gradient(145deg, #7ea5f1 46%, #5a8bed);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #3571e9, 0 4px 4px rgb(82, 0, 14, .32);
@@ -139,16 +136,16 @@
 	--satus-section-foreground: #444;
 	--satus-section-border: #fcd55f;
 	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-modal-background: #73a1fc;
-	--satus-modal-foreground: #fff;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #73a1fc;
+	--satus-popup-foreground: #fff;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-text-field-background: #73a1fc;
 	--satus-text-field-foreground: #f5f5f5;
 	--satus-text-field-border: #73a1fc;
 	--satus-shortcut-key-text: #73a1fc;
 }
 
-.satus-base[theme='plain'] {
+.satus-base[theme=plain] {
 	--satus-bubble-foreground: rgba(255, 255, 255, .75);
 	--satus-bubble-background: linear-gradient(145deg, #4c946b 46%, #4c946b);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #4c946b, 0 4px 4px rgb(82, 0, 14, .32);
@@ -167,16 +164,16 @@
 	--satus-section-foreground: #fff;
 	--satus-section-border: #458762;
 	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-modal-background: #57a87a;
-	--satus-modal-foreground: #fff;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #57a87a;
+	--satus-popup-foreground: #fff;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-text-field-background: #57a87a;
 	--satus-text-field-foreground: #f5f5f5;
 	--satus-text-field-border: #4c946b;
 	--satus-shortcut-key-text: #57a87a;
 }
 
-.satus-base[theme='black'] {
+.satus-base[theme=black] {
 	--it-appearance-shadow-color: #333;
 	--satus-light: 255, 255, 255;
 	--satus-base-background: #000;
@@ -189,9 +186,9 @@
 	--satus-section-background: #131316;
 	--satus-section-border: #26272c;
 	--satus-switch-track: #292929;
-	--satus-modal-background: #1d1e20;
-	--satus-modal-foreground: #e0e0e0;
-	--satus-modal-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+	--satus-popup-background: #1d1e20;
+	--satus-popup-foreground: #e0e0e0;
+	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
 	--satus-tabs-background: #1c1d21;
 	--satus-tabs-foreground: #33343d;
 	--satus-text-field-background: #1e1e1e;
@@ -200,8 +197,7 @@
 	--satus-shortcut-key-text: #000;
 }
 
-
-.satus-label[class$='-theme'] {
+.satus-radio[class$='-theme'] {
 	display: flex;
 
 	height: 80px;
@@ -453,8 +449,4 @@
 .satus-label--black-theme {
 	background: #000 !important;
 	height: 72px !important;
-}
-
-.satus-radio__content {
-	display: none;
 }

@@ -1,6 +1,4 @@
-/*--------------------------------------------------------------
->>> HEADER
---------------------------------------------------------------*/
+/*--- HEADER -------------------------------------------------*/
 .satus-header>.satus-section--align-start {
 	max-width: calc(100% - 136px);
 }
@@ -19,13 +17,15 @@
 	opacity: .6;
 }
 
-.satus-base[title-version='false'] .satus-span--version {display:none;}
+.satus-base[title-version=false] .satus-span--version {
+	display:none;
+}
 
-.satus-modal--vertical-menu .satus-button svg {
+.satus-popup--vertical-menu .satus-button svg {
 	stroke: var(--satus-primary);
 }
 
-.satus-modal--vertical-menu .satus-button .satus-span {
+.satus-popup--vertical-menu .satus-button .satus-span {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;

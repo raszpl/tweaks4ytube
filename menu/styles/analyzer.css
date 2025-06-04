@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> ANALYZER
---------------------------------------------------------------*/
-
+/*--- ANALYZER -----------------------------------------------*/
 .analyzer-watch-time {
 	font-size: 13px;
 	display: flex;
@@ -29,6 +26,6 @@
 	background: rgba(var(--satus-light), .12);
 }
 
-.satus-switch--activation[data-value='true']>.satus-switch__i {
+.satus-switch--activation[data-value=true]>.satus-switch__i {
 	opacity: .88;
 }

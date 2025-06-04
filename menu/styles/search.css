@@ -1,13 +1,8 @@
-/*--------------------------------------------------------------
->>> SEARCH:
-----------------------------------------------------------------
+/*--- SEARCH ---------------------------------------------------
 # Buttons
 --------------------------------------------------------------*/
 
-/*--------------------------------------------------------------
-# BUTTONS
---------------------------------------------------------------*/
-
+/*--- BUTTONS ------------------------------------------------*/
 .satus-text-field--search {
 	position: absolute;
 	z-index: 2;
@@ -39,13 +34,17 @@
 	border-bottom-left-radius: 0;
 }
 
+.satus-text-field--search:not([results]) {
+    filter: brightness(85%);
+}
+
 .search-results {
 	top: 56px;
 
 	height: calc(100vh - 56px);
 }
 
-.search-results .satus-modal__surface {
+.search-results .satus-popup__surface {
 	position: absolute;
 	top: -10px;
 	left: 12px;
