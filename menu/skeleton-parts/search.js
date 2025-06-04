@@ -50,7 +50,7 @@ extension.skeleton.header.sectionSearch = {
 						while (parent.parentObject && !parent.parentObject.category) {
 							parent = parent.parentObject;
 							subcategory = '';
-							
+
 							if (parent.component == 'button') {
 								subcategory = satus.locale.get(parent.text);
 							} else if (parent.title) {
@@ -65,7 +65,7 @@ extension.skeleton.header.sectionSearch = {
 							text = subcategory + (!text ? '' : ' > ' + text);
 							category = (!category ? subcategory : subcategory + category).replace(/[^a-zA-Z]/g, '');
 						}
-						
+
 						skeleton[category + '_label'] = {
 							component: 'span',
 							class: 'satus-section--label',
