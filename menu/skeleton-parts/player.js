@@ -87,7 +87,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					if (this.dataset.value === 'false') {
 						let where = this;
 						satus.render({
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'PipRequiresUserInteraction',
 							ok: function () {
@@ -605,7 +605,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_background_color: {
 						component: 'select',
 						text: 'backgroundColor',
-						value: '#000',
+						value: '#080808',
 						options: [{
 							text: 'white',
 							value: '#fff'
@@ -629,7 +629,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 							value: '#f00'
 						}, {
 							text: 'black',
-							value: '#000'
+							value: '#080808'
 						}]
 					},
 					subtitles_background_opacity: {
@@ -643,6 +643,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					subtitles_window_color: {
 						component: 'select',
 						text: 'windowColor',
+						value: '#080808',
 						options: function () {
 							return extension.skeleton.main.layers.section.player.on.click.section_1.subtitles.on.click.subtitles_background_color.options;
 						}
@@ -817,7 +818,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 										if (satus.storage.get('block_h264')) {
 											let where = this;
 											satus.render({
-												component: 'modal',
+												component: 'popup',
 												variant: 'confirm',
 												content: 'block_Codec_Alert_h264',
 												ok: function () { where.flip(true); }
@@ -837,11 +838,10 @@ extension.skeleton.main.layers.section.player.on.click = {
 										if (satus.storage.get('block_vp9')) {
 											let where = this;
 											satus.render({
-												component: 'modal',
+												component: 'popup',
 												variant: 'confirm',
 												content: 'block_Codec_Alert_h264',
-												ok: function () { where.flip(true); },
-												cancel: function () {}
+												ok: function () { where.flip(true); }
 											}, extension.skeleton.rendered);
 										} else this.flip(true);
 									} else this.flip(false);
@@ -897,7 +897,7 @@ extension.skeleton.main.layers.section.player.on.click = {
 					if (this.dataset.value === 'false') {
 						let where = this;
 						satus.render({
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'youtubeLimitsVideoQualityTo1080pForH264Codec',
 							ok: function () {
