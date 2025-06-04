@@ -1,7 +1,4 @@
-/*--------------------------------------------------------------
->>> GENERAL
---------------------------------------------------------------*/
-
+/*--- GENERAL ------------------------------------------------*/
 extension.skeleton.main.layers.section.general = {
 	component: 'button',
 	variant: 'general',
@@ -88,6 +85,7 @@ extension.skeleton.main.layers.section.general = {
 					component: 'section',
 					variant: 'card',
 					title: 'Youtube_Search',
+
 					remove_related_search_results: {
 						component: 'switch',
 						text: 'removeRelatedSearchResults'
@@ -254,7 +252,7 @@ extension.skeleton.main.layers.section.general = {
 					},
 					on: {
 						click: {
-							component: 'modal',
+							component: 'popup',
 							variant: 'confirm',
 							content: 'thisWillRemoveAllWatchedVideos',
 							ok: function () {
