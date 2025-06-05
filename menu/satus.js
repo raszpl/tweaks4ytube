@@ -787,7 +787,6 @@ satus.search = function (query, object, callback) {
 
 	function parse (items) {
 		threads++;
-		console.log(items);
 
 		for (const [key, item] of Object.entries(items)) {
 			if (excluded.includes(key)) continue;
@@ -956,38 +955,40 @@ satus.components.popup = function (component, skeleton) {
 		}, Number(satus.css(this.surface, 'animation-duration').replace(/[^0-9.]/g, '')) * 1000);
 	};
 
-	component.scrim.addEventListener('click', function () {
-		// this is someone clicking outside of popup dialog
-		switch (skeleton.variant) {
-			case 'confirm':
-				if (skeleton.buttons?.cancel) {
-					// popup.confirm.buttons variant have own closing mechanism, lets try to click cancel button
-					if (satus.isFunction(skeleton.buttons.cancel?.rendered?.click)) {
-						skeleton.buttons.cancel.rendered.click();
+	if (!skeleton.modal) {
+		component.scrim.addEventListener('click', function () {
+			// this is someone clicking outside of popup dialog
+			switch (skeleton.variant) {
+				case 'confirm':
+					if (skeleton.buttons?.cancel) {
+						// popup.confirm.buttons variant have own closing mechanism, lets try to click cancel button
+						if (satus.isFunction(skeleton.buttons.cancel?.rendered?.click)) {
+							skeleton.buttons.cancel.rendered.click();
+						} else {
+							// cant find cancel button, just force close it
+							this.parentNode.close();
+						}
 					} else {
-						// cant find cancel button, just force close it
+						// popup.confirm simplified variant, try optional cancel() then close()
+						if (satus.isFunction(skeleton.cancel)) {
+							skeleton.cancel();
+						}
 						this.parentNode.close();
 					}
-				} else {
-					// popup.confirm simplified variant, try optional cancel() then close()
-					if (satus.isFunction(skeleton.cancel)) {
-						skeleton.cancel();
-					}
+					break;
+
+				case 'vertical-menu':
 					this.parentNode.close();
-				}
-				break;
+					break;
 
-			case 'vertical-menu':
-				this.parentNode.close();
-				break;
-
-			case 'shortcut':
-			case 'color-picker':
-				// click cancel button
-				skeleton.actions.cancel.rendered.click();
-				break;
-		}
-	});
+				case 'shortcut':
+				case 'color-picker':
+					// click cancel button
+					skeleton.actions.cancel.rendered.click();
+					break;
+			}
+		});
+	}
 
 	if (satus.isset(content)) {
 		component.surface.content = component.surface.createChildElement('p', 'content');
@@ -1056,124 +1057,6 @@ satus.components.popup.confirm = function (component, skeleton) {
 		})(component);
 	}
 };
-//_________________________________________________________________________________________________________________________________________________________
-satus.components.modal = function (component, skeleton) {
-	let content = skeleton.content;
-
-	component.scrim = component.createChildElement('div', 'scrim');
-	component.surface = component.createChildElement('div', 'surface');
-
-	component.close = function () {
-		this.classList.add('satus-modal--closing');
-
-		setTimeout(function () {
-			component.remove();
-
-			component.dispatchEvent(new CustomEvent('close'));
-		}, Number(satus.css(this.surface, 'animation-duration').replace(/[^0-9.]/g, '')) * 1000);
-	};
-
-	component.scrim.addEventListener('click', function () {
-		// this is someone clicking outside of modal dialog
-		switch (skeleton.variant) {
-			case 'confirm':
-				if (skeleton.buttons?.cancel) {
-					// modal.confirm.buttons variant have own closing mechanism, lets try to click cancel button
-					if (satus.isFunction(skeleton.buttons.cancel?.rendered?.click)) {
-						skeleton.buttons.cancel.rendered.click();
-					} else {
-						// cant find cancel button, just force close it
-						this.parentNode.close();
-					}
-				} else {
-					// modal.confirm simplified variant, try optional cancel() then close()
-					if (satus.isFunction(skeleton.cancel)) {
-						skeleton.cancel();
-					}
-					this.parentNode.close();
-				}
-				break;
-
-			case 'vertical-menu':
-				this.parentNode.close();
-				break;
-
-			case 'shortcut':
-			case 'color-picker':
-				// click cancel button
-				skeleton.actions.cancel.rendered.click();
-				break;
-		}
-	});
-
-	if (satus.isset(content)) {
-		component.surface.content = component.surface.createChildElement('p', 'content');
-
-		//modal 'content' can be a function
-		if (satus.isFunction(content)) content = content();
-		if (satus.isObject(content)) {
-			satus.render(content, component.surface.content);
-		} else {
-			component.surface.content.textContent = satus.locale.get(content);
-		}
-	} else {
-		component.childrenContainer = component.surface;
-	}
-
-	if (satus.components.modal[skeleton.variant]) {
-		satus.components.modal[skeleton.variant](component, skeleton);
-	}
-};
-/*--- CONFIRM --------------------------------------------------*/
-satus.components.modal.confirm = function (component, skeleton) {
-	component.surface.actions = satus.render({
-		component: 'section',
-		variant: 'align-end'
-	}, component.surface);
-
-	if (skeleton.buttons) {
-		for (const key in skeleton.buttons) {
-			const button = skeleton.buttons[key];
-
-			if (button?.component === 'button') {
-				satus.render(button, component.surface.actions).modalProvider = component;
-			}
-		}
-	} else {
-		// IIFE (Immediately Invoked Function Expression) to bind component inside closure
-		(function () {
-			satus.render({
-				cancel: {
-					component: 'button',
-					text: 'cancel',
-					on: {
-						click: function () {
-							// cancel() is optional in modal.confirm simplified variant
-							if (satus.isFunction(component.skeleton.cancel)) {
-								component.skeleton.cancel();
-							}
-							component.close();
-						}
-					}
-				},
-				ok: {
-					component: 'button',
-					text: 'ok',
-					on: {
-						click: function () {
-							// ok() is optional in modal.confirm simplified variant
-							if (satus.isFunction(component.skeleton.ok)) {
-								component.skeleton.ok();
-							}
-							component.close();
-						}
-					}
-				}
-			}, component.surface.actions)
-		})(component);
-	}
-};
-//_________________________________________________________________________________________________________________________________________________________
 /*--- GRID -----------------------------------------------------*/
 satus.components.grid = function (component, skeleton) {
 	console.log(component, skeleton);
@@ -1662,7 +1545,7 @@ satus.components.colorPicker = function (component) {
 		s = 2 * s / (l + s);
 
 		satus.render({
-			component: 'modal',
+			component: 'popup',
 			variant: 'color-picker',
 			value: hsl,
 			parentElement: this,
@@ -1744,8 +1627,8 @@ satus.components.colorPicker = function (component) {
 					max: 360,
 					on: {
 						input: function () {
-							const modal = this.skeleton.parentSkeleton.parentSkeleton,
-								hsl = modal.value;
+							const popup = this.skeleton.parentSkeleton.parentSkeleton,
+								hsl = popup.value;
 
 							hsl[0] = this.value;
 
@@ -1764,12 +1647,12 @@ satus.components.colorPicker = function (component) {
 					text: 'reset',
 					on: {
 						click: function () {
-							const modal = this.skeleton.parentSkeleton.parentSkeleton,
-								component = modal.parentElement;
+							const popup = this.skeleton.parentSkeleton.parentSkeleton,
+								component = popup.parentElement;
 
 							component.value = component.default;
 
-							modal.rendered.close();
+							popup.rendered.close();
 						}
 					}
 				},
@@ -1778,9 +1661,9 @@ satus.components.colorPicker = function (component) {
 					text: 'cancel',
 					on: {
 						click: function () {
-							const modal = this.skeleton.parentSkeleton.parentSkeleton;
+							const popup = this.skeleton.parentSkeleton.parentSkeleton;
 
-							modal.rendered.close();
+							popup.rendered.close();
 						}
 					}
 				},
@@ -1789,12 +1672,12 @@ satus.components.colorPicker = function (component) {
 					text: 'OK',
 					on: {
 						click: function () {
-							const modal = this.skeleton.parentSkeleton.parentSkeleton,
-								component = modal.parentElement;
+							const popup = this.skeleton.parentSkeleton.parentSkeleton,
+								component = popup.parentElement;
 
-							component.value = satus.color.hslToRgb(modal.value);
+							component.value = satus.color.hslToRgb(popup.value);
 
-							modal.rendered.close();
+							popup.rendered.close();
 						}
 					}
 				}
@@ -2011,8 +1894,8 @@ satus.components.shortcut = function (component, skeleton) {
 			createElement('key').textContent = 'Shift';
 		}
 
-		for (const code in this.data.keys) {
-			const key = this.data.keys[code].key,
+		for (const key_entries in this.data.keys) {
+			const key = this.data.keys[key_entries].key,
 				arrows = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
 				index = arrows.indexOf(key);
 
@@ -2034,7 +1917,6 @@ satus.components.shortcut = function (component, skeleton) {
 				div = document.createElement('div');
 
 			mouse.appendChild(div);
-
 			mouse.classList.add((this.data.wheel > 0));
 		}
 
@@ -2045,7 +1927,6 @@ satus.components.shortcut = function (component, skeleton) {
 				div = document.createElement('div');
 
 			mouse.appendChild(div);
-
 			mouse.classList.add('click');
 		}
 
@@ -2056,7 +1937,6 @@ satus.components.shortcut = function (component, skeleton) {
 				div = document.createElement('div');
 
 			mouse.appendChild(div);
-
 			mouse.classList.add('middle');
 		}
 
@@ -2067,7 +1947,6 @@ satus.components.shortcut = function (component, skeleton) {
 				div = document.createElement('div');
 
 			mouse.appendChild(div);
-
 			mouse.classList.add('context');
 		}
 	};
@@ -2075,60 +1954,66 @@ satus.components.shortcut = function (component, skeleton) {
 	component.keydown = function (event) {
 		event.preventDefault();
 		event.stopPropagation();
-
-		component.data = {
-			alt: event.altKey,
-			ctrl: event.ctrlKey,
-			shift: event.shiftKey,
-			keys: {}
-		};
-
-		if (!['control', 'alt', 'altgraph', 'shift'].includes(event.key.toLowerCase())) {
-			component.data.keys[event.keyCode] = {
-				code: event.code,
-				key: event.key
+		let value = component.data,
+			pressed = {
+				... (((!value.alt && event.altKey) || (value.alt && !event.altKey)) && {alt: true}),
+				... (((!value.ctrl && event.ctrlKey) || (value.ctrl && !event.ctrlKey)) && {ctrl: true}),
+				... (((!value.shift && event.shiftKey) || (value.shift && !event.shiftKey)) && {shift: true}),
+				... (value.keys && {keys: value.keys}),
+				... (value.wheel && {wheel: value.wheel}),
+				... (value.click && {click: true}),
+				... (value.middle && {middle: true}),
+				... (value.context && {context: true})
 			};
+
+		if (!['alt', 'altgraph', 'control', 'shift'].includes(event.key.toLowerCase())) {
+			pressed  = {
+				... pressed,
+				... (value.alt && {alt: true}),
+				... (value.ctrl && {ctrl: true}),
+				... (value.shift && {shift: true})
+			};
+			pressed.keys = {};
+			if (!value.keys?.[event.keyCode]) {
+				pressed.keys[event.keyCode] = {
+					code: event.code,
+					key: event.key
+				};
+			}
 		}
 
-		component.data.wheel = 0;
-
+		component.data = pressed;
 		component.render();
-
 		return false;
 	};
 
 	if (skeleton.wheel !== false) {
 		component.mousewheel = function (event) {
 			event.stopPropagation();
-
-			if ((component.data.wheel === 0
-					&& (Object.keys(component.data.keys).length === 0
-						&& component.data.alt === false
-						&& component.data.ctrl === false
-						&& component.data.shift === false))
-				|| (component.data.wheel < 0 && event.deltaY > 0)
-				|| (component.data.wheel > 0 && event.deltaY < 0)) {
-
-				component.data = {
-					alt: false,
-					ctrl: false,
-					shift: false,
-					keys: {}
+			let value = component.data,
+				wheel = (event.deltaY < 0) ? -1 : 1,
+				pressed = {
+					... (value.alt && {alt: true}),
+					... (value.ctrl && {ctrl: true}),
+					... (value.shift && {shift: true}),
+					... (value.keys && {keys: value.keys}),
+					... (!value.wheel ? {wheel: wheel} : ((value.wheel != wheel) ? {} : {wheel: value.wheel})),
+					... (value.click && {click: true}),
+					... (value.middle && {middle: true}),
+					... (value.context && {context: true})
 				};
-			}
 
-			component.data.wheel = (event.deltaY < 0) ? -1 : 1;
-
+			component.data = pressed;
 			component.render();
-
 			return false;
 		};
 	}
 
 	component.addEventListener('click', function () {
 		satus.render({
-			component: 'modal',
+			component: 'popup',
 			variant: 'shortcut',
+			modal: true,
 			on: {
 				close: function () {
 					window.removeEventListener('keydown', component.keydown);
@@ -2145,52 +2030,25 @@ satus.components.shortcut = function (component, skeleton) {
 
 						if (component.skeleton.mouseButtons === true) {
 							this.addEventListener('mousedown', function (event) {
-								if (
-									component.data.click && event.button === 0 ||
-									component.data.middle && event.button === 1
-								) {
-									component.data = {
-										alt: false,
-										ctrl: false,
-										shift: false,
-										keys: {}
+								let value = component.data,
+									pressed = {
+										... (value.alt && {alt: true}),
+										... (value.ctrl && {ctrl: true}),
+										... (value.shift && {shift: true}),
+										... (value.keys && {keys: value.keys}),
+										... (value.wheel && {wheel: value.wheel}),
+										... (!value.click && event.button === 0 && {click: true}),
+										... (!value.middle && event.button === 1 && {middle: true}),
+										... (!value.context && event.button === 2 && {context: true})
 									};
-								}
 
-								component.data.click = false;
-								component.data.middle = false;
-								component.data.context = false;
-
-								if (event.button === 0) {
-									component.data.click = true;
-
-									component.render();
-								} else if (event.button === 1) {
-									component.data.middle = true;
-
-									component.render();
-								}
+								component.data = pressed;
+								component.render();
 							});
 
 							this.addEventListener('contextmenu', function (event) {
 								event.preventDefault();
 								event.stopPropagation();
-
-								if (component.data.context) {
-									component.data = {
-										alt: false,
-										ctrl: false,
-										shift: false,
-										keys: {}
-									};
-								}
-
-								component.data.context = true;
-								component.data.middle = false;
-								component.data.click = false;
-
-								component.render();
-
 								return false;
 							});
 						}
@@ -2208,15 +2066,8 @@ satus.components.shortcut = function (component, skeleton) {
 					text: 'reset',
 					on: {
 						click: function () {
-							component.data = component.skeleton.value || {};
-							component.storage.remove();
-
-							component.render(component.valueElement);
-
+							component.value = component.default;
 							this.parentNode.parentNode.parentNode.close();
-
-							window.removeEventListener('keydown', component.keydown);
-							window.removeEventListener('wheel', component.mousewheel);
 						}
 					}
 				},
@@ -2225,14 +2076,8 @@ satus.components.shortcut = function (component, skeleton) {
 					text: 'cancel',
 					on: {
 						click: function () {
-							component.data = satus.storage.get(component.storage.key) || component.skeleton.value || {};
-
-							component.render(component.valueElement);
-
+							component.data = component.storage.value;
 							this.parentNode.parentNode.parentNode.close();
-
-							window.removeEventListener('keydown', component.keydown);
-							window.removeEventListener('wheel', component.mousewheel);
 						}
 					}
 				},
@@ -2241,14 +2086,8 @@ satus.components.shortcut = function (component, skeleton) {
 					text: 'save',
 					on: {
 						click: function () {
-							component.storage.value = component.data;
-
-							component.render(component.valueElement);
-
+							component.value = component.data;
 							this.parentNode.parentNode.parentNode.close();
-
-							window.removeEventListener('keydown', component.keydown);
-							window.removeEventListener('wheel', component.mousewheel);
 						}
 					}
 				}
@@ -2265,34 +2104,19 @@ satus.components.shortcut = function (component, skeleton) {
 				return this.skeleton.value || {};
 			}
 		},
-		/*		value: {
+		value: {
 			get () {
-				//return Number(this.input.value);
+				return this.data;
 			},
 			set (val) {
-*/				/*this.input.value = val;
-
-				if (this.storage) {
-					if (val === this.default) {
-						this.storage.remove();
-					} else {
-						this.storage.value = val;
-					}
-				}
-
+				this.data = val;
+				this.render(this.valueElement);
 				this.dispatchEvent(new CustomEvent('change'));
-				*/
-		/*			},
+			},
 			enumerable: true,
 			configurable: true
-		}*/
+		}
 	});
-
-	component.data = component.storage ? component.storage.value : component.default;
-
-	//component.value = component.storage ? component.storage.value : component.default;
-
-	component.render(component.valueElement);
 };
 /*--- CHECKBOX -------------------------------------------------*/
 satus.components.checkbox = function (component) {
@@ -2444,8 +2268,8 @@ satus.events.on('render', function (component) {
 		component.addEventListener('contextmenu', function (event) {
 			const base = this.baseProvider,
 				base_rect = base.getBoundingClientRect(),
-				modal = satus.render({
-					component: 'modal',
+				popup = satus.render({
+					component: 'popup',
 					variant: 'contextmenu',
 					parentSkeleton: this.skeleton,
 					baseProvider: base
@@ -2460,16 +2284,16 @@ satus.events.on('render', function (component) {
 					x = 0;
 				}
 
-				modal.childrenContainer.style.right = x + 'px';
+				popup.childrenContainer.style.right = x + 'px';
 			} else {
-				modal.childrenContainer.style.left = x + 'px';
+				popup.childrenContainer.style.left = x + 'px';
 			}
 
-			modal.childrenContainer.style.top = y + 'px';
+			popup.childrenContainer.style.top = y + 'px';
 
 			this.skeleton.contextMenu.parentSkeleton = this.skeleton;
 
-			satus.render(this.skeleton.contextMenu, modal.childrenContainer);
+			satus.render(this.skeleton.contextMenu, popup.childrenContainer);
 
 			event.preventDefault();
 			event.stopPropagation();
