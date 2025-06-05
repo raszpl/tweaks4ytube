@@ -254,8 +254,8 @@ satus.issame = function (obj1, obj2) {
 		return false;
 	}
 	for (let key of keys1) {
-		if (!obj2.hasOwnProperty(key) || !deepCompare(obj1[key], obj2[key])) {
-		return false;
+		if (!Object.hasOwn(obj2, key) || !deepCompare(obj1[key], obj2[key])) {
+			return false;
 		}
 	}
 	return true;
@@ -1991,7 +1991,7 @@ satus.components.shortcut = function (component, skeleton) {
 			};
 
 		if (!['alt', 'altgraph', 'control', 'shift'].includes(event.key.toLowerCase())) {
-			pressed  = {
+			pressed = {
 				... pressed,
 				... (value.alt && {alt: true}),
 				... (value.ctrl && {ctrl: true}),
