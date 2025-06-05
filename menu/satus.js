@@ -1475,12 +1475,15 @@ satus.components.time = function (component, skeleton) {
 /*--- LAYERS ---------------------------------------------------*/
 satus.components.layers = function (component, skeleton) {
 	component.path = [];
+	component.rememberScrollTop;
 	component.baseProvider.layers.push(component);
 	component.layersProvider = component;
 
 	component.back = function () {
-		if (this.path.length > 1) {
+		if (this.path.length > 2) {
+
 			this.path.pop();
+			this.rememberScrollTop = this.path.pop();
 
 			this.open(this.path.last, true);
 		}
@@ -1496,16 +1499,16 @@ satus.components.layers = function (component, skeleton) {
 		const previous_layer = this.querySelector('.satus-layers__layer:last-child'),
 			layer = this.createChildElement('div', 'layer');
 
-		if (previous_layer) previous_layer.style.animation = 'fadeOut 100ms ease forwards';
-
 		if (back) {
 			layer.style.animation = 'fadeInRight 150ms ease forwards';
 		} else {
 			layer.style.animation = 'fadeInLeft 300ms ease forwards';
+			this.path.push(previous_layer?.scrollTop); // remember scroll position for History traversal
 			this.path.push(skeleton);
 		}
 
 		if (previous_layer) {
+			previous_layer.style.animation = 'fadeOut 100ms ease forwards';
 			setTimeout(function () {
 				previous_layer.remove();
 			}, satus.getAnimationDuration(previous_layer));
@@ -1515,6 +1518,10 @@ satus.components.layers = function (component, skeleton) {
 		layer.baseProvider = this.baseProvider;
 
 		satus.render(skeleton, layer, undefined, skeleton.component === 'layers');
+
+		if (back && this.rememberScrollTop) { // apply remembered scroll position of restored History element
+			layer.scrollTop = this.rememberScrollTop;
+		}
 
 		this.dispatchEvent(new Event('open'));
 	};
