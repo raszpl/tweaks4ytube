@@ -254,7 +254,7 @@ satus.issame = function (obj1, obj2) {
 		return false;
 	}
 	for (let key of keys1) {
-		if (!Object.hasOwn(obj2, key) || !deepCompare(obj1[key], obj2[key])) {
+		if (!Object.hasOwn(obj2, key) || !this.issame(obj1[key], obj2[key])) {
 			return false;
 		}
 	}
