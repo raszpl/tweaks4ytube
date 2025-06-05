@@ -6,6 +6,7 @@
 			sort(array, order, property)
 			data(element, data)
 			isset(target, is_object)
+			issame(obj1, obj2)
 			is___(target) Function Array String Number Object Element NodeList Boolean
 			log()
 			getProperty(object, string)
@@ -242,8 +243,25 @@ satus.isset = function (target, is_object) {
 
 	return true;
 };
+/*--- ISSAME ---------------------------------------------------*/
+satus.issame = function (obj1, obj2) {
+	if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+		return obj1 === obj2;
+	}
+	const keys1 = Object.keys(obj1);
+	const keys2 = Object.keys(obj2);
+	if (keys1.length !== keys2.length) {
+		return false;
+	}
+	for (let key of keys1) {
+		if (!obj2.hasOwnProperty(key) || !deepCompare(obj1[key], obj2[key])) {
+		return false;
+		}
+	}
+	return true;
+};
 /*--- IS___(target) --------------------------------------------*/
-satus.isFunction	= function (target) { return typeof target ==='function'; };
+satus.isFunction	= function (t) { return typeof t ==='function'; };
 satus.isArray		= Array.isArray;
 satus.isString		= function (t) { return typeof t ==='string'; };
 satus.isNumber		= function (t) { return (typeof t ==='number' && !isNaN(t)); };
@@ -669,12 +687,12 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 						} else return undefined;
 					},
 					set (val) {
-						if (val === satus.storage.data[key]
-							|| (!Object.hasOwn(satus.storage.data, key) && val === element.default)) return;
+						if ((satus.issame(val, satus.storage.data[key]) && !satus.issame(val, element.default))
+							|| (!Object.hasOwn(satus.storage.data, key) && satus.issame(val, element.default))) return;
 						if (val === undefined
 							// Special case 'theme', Need to save first regardless of .default to send Light theme changes up the chain
 							// ImprovedTube.setTheme will delete it for us
-							|| (val === element.default && key != 'theme')) {
+							|| (satus.issame(val, element.default) && key != 'theme')) {
 							satus.storage.remove(key);
 						} else {
 							// only store if actually different value
@@ -1130,6 +1148,12 @@ satus.components.textField = function (component, skeleton) {
 			component.pre.update();
 		}
 	};
+
+	if (skeleton.lineNumbers === false) {
+		component.setAttribute('line-numbers', 'false');
+
+		component.lineNumbers.setAttribute('hidden', '');
+	}
 
 	component.lineNumbers.update = function () {
 		const count = component.input.value.split('\n').length;
