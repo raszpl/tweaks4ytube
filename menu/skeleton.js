@@ -63,8 +63,8 @@ extension.skeleton.header = {
 			variant: 'icon',
 			on: {
 				click: function () {
-					document.querySelector('#sectionSearch').hidden = false;
-					document.querySelector('#sectionSearch').dispatchEvent(new CustomEvent('render'));
+					document.querySelector('#searchBar').hidden = false;
+					document.querySelector('#searchBar').dispatchEvent(new CustomEvent('render'));
 				}
 			},
 
