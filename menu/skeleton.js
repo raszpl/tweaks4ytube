@@ -164,9 +164,9 @@ extension.skeleton.main = {
 					}
 				}
 
-				section.back.rendered.hidden = this.path.length <= 1;
+				section.back.rendered.hidden = this.path.length <= 2;
 				section.it_title.rendered.innerText = satus.locale.get(title);
-				section.it_version.rendered.hidden = this.path.length > 1;
+				section.it_version.rendered.hidden = this.path.length > 2;
 
 				const vertical_menu = document.querySelector('.satus-popup--vertical-menu');
 
