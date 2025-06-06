@@ -1,5 +1,5 @@
 /*--- SEARCH -------------------------------------------------*/
-extension.skeleton.header.sectionSearch = {
+extension.skeleton.header.searchBar = {
 	component: 'text-field',
 	variant: 'search',
 	focus: true,
@@ -166,7 +166,7 @@ extension.skeleton.header.sectionSearch = {
 				}
 
 				//this.parentNode.remove();
-				document.querySelector('#sectionSearch').hidden = true;
+				document.querySelector('#searchBar').hidden = true;
 			}
 		},
 
