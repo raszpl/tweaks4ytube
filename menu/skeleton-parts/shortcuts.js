@@ -173,7 +173,7 @@ extension.skeleton.main.layers.section.shortcuts = {
 					value: {
 						keys: {
 							32: {
-								code: 'space'
+								key: ' '
 							}
 						}
 					}
