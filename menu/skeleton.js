@@ -168,11 +168,7 @@ extension.skeleton.main = {
 				section.it_title.rendered.innerText = satus.locale.get(title);
 				section.it_version.rendered.hidden = this.path.length > 2;
 
-				const vertical_menu = document.querySelector('.satus-popup--vertical-menu');
-
-				if (vertical_menu) {
-					vertical_menu.close();
-				}
+				document.querySelector('.satus-popup--vertical-menu')?.close();
 			}
 		},
 
