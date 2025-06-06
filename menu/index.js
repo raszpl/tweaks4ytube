@@ -22,21 +22,21 @@ satus.storage.import(function (items) {
 });
 
 extension.attributes = function (key) {
-	const attributes = {
-		theme: true,
-		improvedtube_home: true,
-		title_version: true,
-		it_general: true,
-		it_appearance: true,
-		it_themes: true,
-		it_player: true,
-		it_playlist: true,
-		it_channel: true,
-		it_shortcuts: true,
-		it_blocklist: true,
-		it_analyzer: true,
-		layer_animation_scale: false
-	};
+	const attributes = [
+		'theme',
+		'improvedtube_home',
+		'title_version',
+		'it_general',
+		'it_appearance',
+		'it_themes',
+		'it_player',
+		'it_playlist',
+		'it_channel',
+		'it_shortcuts',
+		'it_blocklist',
+		'it_analyzer',
+		'layer_animation_scale',
+	];
 	function attrib (attribute) {
 		const value = satus.storage.get(attribute);
 
@@ -51,10 +51,11 @@ extension.attributes = function (key) {
 
 	if (!key) {
 		// init
-		for (const attribute in attributes) {
+		for (const attribute of attributes) {
 			attrib(attribute);
 		}
-	} else if (attributes[key]) {
+	} else if (attributes.includes(key)) {
+		//if (attributes[key]) {
 		// changed key on list
 		attrib(key);
 	}
@@ -91,7 +92,7 @@ chrome.runtime.onMessage.addListener(function (message) {
 	if (message.action === 'performance-reply') {
 		const element = document.createElement('pre');
 		element.style = 'position:fixed; top: 466px;';
-		element.appendChild(document.createTextNode('eEements start ' + message.perf.elements_start));
+		element.appendChild(document.createTextNode('Elements start ' + message.perf.elements_start));
 		element.appendChild(document.createTextNode('\nElements injected ' + message.perf.elements_injected));
 		element.appendChild(document.createTextNode('\nElements handled ' + (message.perf.elements_handled_name + message.perf.elements_handled_id + message.perf.elements_handled_class)));
 		element.appendChild(document.createTextNode('\n name ' + message.perf.elements_handled_name));
