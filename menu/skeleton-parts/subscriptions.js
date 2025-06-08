@@ -11,9 +11,9 @@ extension.skeleton.main.layers.section.subscriptions = {
 
 				subscription_thumbs: {
 					component: 'select',
-					text: 'Videos per row',
+					text: 'thumb_per_row',
 					options: [{
-						text: 'default (3)',
+						text: '3',
 						value: 3
 					}, {
 						text: '4',
@@ -29,11 +29,11 @@ extension.skeleton.main.layers.section.subscriptions = {
 				},
 				remove_subscriptions_shorts: {
 					component: 'switch',
-					text: 'Remove Shorts'
+					text: 'remove_subscriptions_shorts'
 				},
 				thumb_title_max: {
 					component: 'switch',
-					text: 'Show whole video title under thumbnail'
+					text: 'thumb_title_max'
 				}
 			}
 		}
