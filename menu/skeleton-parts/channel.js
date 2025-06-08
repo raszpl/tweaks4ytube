@@ -10,9 +10,9 @@ extension.skeleton.main.layers.section.channel = {
 
 			channel_thumbs: {
 				component: 'select',
-				text: 'Videos per row',
+				text: 'thumb_per_row',
 				options: [{
-					text: 'default (4)',
+					text: '4',
 					value: 4
 				}, {
 					text: '5',
@@ -70,7 +70,7 @@ extension.skeleton.main.layers.section.channel = {
 			},
 			thumb_title_max: {
 				component: 'switch',
-				text: 'Show whole video title under thumbnail'
+				text: 'thumb_title_max'
 			}
 		}
 	},
