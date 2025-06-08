@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Alisin ang Shorts mula sa homepage"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Alisin ang Shorts reel mula sa mga resulta ng paghahanap"
-    }
+	"hideHomePageShorts": {
+		"message": "Alisin ang Shorts mula sa homepage"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Alisin ang Shorts reel mula sa mga resulta ng paghahanap"
+	}
 }

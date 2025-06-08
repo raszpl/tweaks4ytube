@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Ondoa Shorts kutoka ukurasa wa nyumbani"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Ondoa gurudumu la Shorts kutoka kwenye matokeo ya utafutaji"
-    }
+	"hideHomePageShorts": {
+		"message": "Ondoa Shorts kutoka ukurasa wa nyumbani"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Ondoa gurudumu la Shorts kutoka kwenye matokeo ya utafutaji"
+	}
 }

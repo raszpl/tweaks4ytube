@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Pašalinkite Shorts iš pagrindinio puslapio"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Pašalinkite Shorts ritinį iš paieškos rezultatų"
-    }
+	"hideHomePageShorts": {
+		"message": "Pašalinkite Shorts iš pagrindinio puslapio"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Pašalinkite Shorts ritinį iš paieškos rezultatų"
+	}
 }

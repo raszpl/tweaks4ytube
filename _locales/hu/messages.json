@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Shorts eltávolítása a főoldalról"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Távolítsa el a Shorts karusellt a keresési találatokból"
-    }
+	"hideHomePageShorts": {
+		"message": "Shorts eltávolítása a főoldalról"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Távolítsa el a Shorts karusellt a keresési találatokból"
+	}
 }
