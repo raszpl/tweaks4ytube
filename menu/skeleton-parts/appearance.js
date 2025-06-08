@@ -97,7 +97,7 @@ extension.skeleton.main.layers.section.appearance.on.click.header = {
 			},
 			header_transparent_alternative: {
 				component: 'switch',
-				text: 'Transparent background alternative'
+				text: 'header_transparent_alternative'
 			},
 			header_hide_country_code: {
 				component: 'switch',
@@ -136,7 +136,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 					text: 'fullWindow',
 					value: 'full_window'
 				}, {
-					text: 'Max. width within the page',
+					text: 'max_width_within_page',
 					value: 'max_width'
 				}, {
 					text: 'fitToWindow',
@@ -784,10 +784,10 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 					text: 'hidden',
 					value: 'hidden'
 				}, {
-					text: 'Focus',
+					text: 'focus',
 					value: 'focus'
 				}, {
-					text: 'Titles',
+					text: 'titles',
 					value: 'titles'
 				}, {
 					text: 'collapsed',
@@ -812,7 +812,7 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 			},
 			sidebar_thumb_title_max: {
 				component: 'switch',
-				text: 'Show whole video title'
+				text: 'sidebar_thumb_title_max'
 			},
 			transcript: {
 				component: 'switch',
