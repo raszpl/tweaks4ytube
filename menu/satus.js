@@ -962,14 +962,14 @@ satus.locale.validate = async function () {
 	for (const language of allLocales) {
 		fetchedLocales[language] = {};
 		const dat = await (await fetch(chrome.runtime.getURL("_locales/" + language + '/messages.json'))).json();
-			for (const key in dat) {
-				if (!fetchedLocales[language][key]) {
-					fetchedLocales[language][key] = dat[key].message;
-				}
-				if (!allKeys[key]) {
-					allKeys[key] = 1;
-				}
+		for (const key in dat) {
+			if (!fetchedLocales[language][key]) {
+				fetchedLocales[language][key] = dat[key].message;
 			}
+			if (!allKeys[key]) {
+				allKeys[key] = 1;
+			}
+		}
 	}
 
 	//check if any duplicates exist
