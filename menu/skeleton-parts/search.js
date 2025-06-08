@@ -6,32 +6,30 @@ extension.skeleton.header.searchBar = {
 	storage: false,
 	prepend: true,
 	placeholder: 'search',
-	lineNumbers: false,
-	rows: 1,
-	search: false,
-	searchPosition: 0,
 	attr: {
 		'hidden': false
 	},
 	on: {
 		render: function () {
 			this.input.focus();
-			if (this.skeleton.search) {
-				this.value = this.skeleton.search;
+			if (this.dataset.search) {
+				this.value = this.dataset.search;
 				this.dispatchEvent(new CustomEvent('input'));
 			}
 		},
 		blur: function () {
-			if (this.value.length === 0) {
+			if (this.value.length === 0 || this.dataset.results === '0') {
 				document.querySelector('.search-results')?.close();
 				this.hidden = true;
 			}
 		},
 		input: function () {
-			let self = this,
+			const searchbar = this,
 				value = this.value.trim();
 
-			this.skeleton.search = value;
+			if (value != this.dataset.search ) {
+				this.dataset.search = value;
+			}
 
 			if (value.length > 0) {
 				satus.search(value, extension.skeleton, function (results) {
@@ -41,6 +39,7 @@ extension.skeleton.header.searchBar = {
 							class: 'search-results'
 						};
 
+					// prepare search results
 					for (const [key, result] of Object.entries(results)) {
 						let parent = result,
 							category,
@@ -83,71 +82,63 @@ extension.skeleton.header.searchBar = {
 					}
 
 					if (Object.keys(results).length === 0) {
-						if (search_results) {
-							search_results.remove();
-
-							self.removeAttribute('results');
-						}
+						search_results?.remove();
+						delete searchbar.searchPosition;
+						searchbar.removeAttribute('results');
+						searchbar.dataset.results = 0;
+						searchbar.title = '0 ' + satus.locale.get('searchResults');
 					} else {
 						if (search_results) {
-							let surface = document.querySelector('.search-results .satus-popup__surface');
+							const surface = document.querySelector('.search-results .satus-popup__surface');
 
 							satus.empty(surface);
-
 							satus.render(skeleton, surface, undefined, true);
+
+							searchbar.dataset.results = Object.keys(results).length;
+							searchbar.title = Object.keys(results).length + ' ' + satus.locale.get('searchResults');
 						} else {
-							self.setAttribute('results', '');
+							searchbar.setAttribute('results', '');
+							searchbar.dataset.results = Object.keys(results).length;
+							searchbar.title = Object.keys(results).length + ' ' + satus.locale.get('searchResults');
 
-							search_results = satus.render(skeleton, self.baseProvider);
+							search_results = satus.render(skeleton, searchbar.baseProvider);
 
-							// we need global listener here
-							function hidesearch (event) {
-								// make sure to clean it after closing search results
-								if (!document.body.contains(search_results)) {
-									document.removeEventListener('click', hidesearch);
-								}
-								// hide search results when clicking on result that is a 'button' inside search results
-								if (search_results.contains(event.target) && event.target.className.includes('satus-button')
-									// dont close on popups
-									&& !(event.target.skeleton?.on?.click?.component == 'popup')
-									// shortcut are also popups
-									&& !(event.target.skeleton?.component == 'shortcut')) {
-									search_results.close();
-									self.skeleton.close.rendered.click();
-								} else if (event.target.closest('.satus-popup.satus-popup--vertical-menu') && event.target.closest('.satus-button')) {
-									// hide search results when clicking on vertical-menu button
-									search_results.close();
-									self.skeleton.close.rendered.click();
-								}
+							// restore scroll position
+							if (searchbar.searchPosition) {
+								search_results.childNodes[1].scrollTop = searchbar.searchPosition;
 							}
 
-							document.addEventListener('click', hidesearch);
-
-							if (self.skeleton.searchPosition) {
-								search_results.childNodes[1].scrollTop = self.skeleton.searchPosition;
-							}
-
-							document.querySelector('.search-results .satus-popup__scrim').addEventListener('click', function () {
-								// this is someone clicking outside of Search results window
-								let search_results = document.querySelector('.search-results');
-
-								if (search_results) {
-									self.skeleton.searchPosition = search_results.childNodes[1].scrollTop;
-									search_results.close();
+							// close Search results on 'button' or clicking outside
+							search_results.addEventListener('click', (event) => {
+								// buttons call component.open and load new sections
+								if (event.target.closest('button')
+									// or click outside of Search results window
+									|| event.target.componentName === "popup__scrim") {
+									// just click Close Search button, its going to take care of the rest
+									searchbar.skeleton.close.rendered.click();
 								}
-
-								self.skeleton.close.rendered.click()
 							});
+
+							// we need one unique global listener to catch vertical-menu button clicks
+							if (!searchbar.globalListener) {
+								searchbar.globalListener = function (event) {
+									// hide search results when clicking on vertical-menu button
+									if (event.target.closest('.satus-popup.satus-popup--vertical-menu') && event.target.closest('.satus-button')) {
+										searchbar.skeleton.close.rendered.click();
+									}
+								};
+							}
+							document.addEventListener('click', searchbar.globalListener);
 						}
 					}
 				});
 			} else {
-				let search_results = document.querySelector('.search-results');
+				const search_results = document.querySelector('.search-results');
 
 				if (search_results) {
 					search_results.close();
 
-					self.removeAttribute('results');
+					searchbar.removeAttribute('results');
 				}
 			}
 		}
@@ -158,14 +149,17 @@ extension.skeleton.header.searchBar = {
 		variant: 'icon',
 		on: {
 			click: function () {
-				let search_results = document.querySelector('.search-results');
+				const search_results = document.querySelector('.search-results'),
+					searchbar = this.parentNode;
 
 				if (search_results) {
-					this.parentNode.skeleton.searchPosition = search_results.childNodes[1].scrollTop;
+					// remember scroll position when closing Search
+					searchbar.searchPosition = search_results.childNodes[1].scrollTop;
+					// remove global listener
+					document.removeEventListener('click', searchbar.globalListener);
 					search_results.close();
 				}
 
-				//this.parentNode.remove();
 				document.querySelector('#searchBar').hidden = true;
 			}
 		},
