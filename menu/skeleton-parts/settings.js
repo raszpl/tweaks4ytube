@@ -492,8 +492,8 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 									url: 'https://www.youtube.com/*',
 									discarded: false
 								}).then(tabs => {
-									for (let i = 0, l = tabs.length; i < l; i++) {
-										chrome.tabs.sendMessage(tabs[i].id, {
+									for (const tab of tabs) {
+										chrome.tabs.sendMessage(tab.id, {
 											action: 'delete-youtube-cookies'
 										});
 									}
