@@ -67,10 +67,10 @@ extension.skeleton.main.layers.section.themes.on.click.section = {
 		value: 'custom',
 		on: {
 			click: {
-				section: {
+				custom_colors: {
 					component: 'section',
 					variant: 'card',
-					title: 'Custom colors',
+					title: 'custom_colors',
 
 					theme_primary_color: {
 						component: 'color-picker',
