@@ -55,7 +55,6 @@ extension.attributes = function (key) {
 			attrib(attribute);
 		}
 	} else if (attributes.includes(key)) {
-		//if (attributes[key]) {
 		// changed key on list
 		attrib(key);
 	}
