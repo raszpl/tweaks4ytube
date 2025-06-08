@@ -571,9 +571,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 						variant: 'transparent-card',
 						title: 'YouTube API',
 						google_api_key: {
-							component: 'text-field',
-							rows: 1,
-							lineNumbers: false
+							component: 'text-field'
 						}
 					}
 				}
@@ -585,6 +583,8 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					click: {
 						custom_css: {
 							component: 'text-field',
+							multiline: true,
+							lineNumbers: true,
 							style: {
 								height: '100%'
 							}
@@ -599,6 +599,8 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 					click: {
 						custom_js: {
 							component: 'text-field',
+							multiline: true,
+							lineNumbers: true,
 							style: {
 								height: '100%'
 							}
