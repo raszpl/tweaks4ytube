@@ -263,7 +263,7 @@ satus.issame = function (obj1, obj2) {
 	if (keys1.length !== keys2.length) {
 		return false;
 	}
-	for (let key of keys1) {
+	for (const key of keys1) {
 		if (!Object.hasOwn(obj2, key) || !this.issame(obj1[key], obj2[key])) {
 			return false;
 		}
@@ -494,8 +494,8 @@ satus.events.trigger = function (type, data) {
 	const handlers = this.data[type];
 
 	if (handlers) {
-		for (let i = 0, l = handlers.length; i < l; i++) {
-			handlers[i](data);
+		for (const handler of handlers) {
+			handler(data);
 		}
 	}
 };
@@ -693,7 +693,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 						} else return undefined;
 					},
 					set (val) {
-						if ((satus.issame(val, satus.storage.data[key]) && !satus.issame(val, element.default))
+						if ((satus.issame(val, satus.storage.data[key]))
 							|| (!Object.hasOwn(satus.storage.data, key) && satus.issame(val, element.default))) return;
 						if (val === undefined
 							// Special case 'theme', Need to save first regardless of .default to send Light theme changes up the chain
@@ -1368,14 +1368,6 @@ satus.components.select = function (component, skeleton) {
 
 	component.options = satus.ifFunctionExec(skeleton.options) || [];
 
-	for (const options of component.options) {
-		const option = document.createElement('option');
-
-		option.value = options.value;
-		satus.text(option, options.text);
-		component.selectElement.appendChild(option);
-	}
-
 	component.selectElement.addEventListener('change', function () {
 		// Option value property in HTML DOM is always DOMString, use satus.toValue
 		component.value = satus.toValue(this.value);
@@ -1385,7 +1377,7 @@ satus.components.select = function (component, skeleton) {
 		satus.empty(this.valueElement);
 
 		if (this.selectElement.options[this.selectElement.selectedIndex]) {
-			satus.text(this.valueElement, this.selectElement.options[this.selectElement.selectedIndex].text);
+			this.valueElement.appendChild(document.createTextNode(this.selectElement.options[this.selectElement.selectedIndex].text));
 		}
 	};
 
@@ -1412,6 +1404,18 @@ satus.components.select = function (component, skeleton) {
 			configurable: true
 		}
 	});
+
+	for (const option of component.options) {
+		const optionElement = document.createElement('option');
+		let optionText = satus.locale.get(option.text);
+
+		// mark Default option
+		optionText += (satus.toValue(option.value) === component.default) ? ' (' + satus.locale.get('default') + ')' : '';
+
+		optionElement.value = option.value;
+		optionElement.appendChild(document.createTextNode(optionText));
+		component.selectElement.appendChild(optionElement);
+	}
 };
 /*--- SECTION --------------------------------------------------*/
 satus.components.section = function (component, skeleton) {
@@ -1731,6 +1735,8 @@ satus.components.colorPicker = function (component) {
 			configurable: true
 		}
 	});
+
+	component.color.title = satus.locale.get('default') + ' ' + component.default;
 };
 /*--- RADIO ----------------------------------------------------*/
 satus.components.radio = function (component, skeleton) {
@@ -1838,6 +1844,9 @@ satus.components.slider = function (component, skeleton) {
 			configurable: true
 		}
 	});
+
+	component.number.title = satus.locale.get('default') + ' ' + component.default;
+	component.bar.title = satus.locale.get('default') + ' ' + component.default;
 };
 /*--- TABS -----------------------------------------------------*/
 satus.components.tabs = function (component, skeleton) {
@@ -2123,6 +2132,9 @@ satus.components.shortcut = function (component, skeleton) {
 			configurable: true
 		}
 	});
+
+	//fixme: this needs adapting component.render function
+	//component.valueElement.title = satus.locale.get('default') + ' ' + component.default;
 };
 /*--- CHECKBOX -------------------------------------------------*/
 satus.components.checkbox = function (component) {
@@ -2163,11 +2175,13 @@ satus.components.checkbox = function (component) {
 			configurable: true
 		}
 	});
+
+	component.checkmark.title = satus.locale.get('default') + ' ' + (component.default ? satus.locale.get('on') : satus.locale.get('off'));
 };
 /*--- SWITCH ---------------------------------------------------*/
 satus.components.switch = function (component, skeleton) {
 	component.childrenContainer = component.createChildElement('div', 'content');
-	component.createChildElement('i');
+	component.switcher = component.createChildElement('i');
 	component.flip = satus.components.switch.flip;
 
 	// variant: 'manual' disables default onclick, user provided function should handle this functionality manually
@@ -2200,6 +2214,8 @@ satus.components.switch = function (component, skeleton) {
 			configurable: true
 		}
 	});
+
+	component.switcher.title = satus.locale.get('default') + ' ' + (component.default ? satus.locale.get('on') : satus.locale.get('off'));
 };
 /*--- SWITCH FLIP ----------------------------------------------*/
 satus.components.switch.flip = function (val = (this.dataset.value === 'true') ? false : true) {
