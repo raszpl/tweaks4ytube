@@ -418,8 +418,7 @@ extension.skeleton.main.layers.section.appearance.on.click.details = {
 			},
 			day_of_week: {
 				component: 'switch',
-				text: 'displayDayOfTheWeak',
-				depends: {hide_date:true}
+				text: 'displayDayOfTheWeak'
 			},
 			api: {
 				component: 'section',
