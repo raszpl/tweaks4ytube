@@ -50,6 +50,7 @@
 # LOCALIZATION
 			locale.get(string)
 			locale.import = function(code, callback, path)
+			locale.validate() purely debug function for cleaning up locale duplicates and validating json correctnes
 			text(element, value)
 
 // We always try to run values as functions to allow for dynamic content
@@ -950,6 +951,40 @@ satus.locale.import = function (code, callback, path) {
 		}
 		console.log(error);
 	}
+};
+/*--- VALIDATE ---------------------------------------------------*/
+// purely debug function for cleaning up locale duplicates and validating json correctnes
+satus.locale.validate = async function () {
+	const allLocales = ["en", "am", "ar", "bg", "bn", "ca", "cs", "da", "de", "el", "en_GB", "en_US", "es", "es_419", "et", "fa", "fa_IR", "fi", "fil", "fr", "gu", "he", "hi", "hr", "hu", "id", "it", "ja", "kn", "ko", "lt", "lv", "ml", "mr", "ms", "nb", "nb_NO", "nl", "no", "pl", "pt", "pt_BR", "pt_PT", "ro", "ru", "si", "sk", "sl", "sr", "sv", "sw", "sw_KE", "ta", "te", "th", "tr", "uk", "vi", "zh", "zh_CN", "zh_TW"],
+		fetchedLocales = {},
+		allKeys = {};
+
+	for (const language of allLocales) {
+		fetchedLocales[language] = {};
+		const dat = await (await fetch(chrome.runtime.getURL("_locales/" + language + '/messages.json'))).json();
+			for (const key in dat) {
+				if (!fetchedLocales[language][key]) {
+					fetchedLocales[language][key] = dat[key].message;
+				}
+				if (!allKeys[key]) {
+					allKeys[key] = 1;
+				}
+			}
+	}
+
+	//check if any duplicates exist
+	for (const key in allKeys) {
+		const allStrings = [];
+		for (const language of allLocales) {
+			if (!fetchedLocales[language][key]) continue;
+
+			if ((language != "en") && (fetchedLocales["en"][key] === fetchedLocales[language][key])) {
+				console.log(fetchedLocales[language][key] + ' | ' + key + ' ' + language);
+			}
+		}
+	}
+
+	return fetchedLocales;
 };
 /*--- TEXT -----------------------------------------------------*/
 satus.text = function (element, value) {
