@@ -8,10 +8,12 @@
 			isset(target, is_object)
 			issame(obj1, obj2)
 			is___(target) Function Array String Number Object Element NodeList Boolean
+			ifFunctionExec(target) shorthand for 'return (satus.isFunction(target) ? target() : target;'
 			log()
 			getProperty(object, string)
 			indexOf(child, parent)
 			toIndex(index, child, parent)
+			toValue(String) Returns Integer if clean conversion is possible, otherwise original String
 			Array.last HTMLCollection.last NodeList.last
 
 # DOM:		append(child, parent)
@@ -211,11 +213,7 @@ satus.sort = function (array, order, property) {
 satus.data = function (element, data) {
 	if (data) {
 		for (const key in data) {
-			let value = data[key];
-
-			if (satus.isFunction(value)) value = value();
-
-			element.dataset[key] = value;
+			element.dataset[key] = satus.ifFunctionExec(data[key]);
 		}
 	}
 };
@@ -269,6 +267,8 @@ satus.isObject		= function (t) { return (t instanceof Object && t !== null); };
 satus.isElement		= function (t) { return (t instanceof Element || t instanceof HTMLDocument); };
 satus.isNodeList	= function (t) { return t instanceof NodeList; };
 satus.isBoolean		= function (t) { return (t === false || t === true); };
+/*--- IFFUNCTIONEXEC -------------------------------------------*/
+satus.ifFunctionExec= function (t) { return (satus.isFunction(t) ? t() : t); };
 /*--- LOG ------------------------------------------------------*/
 satus.log			= function () { console.log.apply(null, arguments);};
 /*--- GET PROPERTY ---------------------------------------------*/
@@ -307,6 +307,11 @@ satus.toIndex = function (index, child, parent) {
 		parent.splice(index, 0, parent.splice(satus.indexOf(child, parent), 1)[0])
 	}
 };
+/*--- TO VALUE -------------------------------------------------*/
+// Option value property in HTML DOM is always DOMString, .toValue will detect and convert integers
+satus.toValue = function (string) {
+	return (string === parseInt(string).toString()) ? parseInt(string) : string;
+};
 /*--- LAST -----------------------------------------------------*/
 // much easier to use .last property for Array HTMLCollection NodeList
 Object.defineProperty(Array.prototype, 'last', {
@@ -335,9 +340,7 @@ satus.append = function (child, parent) {
 satus.attr = function (element, attributes) {
 	if (attributes) {
 		for (const name in attributes) {
-			let value = attributes[name];
-
-			if (satus.isFunction(value)) value = value();
+			const value = satus.ifFunctionExec(attributes[name]);
 
 			if (element.namespaceURI) {
 				if (value === false) {
@@ -440,9 +443,7 @@ satus.elementIndex = function (element) {
 	return Array.prototype.slice.call(element.parentNode.children).indexOf(element);
 };
 /*--------------------------------------------------------------
-
 # CSS
-
 --------------------------------------------------------------*/
 satus.css = function (element, property) {
 	return window.getComputedStyle(element).getPropertyValue(property);
@@ -540,7 +541,6 @@ satus.on = function (element, listeners) {
 								target = target[key];
 								// render last element if its not a function, lets us use redirects
 								if (i == match.length-1 && !satus.isFunction(target)) {
-									satus.isFunction(target[key])
 									let layers = this.layersProvider;
 									if (!layers && this.baseProvider.layers.length > 0) {
 										layers = this.baseProvider.layers[0];
@@ -620,9 +620,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 		element.componentName = tagName;
 
 		if (skeleton.variant) {
-			let variant = skeleton.variant;
-
-			if (this.isFunction(variant)) variant = variant();
+			const variant = satus.ifFunctionExec(skeleton.variant);
 
 			if (satus.isArray(variant)) {
 				for (let i = 0, l = variant.length; i < l; i++) {
@@ -658,23 +656,19 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 
 		// storage available only for appropriate elements
 		if (['text-field', 'select', 'color-picker', 'radio', 'slider', 'shortcut', 'checkbox', 'switch'].includes(tagName) && skeleton.storage != false) {
+			// default storage key fallback is element name (property)
+			const key = satus.ifFunctionExec(skeleton.storage || property);
+
 			element.storage = {};
 			element.storage.remove = function () {
 				satus.storage.remove(key);
 				element.dispatchEvent(new CustomEvent('change'));
 			};
-			// default storage key fallback is element name (property)
-			let key = skeleton.storage || property;
-			// key can also be function(), afaik yet unused capability
-			if (satus.isFunction(key)) key = key();
 
 			Object.defineProperties(element.storage, {
 				key: {
 					get () {
 						return key;
-					},
-					set (string) {
-						key = string;
 					}
 				},
 				value: {
@@ -769,7 +763,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 			let item = skeleton[key];
 
 			// sections can be functions, but ignore popups because that would call all the button functions
-			if (satus.isFunction(item) && skeleton.component != 'popup') item = item();
+			if (skeleton.component != 'popup') item = satus.ifFunctionExec(item);
 
 			if (item && item.component) {
 				item.parentSkeleton = skeleton;
@@ -948,9 +942,7 @@ satus.locale.import = function (code, callback, path) {
 /*--- TEXT -----------------------------------------------------*/
 satus.text = function (element, value) {
 	if (value) {
-		if (satus.isFunction(value)) value = value();
-
-		element.appendChild(document.createTextNode(satus.locale.get(value)));
+		element.appendChild(document.createTextNode(satus.locale.get(satus.ifFunctionExec(value))));
 	}
 };
 /*--------------------------------------------------------------
@@ -958,7 +950,7 @@ satus.text = function (element, value) {
 --------------------------------------------------------------*/
 /*--- POPUP ----------------------------------------------------*/
 satus.components.popup = function (component, skeleton) {
-	let content = skeleton.content;
+	const content = satus.ifFunctionExec(skeleton.content);
 
 	component.scrim = component.createChildElement('div', 'scrim');
 	component.surface = component.createChildElement('div', 'surface');
@@ -974,8 +966,8 @@ satus.components.popup = function (component, skeleton) {
 	};
 
 	if (!skeleton.modal) {
+		// this is someone clicking outside of popup dialog
 		component.scrim.addEventListener('click', function () {
-			// this is someone clicking outside of popup dialog
 			switch (skeleton.variant) {
 				case 'confirm':
 					if (skeleton.buttons?.cancel) {
@@ -1011,8 +1003,6 @@ satus.components.popup = function (component, skeleton) {
 	if (satus.isset(content)) {
 		component.surface.content = component.surface.createChildElement('p', 'content');
 
-		//popup 'content' can be a function
-		if (satus.isFunction(content)) content = content();
 		if (satus.isObject(content)) {
 			satus.render(content, component.surface.content);
 		} else {
@@ -1186,9 +1176,7 @@ satus.components.textField = function (component, skeleton) {
 		}
 
 		if (value.length === 0) {
-			let placeholder = component.skeleton.placeholder;
-			if (satus.isFunction(placeholder)) placeholder = placeholder();
-			this.textContent = satus.locale.get(placeholder);
+			this.textContent = satus.locale.get(satus.ifFunctionExec(component.skeleton.placeholder));
 		}
 	};
 
@@ -1291,9 +1279,7 @@ satus.components.textField = function (component, skeleton) {
 			get () {
 				let value = '';
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = this.skeleton.value;
-					if (satus.isFunction(value)) value = value();
-					value = satus.locale.get(value);
+					value = satus.locale.get(satus.ifFunctionExec(this.skeleton.value));
 				}
 				return value;
 			}
@@ -1322,12 +1308,9 @@ satus.components.chart = function (component, skeleton) {
 };
 /*--- CHART BAR ------------------------------------------------*/
 satus.components.chart.bar = function (component, skeleton) {
-	let labels = skeleton.labels,
-		datasets = skeleton.datasets,
+	const labels = satus.ifFunctionExec(skeleton.labels),
+		datasets = satus.ifFunctionExec(skeleton.datasets),
 		bars = [];
-
-	if (satus.isFunction(labels)) labels = labels();
-	if (satus.isFunction(datasets)) datasets = datasets();
 
 	if (satus.isArray(labels)) {
 		const container = component.createChildElement('div', 'labels');
@@ -1370,7 +1353,7 @@ satus.components.select = function (component, skeleton) {
 	component.appendChild(component.valueElement);
 	component.appendChild(component.selectElement);
 
-	component.options = satus.isFunction(skeleton.options) ? skeleton.options() : skeleton.options || [];
+	component.options = satus.ifFunctionExec(skeleton.options) || [];
 
 	for (const options of component.options) {
 		const option = document.createElement('option');
@@ -1381,8 +1364,8 @@ satus.components.select = function (component, skeleton) {
 	}
 
 	component.selectElement.addEventListener('change', function () {
-		// Option value property in HTML DOM is always DOMString, try to detect and convert integers
-		component.value = (this.value === parseInt(this.value).toString()) ? parseInt(this.value) : this.value;
+		// Option value property in HTML DOM is always DOMString, use satus.toValue
+		component.value = satus.toValue(this.value);
 	});
 
 	function render () {
@@ -1400,13 +1383,13 @@ satus.components.select = function (component, skeleton) {
 		default: {
 			get () {
 				// default is either in order: .value | .index | first options element
-				return [this.skeleton.value, this.options[this.skeleton.index]?.value, this.options[0]?.value].find(e => satus.isset(e));
+				return [satus.ifFunctionExec(this.skeleton.value), this.options[satus.ifFunctionExec(this.skeleton.index)]?.value, this.options[0]?.value].find(e => satus.isset(e));
 			}
 		},
 		value: {
 			get () {
-				// Option value property in HTML DOM is always DOMString, try to detect and convert integers
-				return (this.selectElement.value === parseInt(this.selectElement.value).toString()) ? parseInt(this.selectElement.value) : this.selectElement.value;
+				// Option value property in HTML DOM is always DOMString, use satus.toValue
+				return satus.toValue(this.selectElement.value);
 			},
 			set (val) {
 				this.selectElement.value = val;
@@ -1435,9 +1418,7 @@ satus.components.time = function (component, skeleton) {
 	select_skeleton.component = 'select';
 	select_skeleton.options = [];
 
-	if (satus.isFunction(select_skeleton.hour12)) {
-		select_skeleton.hour12 = select_skeleton.hour12();
-	}
+	select_skeleton.hour12 = satus.ifFunctionExec(select_skeleton.hour12);
 
 	for (let i = 0, l = 24; i < l; i++) {
 		let hour = i,
@@ -1721,8 +1702,7 @@ satus.components.colorPicker = function (component) {
 			get () {
 				let value = [0, 0, 0];
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = this.skeleton.value;
-					if (satus.isFunction(value)) value = value();
+					value = satus.ifFunctionExec(this.skeleton.value);
 				}
 				return value;
 			}
@@ -1756,24 +1736,10 @@ satus.components.radio = function (component, skeleton) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				const excluded = [
-					'class',
-					'component',
-					'parentObject',
-					'parentSkeleton',
-					'rendered'];
 				let value;
 
-				for (let [key, item] of Object.entries(this.skeleton.parentSkeleton)) {
-					if (excluded.includes(key)) continue;
-					if (satus.isFunction(item)) item = item();
-					if (item.component != 'radio') continue;
-
-					if (item.value
-						&& (!value || item.checked)) {
-						// first element or checked
-						value = item.value;
-					}
+				if (Object.hasOwn(this.skeleton, 'value')) {
+					value = satus.ifFunctionExec(this.skeleton.parentSkeleton.value);
 				}
 				return value;
 			}
@@ -1840,8 +1806,7 @@ satus.components.slider = function (component, skeleton) {
 			get () {
 				let value = 0;
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = this.skeleton.value;
-					if (satus.isFunction(value)) value = value();
+					value = satus.ifFunctionExec(this.skeleton.value);
 				}
 				return value;
 			}
@@ -1863,11 +1828,8 @@ satus.components.slider = function (component, skeleton) {
 };
 /*--- TABS -----------------------------------------------------*/
 satus.components.tabs = function (component, skeleton) {
-	let tabs = skeleton.items,
-		value = skeleton.value;
-
-	if (satus.isFunction(tabs)) tabs = tabs();
-	if (satus.isFunction(value)) value = value();
+	const tabs = satus.ifFunctionExec(skeleton.items),
+		value = satus.ifFunctionExec(skeleton.value);
 
 	for (const tab of tabs) {
 		const button = component.createChildElement('button');
@@ -2132,7 +2094,7 @@ satus.components.shortcut = function (component, skeleton) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				return this.skeleton.value || {};
+				return satus.ifFunctionExec(this.skeleton.value) || {};
 			}
 		},
 		value: {
@@ -2169,8 +2131,11 @@ satus.components.checkbox = function (component) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				// default is true if any .value present
-				return !!this.skeleton.value;
+				let value = false;
+				if (Object.hasOwn(this.skeleton, 'value')) {
+					value = satus.ifFunctionExec(this.skeleton.value);
+				}
+				return value;
 			}
 		},
 		value: {
@@ -2204,9 +2169,7 @@ satus.components.switch = function (component, skeleton) {
 			get () {
 				let value = false;
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = this.skeleton.value;
-					// default value can also be function()
-					if (satus.isFunction(value)) value = value();
+					value = satus.ifFunctionExec(this.skeleton.value);
 				}
 				return value;
 			}
