@@ -25,10 +25,10 @@ extension.skeleton.main.layers.section.blocklist = {
 							add_channel: {
 								component: 'section',
 								variant: 'card',
-								add_channel: {
+								blocklist_add_channel: {
 									// FIXME finish this
 									component: 'button',
-									text: 'Add channel to Blocklist',
+									text: 'blocklist_add_channel',
 									var1: 'Channel URL',
 									var2: 'Optional thumbnail ULR',
 									var3: '',
@@ -36,7 +36,7 @@ extension.skeleton.main.layers.section.blocklist = {
 										click: {
 											component: 'popup',
 											variant: 'confirm',
-											content: function () {return '11234'}
+											content: function () {return 'unfinished functionality'}
 										}
 									}
 								}
@@ -46,12 +46,12 @@ extension.skeleton.main.layers.section.blocklist = {
 								variant: 'card',
 								on: {
 									render: function () {
-										let skeleton = {},
+										const skeleton = {},
 											blocklist = satus.storage.data.blocklist;
 
 										if (blocklist && blocklist.channels) {
-											for (let key in blocklist.channels) {
-												let channel = blocklist.channels[key];
+											for (const key in blocklist.channels) {
+												const channel = blocklist.channels[key];
 
 												if (channel !== false) {
 													skeleton[key] = {
@@ -69,7 +69,7 @@ extension.skeleton.main.layers.section.blocklist = {
 															component: 'button',
 															on: {
 																click: function () {
-																	let blocklist = satus.storage.get('blocklist'),
+																	const blocklist = satus.storage.get('blocklist'),
 																		component = this.parentNode;
 
 																	if (blocklist && blocklist.channels) {
@@ -122,7 +122,7 @@ extension.skeleton.main.layers.section.blocklist = {
 						},
 						on: {
 							render: function () {
-								let blocklist = satus.storage.get('blocklist');
+								const blocklist = satus.storage.get('blocklist');
 
 								if (blocklist && blocklist.channels && Object.keys(blocklist.channels).length) {
 									this.textContent = '('+Object.keys(blocklist.channels).length+')';
@@ -145,12 +145,12 @@ extension.skeleton.main.layers.section.blocklist = {
 							variant: 'card',
 							on: {
 								render: function () {
-									let skeleton = {},
+									const skeleton = {},
 										blocklist = satus.storage.get('blocklist');
 
 									if (blocklist && blocklist.videos) {
-										for (let key in blocklist.videos) {
-											let video = blocklist.videos[key];
+										for (const key in blocklist.videos) {
+											const video = blocklist.videos[key];
 
 											if (video !== false) {
 												skeleton[key] = {
@@ -168,7 +168,7 @@ extension.skeleton.main.layers.section.blocklist = {
 														component: 'button',
 														on: {
 															click: function () {
-																let blocklist = satus.storage.get('blocklist'),
+																const blocklist = satus.storage.get('blocklist'),
 																	component = this.parentNode;
 
 																if (blocklist && blocklist.videos) {
@@ -220,7 +220,7 @@ extension.skeleton.main.layers.section.blocklist = {
 						},
 						on: {
 							render: function () {
-								let blocklist = satus.storage.get('blocklist');
+								const blocklist = satus.storage.get('blocklist');
 
 								if (blocklist && blocklist.videos && Object.keys(blocklist.videos).length) {
 									this.textContent = '('+Object.keys(blocklist.videos).length+')';
