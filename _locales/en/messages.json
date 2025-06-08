@@ -1130,6 +1130,9 @@
 	"search": {
 		"message": "Search"
 	},
+	"searchResults": {
+		"message": "Search results"
+	},
 	"searchBarOnly": {
 		"message": "Search bar only"
 	},
