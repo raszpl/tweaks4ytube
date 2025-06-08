@@ -717,7 +717,7 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 			},
 			comments_sidebar: {
 				component: 'switch',
-				text: 'sidebar',
+				text: 'sidebar'
 			},
 			comments_sidebar_scrollbars: {
 				component: 'switch',
