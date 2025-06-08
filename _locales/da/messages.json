@@ -1,11 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Fjern Shorts fra hjemmesiden"
-    },
-    "qualityWithoutFocus": {
-        "message": "Quality without focus"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Fjern Shorts-rulle fra søgeresultaterne"
-    }
+	"hideHomePageShorts": {
+		"message": "Fjern Shorts fra hjemmesiden"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Fjern Shorts-rulle fra søgeresultaterne"
+	}
 }

@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Odstrani Shorts s prve strani"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Odstrani Shorts kolut iz rezultatov iskanja"
-    }
+	"hideHomePageShorts": {
+		"message": "Odstrani Shorts s prve strani"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Odstrani Shorts kolut iz rezultatov iskanja"
+	}
 }

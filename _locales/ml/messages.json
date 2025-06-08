@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "ഹോം പേജിന്റെ ഷോർട്ട് നീക്കം"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "തിരച്ചില്‍ ഫലങ്ങളില്‍നിന്ന് ഷോര്‍ട്സ് റീല്‍ നീക്കം"
-    }
+	"hideHomePageShorts": {
+		"message": "ഹോം പേജിന്റെ ഷോർട്ട് നീക്കം"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "തിരച്ചില്‍ ഫലങ്ങളില്‍നിന്ന് ഷോര്‍ട്സ് റീല്‍ നീക്കം"
+	}
 }

@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Poista etusivun Shorts"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Poista Shorts-reel hakutuloksista"
-    }
+	"hideHomePageShorts": {
+		"message": "Poista etusivun Shorts"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Poista Shorts-reel hakutuloksista"
+	}
 }

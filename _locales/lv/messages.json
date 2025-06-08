@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Noņem Shorts no sākumlapas"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Noņemiet Shorts rullīti no meklēšanas rezultātiem"
-    }
+	"hideHomePageShorts": {
+		"message": "Noņem Shorts no sākumlapas"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Noņemiet Shorts rullīti no meklēšanas rezultātiem"
+	}
 }

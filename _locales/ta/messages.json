@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "முகப்பு பக்கத்தின் ஷார்ட்ஸ் அகற்று"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "தேடல் முடிவுகளிலிருந்து ஷார்ட்ஸ் ரீலை அகற்று"
-    }
+	"hideHomePageShorts": {
+		"message": "முகப்பு பக்கத்தின் ஷார்ட்ஸ் அகற்று"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "தேடல் முடிவுகளிலிருந்து ஷார்ட்ஸ் ரீலை அகற்று"
+	}
 }

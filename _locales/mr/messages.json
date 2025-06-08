@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "मुख्य पृष्ठाच्या शॉर्ट्स काढा"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "शोध निकाला लावा परिणामातील शॉर्ट्स रील"
-    }
+	"hideHomePageShorts": {
+		"message": "मुख्य पृष्ठाच्या शॉर्ट्स काढा"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "शोध निकाला लावा परिणामातील शॉर्ट्स रील"
+	}
 }

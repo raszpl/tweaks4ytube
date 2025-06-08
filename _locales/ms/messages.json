@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "Alihkan Shorts dari laman utama"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "Alihkan gulungan Shorts dari hasil carian"
-    }
+	"hideHomePageShorts": {
+		"message": "Alihkan Shorts dari laman utama"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "Alihkan gulungan Shorts dari hasil carian"
+	}
 }

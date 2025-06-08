@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "ลบ Shorts ออกจากหน้าแรก"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "ลบ Shorts reel ออกจากผลการค้นหา"
-    }
+	"hideHomePageShorts": {
+		"message": "ลบ Shorts ออกจากหน้าแรก"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "ลบ Shorts reel ออกจากผลการค้นหา"
+	}
 }

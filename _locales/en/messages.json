@@ -221,6 +221,9 @@
 	"blocklist": {
 		"message": "Blocklist"
 	},
+	"blocklist_add_channel": {
+		"message": "Add channel to Blocklist"
+	},
 	"blockMusic": {
 		"message": "Skip ads while I play music"
 	},
@@ -305,6 +308,9 @@
 	"comments": {
 		"message": "Comments"
 	},
+	"community": {
+		"message": "Community"
+	},
 	"compact_spacing": {
 		"message": "Compact Spacing"
 	},
@@ -331,6 +337,9 @@
 	},
 	"customCss": {
 		"message": "Custom CSS"
+	},
+	"custom_colors": {
+		"message": "Custom colors"
 	},
 	"customJs": {
 		"message": "Custom JS"
@@ -491,6 +500,9 @@
 	"flash": {
 		"message": "Flash"
 	},
+	"focus": {
+		"message": "Focus"
+	},
 	"font": {
 		"message": "Font"
 	},
@@ -578,6 +590,9 @@
 	"header": {
 		"message": "Header"
 	},
+	"header_transparent_alternative": {
+		"message": "Transparent background alternative"
+	},
 	"hidden": {
 		"message": "Hidden"
 	},
@@ -597,7 +612,7 @@
 		"message": "Hide Shorts remixing this video"
 	},
 	"Hide_sidebar": {
-		"message": "Hide sidebar "
+		"message": "Hide sidebar"
 	},
 	"Hide_the_tabs_only": {
 		"message": "Hide the tabs only"
@@ -818,6 +833,12 @@
 	"markWatchedVideos": {
 		"message": "Mark watched videos"
 	},
+	"max_width_within_page": {
+		"message": "Max. width within the page"
+	},	
+	"magenta": {
+		"message": "Magenta"
+	},
 	"medium": {
 		"message": "Medium"
 	},
@@ -884,6 +905,9 @@
 	"old": {
 		"message": "Old"
 	},
+	"on": {
+		"message": "On"
+	},
 	"onAllVideos": {
 		"message": "On"
 	},
@@ -939,7 +963,7 @@
 		"message": "Platform"
 	},
 	"playAllButton": {
-		"message": "\"Play all\"button"
+		"message": "\"Play all\" button"
 	},
 	"playbackSpeed": {
 		"message": "Playback speed"
@@ -1058,6 +1082,9 @@
 	"removeShortsReelSearchResults": {
 		"message": "Remove Shorts reel from search results"
 	},
+	"remove_subscriptions_shorts": {
+		"message": "Remove Shorts from Subscriptions"
+	},
 	"repeat": {
 		"message": "Repeat"
 	},
@@ -1139,6 +1166,9 @@
 	"shortcuts": {
 		"message": "Shortcuts"
 	},
+	"shorts": {
+		"message": "Shorts"
+	},
 	"showCardsOnMouseHover": {
 		"message": "Show cards on mouse hover"
 	},
@@ -1165,6 +1195,9 @@
 	},
 	"Sidebar_simple_alternative": {
 		"message": "Sidebar (simple alternative)"
+	},
+	"sidebar_thumb_title_max": {
+		"message": "Show whole video title"
 	},
 	"softwareInformation": {
 		"message": "Software information"
@@ -1247,6 +1280,12 @@
 	"thisWillResetAllShortcuts": {
 		"message": "This will reset all shortcuts"
 	},
+	"thumb_per_row": {
+		"message": "Thumbnails per row"
+	},
+	"thumb_title_max": {
+		"message": "Show whole video title under thumbnail"
+	},
 	"thumbnails": {
 		"message": "Thumbnails"
 	},
@@ -1261,6 +1300,9 @@
 	},
 	"To_the_side_No_page_margin": {
 		"message": "To the side! (No page margin)"
+	},
+	"titles": {
+		"message": "Titles"
 	},
 	"todayAt": {
 		"message": "Today at"

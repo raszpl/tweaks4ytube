@@ -1,8 +1,8 @@
 {
-    "hideHomePageShorts": {
-        "message": "ముఖ్య పేజీని షార్ట్స్ తొలగించండి"
-    },
-    "removeShortsReelSearchResults": {
-        "message": "శోర్ట్స్ రీల్‌ను సెర్చ్ ఫలితాల నుండి తీసుకోండి"
-    }
+	"hideHomePageShorts": {
+		"message": "ముఖ్య పేజీని షార్ట్స్ తొలగించండి"
+	},
+	"removeShortsReelSearchResults": {
+		"message": "శోర్ట్స్ రీల్‌ను సెర్చ్ ఫలితాల నుండి తీసుకోండి"
+	}
 }
