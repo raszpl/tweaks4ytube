@@ -974,7 +974,7 @@ satus.locale.validate = async function () {
 
 	//check if any duplicates exist
 	for (const key in allKeys) {
-		const allStrings = [];
+		//const allStrings = [];
 		for (const language of allLocales) {
 			if (!fetchedLocales[language][key]) continue;
 
