@@ -176,9 +176,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 
 				custom_player_size_width: {
 					component: 'text-field',
-					value: 1280,
-					rows: 1,
-					lineNumbers: false
+					value: 1280
 				},
 				x: {
 					component: 'span',
@@ -186,9 +184,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 				},
 				custom_player_size_height: {
 					component: 'text-field',
-					value: 720,
-					rows: 1,
-					lineNumbers: false
+					value: 720
 				}
 			},
 			player_hide_annotations: {
