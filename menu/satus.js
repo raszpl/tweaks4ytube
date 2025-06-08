@@ -60,31 +60,43 @@
 ----------------------------------------------------------------
 			popup
 			popup.confirm
-// popup variant: 'confirm' supports two forms: Full with user providing own skeleton.buttons
+// popup.variant: 'confirm' supports two forms: Full with user providing own skeleton.buttons
 // and simplified with only function declarations for optional ok() and cancel().
 // Simplified takes care of closing popup on its own.
+// popup.modal: can only be closed with own buttons, clicking outside dialog is ignored
 			grid
 			textField
+// textField.value: defines default text
+// textField.placeholder: defines text to display when textarea/input is empty
+// textField.rows: defaults to 1
+// textField.multiline: defaults to false
+// textField.lineNumbers: defaults to false
 			chart
 			chart.bar
 			select
-// select value: defines default option by value. Takes precedence over index:
-// select index: defines default option by index (zero-indexed)
+// select.value: defines default option by value. Takes precedence over .index
+// select.index: defines default option by index (zero-indexed)
 			base(component)
 			section
 			time
 			layers
 			list
 			colorPicker
+// colorPicker.value: defines default color
 			radio
-// radio storage: defines input.name
+// radio.storage: defines input.name
+// radio.parentSkeleton.value: defines default element
 			slider
+// slider.value: defines default position
 			tabs
 			shortcut
+// shortcut.value: defines default shortcut
 			checkbox
+// checkbox.value: default Checked if .value true
 			switch
 			switch.flip(state)
-// switch variant: 'manual' disables automatic flipping on click, user provided on.click
+// switch.value: default On if .value true
+// switch.variant: 'manual' disables automatic flipping on click, user provided on.click
 // function should handle this by calling this.flip(true|false) manually.
 			countComponent
 ----------------------------------------------------------------
@@ -1073,6 +1085,7 @@ satus.components.grid = function (component, skeleton) {
 satus.components.textField = function (component, skeleton) {
 	const container = component.createChildElement('div', 'container');
 
+	if (!skeleton.rows && !skeleton.multiline) skeleton.rows = 1;
 	if (skeleton.rows === 1) {
 		component.setAttribute('multiline', 'false');
 		component.multiline = false;
@@ -1139,7 +1152,7 @@ satus.components.textField = function (component, skeleton) {
 		}
 	};
 
-	if (skeleton.lineNumbers === false) {
+	if (!skeleton.lineNumbers) {
 		component.setAttribute('line-numbers', 'false');
 
 		component.lineNumbers.setAttribute('hidden', '');
