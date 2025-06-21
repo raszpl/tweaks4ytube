@@ -12,6 +12,7 @@
 extension.skeleton.header.sectionEnd.menu.on.click.settings = {
 	component: 'button',
 	category: true,
+
 	on: {
 		click: {
 			firstSection: {
@@ -24,12 +25,12 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings = {
 			}
 		}
 	},
-
 	svg: {
 		component: 'svg',
 		attr: {
 			'viewBox': '0 0 24 24',
 			'fill': 'none',
+			'stroke': 'currentColor',
 			'stroke-width': '1.75'
 		},
 
@@ -56,7 +57,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings = {
 /*--- APPEARANCE ---------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSection.appearance = {
 	component: 'button',
-	text: 'appearance',
 	before: {
 		svg: {
 			component: 'svg',
@@ -80,7 +80,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 				variant: 'card',
 				title: 'header',
 
-				title_version: {
+				it_version: {
 					component: 'switch',
 					text: 'showVersion',
 					value: true
@@ -91,7 +91,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 				variant: 'card',
 				title: 'homeScreen',
 
-				improvedtube_home: {
+				it_layout: {
 					component: 'select',
 					text: 'layout',
 					options: [{
@@ -104,7 +104,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 				},
 				hideCategories: {
 					component: 'button',
-					text: 'hideCategories',
 					on: {
 						click: {
 							section: {
@@ -130,6 +129,10 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 								it_playlist: {
 									component: 'checkbox',
 									text: 'playlist'
+								},
+								it_subscriptions: {
+									component: 'checkbox',
+									text: 'subscriptions'
 								},
 								it_channel: {
 									component: 'checkbox',
@@ -161,7 +164,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 				variant: 'card',
 				title: 'animations',
 
-				layer_animation_scale: {
+				it_layer_animation_scale: {
 					component: 'select',
 					text: 'layerAnimationScale',
 					options: [{
@@ -179,7 +182,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.firstSectio
 /*--- LANGUAGE -----------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.language = {
 	component: 'button',
-	text: 'language',
 	before: {
 		svg: {
 			component: 'svg',
@@ -332,7 +334,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 /*--- BACKUP & RESET -----------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.backupAndReset = {
 	component: 'button',
-	text: 'backupAndReset',
 	before: {
 		svg: {
 			component: 'svg',
@@ -356,7 +357,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				variant: 'card',
 				importSettings: {
 					component: 'button',
-					text: 'importSettings',
 					on: {
 						click: {
 							component: 'popup',
@@ -397,7 +397,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				},
 				exportSettings: {
 					component: 'button',
-					text: 'exportSettings',
 					on: {
 						click: {
 							component: 'popup',
@@ -439,7 +438,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 
 				pushSyncSettings: {
 					component: 'button',
-					text: 'pushSyncSettings',
 					on: {
 						click: {
 							component: 'popup',
@@ -458,7 +456,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				},
 				pullSyncSettings: {
 					component: 'button',
-					text: 'pullSyncSettings',
 					on: {
 						click: {
 							component: 'popup',
@@ -504,7 +501,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				},
 				resetAllSettings: {
 					component: 'button',
-					text: 'resetAllSettings',
 					on: {
 						click: {
 							component: 'popup',
@@ -518,7 +514,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				},
 				resetAllShortcuts: {
 					component: 'button',
-					text: 'resetAllShortcuts',
 					on: {
 						click: {
 							component: 'popup',
@@ -541,7 +536,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 /*--- DEVELOPER OPTIONS --------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.developerOptions = {
 	component: 'button',
-	text: 'developerOptions',
 	before: {
 		svg: {
 			component: 'svg',
@@ -560,54 +554,85 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 	},
 	on: {
 		click: {
-			component: 'section',
-			variant: 'card',
-			api: {
-				component: 'button',
-				text: 'API',
-				on: {
-					click: {
-						component: 'section',
-						variant: 'transparent-card',
-						title: 'YouTube API',
-						google_api_key: {
-							component: 'text-field'
+			header: {
+				component: 'section',
+				variant: 'card',
+				title: 'youtube',
+
+				api: {
+					component: 'button',
+					text: 'API',
+
+					on: {
+						click: {
+							component: 'section',
+							variant: 'transparent-card',
+							title: 'YouTube API',
+							google_api_key: {
+								component: 'text-field'
+							}
 						}
 					}
-				}
-			},
-			css: {
-				component: 'button',
-				text: 'CSS',
-				on: {
-					click: {
-						custom_css: {
-							component: 'text-field',
-							multiline: true,
-							lineNumbers: true,
-							style: {
-								height: '100%'
+				},
+				css: {
+					component: 'button',
+					text: 'CSS',
+
+					on: {
+						click: {
+							custom_css: {
+								component: 'text-field',
+								multiline: true,
+								lineNumbers: true,
+								style: {
+									height: '100%'
+								}
+							}
+						}
+					}
+				},
+				js: {
+					component: 'button',
+					text: 'JavaScript',
+
+					on: {
+						click: {
+							custom_js: {
+								component: 'text-field',
+								multiline: true,
+								lineNumbers: true,
+								style: {
+									height: '100%'
+								}
 							}
 						}
 					}
 				}
 			},
-			js: {
-				component: 'button',
-				text: 'JavaScript',
-				on: {
-					click: {
-						custom_js: {
-							component: 'text-field',
-							multiline: true,
-							lineNumbers: true,
-							style: {
-								height: '100%'
+			home: {
+				component: 'section',
+				variant: 'card',
+				title: 'improvedTube',
+
+				it_debug_stats: {
+					component: 'switch'
+				},
+				it_debug_locale: {
+					component: 'button',
+
+					on: {
+						click: {
+							component: 'section',
+							variant: 'transparent-card',
+							title: 'not_finished',
+							not_finished: {
+								component: 'text-field'
 							}
+							// fixme: finish this satus.locale.validate
 						}
 					}
 				}
-			}
+			},
 		}
 	}
 };
@@ -652,7 +677,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 
 				softwareInformation: {
 					component: 'button',
-					text: 'softwareInformation',
 					on: {
 						click: {
 							osSection: {
@@ -690,7 +714,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 				},
 				hardwareInformation: {
 					component: 'button',
-					text: 'hardwareInformation',
 					on: {
 						click: {
 							component: 'section',
@@ -715,7 +738,6 @@ extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSecti
 /*--- DATE & TIME --------------------------------------------*/
 extension.skeleton.header.sectionEnd.menu.on.click.settings.on.click.secondSection.dateAndTime = {
 	component: 'button',
-	text: 'dateAndTime',
 	before: {
 		svg: {
 			component: 'svg',
