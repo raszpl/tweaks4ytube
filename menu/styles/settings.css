@@ -4,7 +4,7 @@
 --------------------------------------------------------------*/
 
 /*--- ANIMATIONS ---------------------------------------------*/
-[layer-animation-scale='0'] .satus-layers__layer {
+.satus-base:not([it_layer_animation_scale]) .satus-layers__layer {
 	animation-duration: 0s !important
 }
 
