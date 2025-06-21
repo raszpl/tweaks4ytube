@@ -699,10 +699,10 @@ extension.skeleton.main.layers.section.player.on.click.section_1 = {
 		text: 'forcedPlayVideoFromTheBeginning'
 	},
 	player_crop_chapter_titles: {
-			component: 'switch',
-			text: 'cropChapterTitles',
-			value: true
-		}
+		component: 'switch',
+		text: 'cropChapterTitles',
+		value: true
+	}
 };
 /*--- SECTION ------------------------------------------------*/
 extension.skeleton.main.layers.section.player.on.click.section_video = {
