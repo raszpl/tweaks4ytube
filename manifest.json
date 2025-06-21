@@ -3,7 +3,7 @@
 	"short_name": "tweaks4ytube",
 	"name": "tweaks4ytube! LOCAL TEST",
 	"description": "__MSG_description_ext__",
-	"version": "1.0",
+	"version": "2.0",
 	"default_locale": "en",
 	"icons": {
 		"128": "menu/icons/128.png",
