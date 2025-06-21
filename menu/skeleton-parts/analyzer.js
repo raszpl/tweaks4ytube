@@ -3,11 +3,12 @@ extension.skeleton.main.layers.section.analyzer = {
 	component: 'button',
 	variant: 'analyzer',
 	category: true,
+
 	on: {
 		click: {
 			analyzer_activation: {
 				component: 'switch',
-				class: 'satus-switch--activation',
+				variant: 'activation',
 				text: 'activate'
 			},
 			chartSection: {
@@ -186,7 +187,6 @@ extension.skeleton.main.layers.section.analyzer = {
 			}
 		}
 	},
-
 	icon: {
 		component: 'span',
 
@@ -209,7 +209,6 @@ extension.skeleton.main.layers.section.analyzer = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'analyzer'
+		component: 'span'
 	}
 };
