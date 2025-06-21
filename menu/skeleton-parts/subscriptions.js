@@ -3,6 +3,7 @@ extension.skeleton.main.layers.section.subscriptions = {
 	component: 'button',
 	variant: 'subscriptions',
 	category: true,
+
 	on: {
 		click: {
 			section_1: {
@@ -28,12 +29,10 @@ extension.skeleton.main.layers.section.subscriptions = {
 					tags: 'icons,columns'
 				},
 				remove_subscriptions_shorts: {
-					component: 'switch',
-					text: 'remove_subscriptions_shorts'
+					component: 'switch'
 				},
 				thumb_title_max: {
-					component: 'switch',
-					text: 'thumb_title_max'
+					component: 'switch'
 				}
 			}
 		}
@@ -60,7 +59,6 @@ extension.skeleton.main.layers.section.subscriptions = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'subscriptions'
+		component: 'span'
 	}
 };
