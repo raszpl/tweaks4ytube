@@ -56,9 +56,9 @@
 // We always try to run values as functions to allow for dynamic content
 // for example menu/skeleton-parts/analyzer.js datasets: is being generated
 // from stored staticstics on the spot.
-----------------------------------------------------------------
+------------------------------------------------------------------
 >>> 2. COMPONENTS
-----------------------------------------------------------------
+------------------------------------------------------------------
 			popup
 			popup.confirm
 // popup.variant: 'confirm' supports two forms: Full with user providing own skeleton.buttons
@@ -100,11 +100,11 @@
 // switch.variant: 'manual' disables automatic flipping on click, user provided on.click
 // function should handle this by calling this.flip(true|false) manually.
 			countComponent
-----------------------------------------------------------------
+------------------------------------------------------------------
 >>> COLOR:
 String to array
 RGB2HSL	HUE2RGB	 HSL2RGB
-----------------------------------------------------------------
+------------------------------------------------------------------
 >>> USER
 # HARDWARE and SOFTWARE values
 # OS
@@ -125,7 +125,7 @@ RGB2HSL	HUE2RGB	 HSL2RGB
 		# RAM
 		# GPU
 		# Cores
---------------------------------------------------------------*/
+----------------------------------------------------------------*/
 /*--------------------------------------------------------------
 >>> 1. CORE
 # GLOBAL VARIABLE
@@ -162,11 +162,11 @@ satus.camelize = function (string) {
 	}
 	return result;
 };
-/*--- SNAKELIZE -------------------------------------------------*/
+/*--- SNAKELIZE ------------------------------------------------*/
 satus.snakelize = function (string) {
 	return string.replace(/([A-Z])/g, '-$1').toLowerCase();
 };
-/*--- SORT ------------------------------------------------------*/
+/*--- SORT -----------------------------------------------------*/
 satus.sort = function (array, order, property) {
 	let type;
 
@@ -222,7 +222,7 @@ satus.sort = function (array, order, property) {
 		}
 	}
 };
-/*--- DATA ------------------------------------------------------*/
+/*--- DATA -----------------------------------------------------*/
 satus.data = function (element, data) {
 	if (data) {
 		for (const key in data) {
@@ -230,7 +230,7 @@ satus.data = function (element, data) {
 		}
 	}
 };
-/*--- ISSET -----------------------------------------------------*/
+/*--- ISSET ----------------------------------------------------*/
 satus.isset = function (target, is_object) {
 	if (is_object) {
 		const keys = target.split('.').filter(function (value) {
@@ -482,7 +482,7 @@ satus.getAnimationDuration = function (element) {
 /*--------------------------------------------------------------
 # EVENTS
 --------------------------------------------------------------*/
-/*--- ON ------------------------------------------------------*/
+/*--- ON -------------------------------------------------------*/
 satus.events.on = function (type, handler) {
 	if (!this.data[type]) {
 		this.data[type] = [];
@@ -490,7 +490,7 @@ satus.events.on = function (type, handler) {
 
 	this.data[type].push(handler);
 };
-/*--- TRIGGER ------------------------------------------------*/
+/*--- TRIGGER --------------------------------------------------*/
 satus.events.trigger = function (type, data) {
 	const handlers = this.data[type];
 
@@ -503,7 +503,7 @@ satus.events.trigger = function (type, data) {
 /*--------------------------------------------------------------
 # FUNCTIONS
 --------------------------------------------------------------*/
-/*--- ON ------------------------------------------------------*/
+/*--- ON -------------------------------------------------------*/
 satus.on = function (element, listeners) {
 	if (listeners) {
 		for (const type in listeners) {
@@ -575,20 +575,31 @@ satus.on = function (element, listeners) {
 /*--- PARENTIFY ------------------------------------------------*/
 satus.parentify = function (parentObject, exclude) {
 	for (const key in parentObject) {
-		if (!exclude.includes(key)) {
-			const child = parentObject[key];
+		if (exclude.includes(key)) continue;
+		const child = parentObject[key];
 
-			if (satus.isset(child)) {
-				child.parentObject = parentObject;
+		// make element name (property) the default text
+		if (child.component
+			&& ['select', 'color-picker', 'radio', 'slider', 'shortcut', 'checkbox', 'switch', 'button'].includes(child.component)
+			&& !Object.hasOwn(child, 'text')
+			&& child.variant != 'icon') {
+			if (!child.category) {
+				child.text = key;
+			} else if (child.label) {
+				child.label.text = key;
+			}
+		}
 
-				if (
-					satus.isObject(child) &&
-					!satus.isArray(child) &&
-					!satus.isElement(child) &&
-					!satus.isFunction(child)
-				) {
-					this.parentify(child, exclude);
-				}
+		if (satus.isset(child)) {
+			child.parentObject = parentObject;
+
+			if (
+				satus.isObject(child) &&
+				!satus.isArray(child) &&
+				!satus.isElement(child) &&
+				!satus.isFunction(child)
+			) {
+				this.parentify(child, exclude);
 			}
 		}
 	}
@@ -720,15 +731,15 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 				Object.defineProperty(element, 'value', {
 					set (val) {
 						setter(val);
-						this.storage.value = val;
+						// element setters/getterss sanitize and format input, safer to fetch cleaned value
+						this.storage.value = element.value;
 					}
 				});
 			}
 		}
-		// initialize element lacking storage
+		// initialize default value of element lacking storage
 		if (!element.storage && Object.hasOwn(element, 'default')) element.value = element.default;
 
-		// FIXME - make element name (property) the default text
 		if (skeleton.text) this.text(element.childrenContainer, skeleton.text);
 		this.prepend(skeleton.before, element.childrenContainer);
 
@@ -794,7 +805,7 @@ satus.render = function (skeleton, container, property, childrenOnly, prepend, s
 };
 /*--- SEARCH ---------------------------------------------------*/
 satus.search = function (query, object, callback) {
-	const included = ['text-field', 'select', 'color-picker', 'radio', 'slider', 'shortcut', 'checkbox', 'switch', 'label', 'button'],
+	const included = ['select', 'color-picker', 'radio', 'slider', 'shortcut', 'checkbox', 'switch', 'button'],
 		excluded = [
 			'baseProvider',
 			'layersProvider',
@@ -806,34 +817,39 @@ satus.search = function (query, object, callback) {
 			'rendered'
 		];
 	let threads = 0,
+		path = [],
 		results = {};
 
 	query = query.toLowerCase();
 
-	function parse (items) {
+	function parse (items, itemskey) {
 		threads++;
+		if (itemskey) path.push(itemskey);
 
 		for (const [key, item] of Object.entries(items)) {
 			if (excluded.includes(key)) continue;
-			if (item.component && item.text
-				// list of elements we allow search on
-				&& included.includes(item.component)
-				// only pass buttons whose parents are variant: 'card' or special case 'appearance' (this one abuses variant tag for CSS)
-				&& (item.component != 'button' || item.parentObject?.variant == "card" || item.parentObject?.variant == "appearance")
-				// try to match query against localized description, (maybe add fallback on component name?)
-				&& (query === '*' || satus.locale.get(item.text).toLowerCase().includes(query))) {
+			if (item.component && included.includes(item.component)) {
+				const name = item.text || item.label?.text;
 
-				// plop matching results in object - this means we cant have two elements with same name in whole Menu
-				results[key] = Object.assign({}, item);
+				if (name
+					// try to match query against localized description
+					&& (query === '*' || satus.locale.get(name).toLowerCase().includes(query))) {
+
+					// plop matching results in object - Search only shows last elements with same name
+					results[key] = Object.assign({}, item);
+					// .skeletonPath helper for easier traversing of results
+					results[key].skeletonPath = [...path];
+				}
 			}
 
 			if (satus.isObject(item)
 				&& !satus.isArray(item)
 				&& !satus.isElement(item)
-				&& !satus.isFunction(item)) parse(item);
+				&& !satus.isFunction(item)) parse(item, key);
 		}
 
 		threads--;
+		path.pop();
 
 		if (threads === 0) {
 			callback(results);
@@ -907,12 +923,16 @@ satus.storage.onchanged = function (callback) {
 --------------------------------------------------------------*/
 /*--- GET ------------------------------------------------------*/
 satus.locale.get = function (string) {
-	if (satus.isFunction(chrome?.i18n?.getMessage)) {
-		// can see here all the missing localization
-		//if (!chrome.i18n.getMessage(string)) console.log('satus.locale.get: ', string);
-		return chrome.i18n.getMessage(String(string)) || string;
+	if (Object.hasOwn(this.data, string)) {
+		return this.data[string];
+	} else if (chrome.i18n.getMessage(String(string))) {
+		// fall back on browser buildin locale support
+		return chrome.i18n.getMessage(String(string));
 	} else {
-		return this.data[string] || string;
+		// can see here all the missing localizations
+		//console.log(string + '  | missing !');
+		// return original string
+		return string;
 	}
 };
 /*--- IMPORT ---------------------------------------------------*/
@@ -952,7 +972,7 @@ satus.locale.import = function (code, callback, path) {
 		console.log(error);
 	}
 };
-/*--- VALIDATE ---------------------------------------------------*/
+/*--- VALIDATE -------------------------------------------------*/
 // purely debug function for cleaning up locale duplicates and validating json correctnes
 satus.locale.validate = async function () {
 	const allLocales = ["en", "am", "ar", "bg", "bn", "ca", "cs", "da", "de", "el", "en_GB", "en_US", "es", "es_419", "et", "fa", "fa_IR", "fi", "fil", "fr", "gu", "he", "hi", "hr", "hu", "id", "it", "ja", "kn", "ko", "lt", "lv", "ml", "mr", "ms", "nb", "nb_NO", "nl", "no", "pl", "pt", "pt_BR", "pt_PT", "ro", "ru", "si", "sk", "sl", "sr", "sv", "sw", "sw_KE", "ta", "te", "th", "tr", "uk", "vi", "zh", "zh_CN", "zh_TW"],
@@ -1063,7 +1083,7 @@ satus.components.popup = function (component, skeleton) {
 		satus.components.popup[skeleton.variant](component, skeleton);
 	}
 };
-/*--- CONFIRM --------------------------------------------------*/
+/*--- POPUP CONFIRM --------------------------------------------*/
 satus.components.popup.confirm = function (component, skeleton) {
 	component.surface.actions = satus.render({
 		component: 'section',
@@ -1325,11 +1345,10 @@ satus.components.textField = function (component, skeleton) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				let value = '';
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = satus.locale.get(satus.ifFunctionExec(this.skeleton.value));
+					return satus.locale.get(satus.ifFunctionExec(this.skeleton.value));
 				}
-				return value;
+				return '';
 			}
 		},
 		value: {
@@ -1445,7 +1464,10 @@ satus.components.select = function (component, skeleton) {
 		let optionText = satus.locale.get(option.text);
 
 		// mark Default option
-		optionText += (satus.toValue(option.value) === component.default) ? ' (' + satus.locale.get('default') + ')' : '';
+		if (satus.toValue(option.value) === component.default) {
+			component.selectElement.title = satus.locale.get('default') + ' "' + optionText + '"';
+			optionText += ' (' + satus.locale.get('default') + ')';
+		}
 
 		optionElement.value = option.value;
 		optionElement.appendChild(document.createTextNode(optionText));
@@ -1687,7 +1709,7 @@ satus.components.colorPicker = function (component) {
 					component: 'slider',
 					class: 'satus-color-picker__hue',
 					storage: false,
-					value: hsl[0],
+					value: satus.color.rgbToHsl(component.default)[0],
 					max: 360,
 					on: {
 						input: function () {
@@ -1747,16 +1769,16 @@ satus.components.colorPicker = function (component) {
 				}
 			}
 		}, this.baseProvider);
+		document.querySelector('#hue.satus-color-picker__hue').value = hsl[0];
 	});
 
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				let value = [0, 0, 0];
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = satus.ifFunctionExec(this.skeleton.value);
+					return satus.ifFunctionExec(this.skeleton.value);
 				}
-				return value;
+				return [0, 0, 0];
 			}
 		},
 		value: {
@@ -1790,12 +1812,10 @@ satus.components.radio = function (component, skeleton) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				let value;
-
-				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = satus.ifFunctionExec(this.skeleton.parentSkeleton.value);
+				if (Object.hasOwn(this.skeleton.parentSkeleton, 'value')) {
+					return satus.ifFunctionExec(this.skeleton.parentSkeleton.value);
 				}
-				return value;
+				return undefined;
 			}
 		},
 		value: {
@@ -1858,11 +1878,10 @@ satus.components.slider = function (component, skeleton) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				let value = 0;
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = satus.ifFunctionExec(this.skeleton.value);
+					return satus.ifFunctionExec(this.skeleton.value);
 				}
-				return value;
+				return 0;
 			}
 		},
 		value: {
@@ -2191,11 +2210,10 @@ satus.components.checkbox = function (component) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				let value = false;
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = satus.ifFunctionExec(this.skeleton.value);
+					return satus.ifFunctionExec(this.skeleton.value);
 				}
-				return value;
+				return false;
 			}
 		},
 		value: {
@@ -2229,11 +2247,10 @@ satus.components.switch = function (component, skeleton) {
 	Object.defineProperties(component, {
 		default: {
 			get () {
-				let value = false;
 				if (Object.hasOwn(this.skeleton, 'value')) {
-					value = satus.ifFunctionExec(this.skeleton.value);
+					return satus.ifFunctionExec(this.skeleton.value);
 				}
-				return value;
+				return false;
 			}
 		},
 		value: {
@@ -2477,14 +2494,13 @@ satus.color.rgbToHsl = function (array) {
 		g = array[1] / 255,
 		b = array[2] / 255,
 		min = Math.min(r, g, b),
-		max = Math.max(r, g, b);
+		max = Math.max(r, g, b),
+		delta = max - min;
 	let h = 0,
 		s = 0,
 		l = (min + max) / 2;
 
 	if (min != max) {
-		const delta = max - min;
-
 		s = l <= 0.5 ? delta / (max + min) : delta / (2 - max - min);
 
 		if (max === r) {
@@ -2498,9 +2514,9 @@ satus.color.rgbToHsl = function (array) {
 		h /= 6;
 	}
 
-	h *= 360;
-	s *= 100;
-	l *= 100;
+	h = parseFloat((h *360).toFixed(2));
+	s = parseFloat((s *100).toFixed(2));
+	l = parseFloat((l *100).toFixed(2));
 
 	if (array.length === 3) {
 		return [h, s, l];
@@ -2542,7 +2558,9 @@ satus.color.hslToRgb = function (array) {
 	if (s == 0) {
 		r = g = b = l;
 	} else {
-		const hue2rgb = function (p, q, t) {
+		const q = l < 0.5 ? l * (1 + s) : l + s - l * s,
+			p = 2 * l - q,
+			hue2rgb = function (p, q, t) {
 			if (t < 0) t += 1;
 			if (t > 1) t -= 1;
 			if (t < 1 / 6) return p + (q - p) * 6 * t;
@@ -2551,8 +2569,6 @@ satus.color.hslToRgb = function (array) {
 			return p;
 		};
 
-		const q = l < 0.5 ? l * (1 + s) : l + s - l * s,
-			p = 2 * l - q;
 		r = hue2rgb(p, q, h + 1 / 3);
 		g = hue2rgb(p, q, h);
 		b = hue2rgb(p, q, h - 1 / 3);
@@ -2752,7 +2768,7 @@ satus.user.device.ram = function () {
 	// eslint-disable-next-line
 	return navigator.deviceMemory ? (navigator.deviceMemory + ' GB') : '';
 };
-/*---  GPU --------------------------------------------------*/
+/*---  GPU -----------------------------------------------------*/
 satus.user.device.gpu = function () {
 	const cvs = document.createElement('canvas'),
 		ctx = cvs.getContext('webgl');
