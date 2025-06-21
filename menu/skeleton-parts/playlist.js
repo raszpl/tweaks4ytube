@@ -3,6 +3,7 @@ extension.skeleton.main.layers.section.playlist = {
 	component: 'button',
 	variant: 'playlist',
 	category: true,
+
 	on: {
 		click: {
 			section: {
@@ -43,7 +44,6 @@ extension.skeleton.main.layers.section.playlist = {
 			}
 		}
 	},
-
 	icon: {
 		component: 'span',
 
@@ -66,7 +66,6 @@ extension.skeleton.main.layers.section.playlist = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'playlist'
+		component: 'span'
 	}
 };
