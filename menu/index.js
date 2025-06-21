@@ -2,8 +2,8 @@
 satus.storage.import(function (items) {
 	satus.locale.import(items.it_language, function () {
 		if (['?action=import-settings', '?action=export-settings'].includes(location.search)) return;
-		satus.render(extension.skeleton);
 
+		// initialize skeleton by pre-filling it with default structures (parentObject, .text)
 		satus.parentify(extension.skeleton, [
 			'attr',
 			'baseProvider',
@@ -16,31 +16,47 @@ satus.storage.import(function (items) {
 			'value'
 		]);
 
+		satus.render(extension.skeleton);
+
 		extension.attributes();
 		satus.events.on('storage-set', extension.attributes);
+
+		// show debug performance stats ?
+		if (items.it_debug_stats) {
+			chrome.tabs.query({
+				currentWindow: true,
+				active: true,
+				url: 'https://www.youtube.com/*'
+			}).then(t => {
+				if (t.length) {
+					chrome.tabs.sendMessage(t[0].id, {
+						action: 'performance-request'
+					});
+				}
+			});
+		}
 	}, '_locales/');
 });
 
 extension.attributes = function (key) {
 	const attributes = [
 		'theme',
-		'improvedtube_home',
-		'title_version',
+		'it_layout',
+		'it_version',
+		'it_layer_animation_scale',
 		'it_general',
-		'it_appearance',
-		'it_themes',
 		'it_player',
-		'it_playlist',
+		'it_appearance',
+		'it_subscriptions',
 		'it_channel',
 		'it_shortcuts',
+		'it_playlist',
+		'it_themes',
 		'it_blocklist',
-		'it_analyzer',
-		'layer_animation_scale',
+		'it_analyzer'
 	];
 	function attrib (attribute) {
 		const value = satus.storage.get(attribute);
-
-		attribute = attribute.replace('it_', '').replace(/_/g, '-');
 
 		if (satus.isset(value)) {
 			extension.skeleton.rendered.setAttribute(attribute, value);
@@ -55,7 +71,7 @@ extension.attributes = function (key) {
 			attrib(attribute);
 		}
 	} else if (attributes.includes(key)) {
-		// changed key on list
+		// changed one of attributes we watch for, inject it into .satus-base element
 		attrib(key);
 	}
 };
@@ -99,17 +115,5 @@ chrome.runtime.onMessage.addListener(function (message) {
 		element.appendChild(document.createTextNode('\n class ' + message.perf.elements_handled_class));
 		element.appendChild(document.createTextNode('\nTime ' + message.perf.time + ' ms'));
 		document.body.appendChild(element);
-	}
-});
-
-chrome.tabs.query({
-	currentWindow: true,
-	active: true,
-	url: 'https://www.youtube.com/*'
-}).then(t => {
-	if (t.length) {
-		chrome.tabs.sendMessage(t[0].id, {
-			action: 'performance-request'
-		});
 	}
 });
