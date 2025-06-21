@@ -54,11 +54,13 @@ extension.skeleton.main.layers.section.blocklist.on.click = {
 			style: {
 				justifyContent: 'space-between'
 			},
+
 			on: {
 				click: {
 					add_channel: {
 						component: 'section',
 						variant: 'card',
+
 						blocklist_add_channel: {
 							// FIXME finish this
 							component: 'button',
@@ -77,6 +79,7 @@ extension.skeleton.main.layers.section.blocklist.on.click = {
 					channels: {
 						component: 'section',
 						variant: 'card',
+
 						on: {
 							render: function () {
 								const skeleton = {},
@@ -153,6 +156,7 @@ extension.skeleton.main.layers.section.blocklist.on.click = {
 				style: {
 					opacity: .64
 				},
+
 				on: {
 					render: function () {
 						const blocklist = satus.storage.get('blocklist');
@@ -171,10 +175,12 @@ extension.skeleton.main.layers.section.blocklist.on.click = {
 			style: {
 				justifyContent: 'space-between'
 			},
+
 			on: {
 				click: {
 					component: 'section',
 					variant: 'card',
+
 					on: {
 						render: function () {
 							const skeleton = {},
@@ -250,6 +256,7 @@ extension.skeleton.main.layers.section.blocklist.on.click = {
 				style: {
 					opacity: .64
 				},
+
 				on: {
 					render: function () {
 						const blocklist = satus.storage.get('blocklist');
