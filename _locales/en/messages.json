@@ -734,20 +734,20 @@
 	"importSettings": {
 		"message": "Import settings"
 	},
-	"ImprovedTube": {
-		"message": "ImprovedTube"
+	"improvedTube": {
+		"message": "tweaks4ytube"
 	},
 	"improvedtubeButtons": {
-		"message": "ImprovedTube buttons"
+		"message": "tweaks4ytube buttons"
 	},
 	"improvedtubeIconOnYoutube": {
-		"message": "ImprovedTube icon on YouTube"
+		"message": "tweaks4ytube icon on YouTube"
 	},
 	"improvedtubeLanguage": {
-		"message": "ImprovedTube"
+		"message": "tweaks4ytube"
 	},
 	"improvedtubeVersion": {
-		"message": "ImprovedTube version"
+		"message": "tweaks4ytube version"
 	},
 	"improveLogo": {
 		"message": "Logo: Monochrome!"
@@ -763,6 +763,12 @@
 	},
 	"items": {
 		"message": "Items"
+	},
+	"it_debug_stats": {
+		"message": "Show tweaks4ytube Node filtering debug stats"
+	},
+	"it_debug_locale": {
+		"message": "Check Locale files for duplicates"
 	},
 	"language": {
 		"message": "Language"
@@ -1158,7 +1164,7 @@
 		"message": "Share"
 	},
 	"shortcut_chapters": {
-		"message": "Chapter (Sidebar) On/Off"
+		"message": "Chapters (Sidebar) On/Off"
 	},
 	"shortcut_screenshot": {
 		"message": "Screenshot"
@@ -1177,6 +1183,9 @@
 	},
 	"showChannelVideosCount": {
 		"message": "Show channel videos count"
+	},
+	"showAll": {
+		"message": "Show all"
 	},
 	"showLess": {
 		"message": "Show less"
@@ -1409,8 +1418,8 @@
 	"yellow": {
 		"message": "Yellow"
 	},
-	"Youtube_Search": {
-		"message": "Youtube-Search"
+	"youtube": {
+		"message": "Youtube"
 	},
 	"youTubeButtons": {
 		"message": "YouTube buttons"
