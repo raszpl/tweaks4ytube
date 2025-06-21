@@ -1,200 +1,238 @@
 /*--- THEMES -------------------------------------------------*/
 
 /*--- DEFAULT ------------------------------------------------*/
+/*--- THEMES -------------------------------------------------*/
 .satus-base {
+	--satus-light: 0, 20, 82;
+	--satus-primary: #ff4148;
+	--satus-alert-background--error: #501616;
+	--satus-alert-border--error: 1px solid #6f1f1f;
+	--satus-alert-foreground--error: #d77070;
+	--satus-alert-background--success: rgb(246, 180, 101, .32);
+	--satus-alert-border--success: 1px solid rgb(246, 180, 101, .6);
+	--satus-alert-foreground--success: rgb(184, 115, 30);
+	--satus-base-background: #F4F3F2;
+	--satus-base-foreground: #565e76;
+	--satus-checkbox-background: #f3f4f6;
+	--satus-checkbox-border: #dcdfe5;
+	--satus-checkbox-foreground: rgb(255, 255, 255, .96);
+	--satus-divider: rgba(var(--satus-light), .1);
+	--satus-header-background: #fff;
+	--satus-header-foreground: inherit;
+	--satus-header-shadow: 0 1px 0 #dcdee5;
+	--satus-layers-background: var(--satus-base-background);
+	--satus-layers-foreground: inherit;
+	--satus-section-background: #FEfEfE;
+	--satus-section-border: #dcdee5;
+	--satus-section-foreground: inherit;
+	--satus-sidebar-background: #fff;
+	--satus-sidebar-foreground: inherit;
+	--satus-sidebar-shadow: #dcdee5;
+	--satus-popup-foreground: inherit;
+	--satus-popup-background: #fff;
+	--satus-popup-shadow: 0 1px 4px #7d86a1;
+	--satus-tabs-background: rgba(var(--satus-light), .04);
+	--satus-tabs-foreground: #fff;
+	--satus-text-field-background: #edf0f2;
+	--satus-text-field-border: #dcdee5;
+	--satus-text-field-color: #7d8ba1;
+	--satus-text-field-selection: rgb(149, 166, 178, .35);
+	--satus-text-field-cursor: #fa0;
+	--satus-switch-track: #d0d3d9;
+	--satus-switch-track--checked: var(--satus-primary);
+	--satus-switch-thumb: #fff;
+	--satus-input-text-background: #e8e8e3;
+	--satus-input-text-border: #d6d6cd;
+	--satus-input-text-text: #848471;
+	--satus-shortcut-key-text: #000;
 	--satus-bubble-foreground: rgba(255, 255, 255, .90);
-	/* --satus-bubble-background: linear-gradient(135deg, #c05030, #FF4A4F  );
-	--satus-bubble-shadow-raised: 0 2px 1px 2px #EED, 0 7px 7px 1px rgb(61, 152, 200, .4);
-	--satus-bubble-shadow-unelevated: 0px 0px 2px 3px #FFB, 0 0px 3px 4px rgb(61, 152, 200, .4);
-	--satus-bubble-background: linear-gradient(135deg, #ff4766, #f50029);	*/
 	--satus-bubble-background: linear-gradient(135deg, #ff5075, #C02020);
 	--satus-bubble-shadow-raised: 0 2px 1px 1px #EDC, 0 4px 4px 1px rgb(30, 50, 110, .37);
 	--satus-bubble-shadow-unelevated: 0 0px 2px 2px #FFD, 0 1px 3px 3px rgb(30, 50, 110, .37);
 	--it-appearance-shadow-color: #dfdfdf;
-}
 
-.satus-base[theme=dark] {
-	--satus-light: 255, 255, 255;
-	--satus-base-background: #131316;
-	--satus-base-foreground: #e0e0e0;
-	--satus-header-background: #26262c;
-	--satus-header-text: #e0e0e0;
-	--satus-header-shadow: 0 1px 0 #000;
-	--satus-layers-background: #131316;
-	--satus-layers-text: #e0e0e0;
-	--satus-section-background: #1c1d21;
-	--satus-section-border: #212121;
-	--satus-switch-track: #e1e4ea;
-	--satus-popup-background: #2a2b32;
-	--satus-popup-foreground: #e0e0e0;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-tabs-background: #1c1d21;
-	--satus-tabs-foreground: #33343d;
-	--satus-text-field-background: #1e1e1e;
-	--satus-text-field-foreground: #e0e0e0;
-	--satus-shortcut-key-text: #131316;
-}
-
-.satus-base[theme=night] {
-	--satus-bubble-foreground: rgba(255, 255, 255, .75);
-	--satus-bubble-background: linear-gradient(135deg, #3a48b4, #5663c8);
-	--satus-bubble-shadow-raised: 0 2px 1px 1px #2f3b92, 0 4px 4px rgb(82, 0, 14, .32);
-	--satus-bubble-shadow-unelevated: 0 1px 1px 0 #2f3b92, 0 1px 2px rgb(82, 0, 14, .32);
-	--it-appearance-shadow-color: #dfdfdf;
-	--satus-light: 255, 255, 255;
-/*	--satus-primary: #f5f5f5; */  --satus-primary: #fc4;
-	--satus-base-background: #191f4d;
-	--satus-base-foreground: #f5f5f5;
-	--satus-header-background: #3a48b4;
-	--satus-header-text: #f5f5f5;
-	--satus-header-shadow: 0 1px 0 #000;
-	--satus-layers-background: #191f4d;
-	--satus-layers-text: #f5f5f5;
-	--satus-section-background: #28327b;
-	--satus-section-border: #2f3b92;
-	--satus-switch-track: #e1e4ea;
-	--satus-popup-background: #3a48b4;
-	--satus-popup-foreground: #f5f5f5;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-text-field-background: #3a48b4;
-	--satus-text-field-foreground: #f5f5f5;
-	--satus-text-field-border: #5d6acb;
-	--satus-shortcut-key-text: #191f4d;
-
-}
-
-.satus-base[theme=dawn] {
-	--satus-bubble-foreground: rgba(255, 255, 255, .75);
-	--satus-bubble-background: linear-gradient(145deg, #ed5a97 46%, #ffa77a);
-	--satus-bubble-shadow-raised: 0 2px 1px 1px #de357c, 0 4px 4px rgb(82, 0, 14, .32);
-	--satus-bubble-shadow-unelevated: 0 1px 1px 0 #de357c, 0 1px 2px rgb(82, 0, 14, .32);
-	--it-appearance-shadow-color: #dfdfdf;
-	--satus-light: 255, 255, 255;
-/*	--satus-primary: #f5f5f5; */ --satus-primary: #fc4;
-	--satus-base-background: linear-gradient(345deg, #ffa77a, #de357c 70%);
-	--satus-base-foreground: #f5f5f5;
-	--satus-header-background: #e45892;
-	--satus-header-text: #fff;
-	--satus-header-shadow: 0 2px 2px #db2470;
-	--satus-layers-background: linear-gradient(345deg, #ffa77a, #de357c 70%);
-	--satus-layers-text: #f5f5f5;
-	--satus-section-background: rgb(221, 75, 136, .6);
-	--satus-section-border: rgb(224, 92, 147, .8);
-	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-popup-background: #e45892;
-	--satus-popup-foreground: #fff;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-text-field-background: #ed74a9;
-	--satus-text-field-foreground: #f5f5f5;
-	--satus-text-field-border: #e53883;
-	--satus-shortcut-key-text: #de357c;
-}
-
-.satus-base[theme=sunset] {
-	--satus-bubble-foreground: rgba(255, 255, 255, .75);
-	--satus-bubble-background: linear-gradient(145deg, #ef4d5a 46%, #fa7965);
-	--satus-bubble-shadow-raised: 0 2px 1px 1px #e14749, 0 4px 4px rgb(82, 0, 14, .32);
-	--satus-bubble-shadow-unelevated: 0 1px 1px 0 #e14749, 0 1px 2px rgb(82, 0, 14, .32);
-	--it-appearance-shadow-color: #dfdfdf;
-	--satus-light: 255, 255, 255;
-/*	--satus-primary: #f5f5f5; */ --satus-primary: #fc4;
-	--satus-base-background: linear-gradient(345deg, #a96165, #2f3364 70%);
-	--satus-base-foreground: #f5f5f5;
-	--satus-header-background: #313668;
-	--satus-header-text: #fff;
-	--satus-header-shadow: 0 2px 2px #262a54;
-	--satus-layers-background: linear-gradient(345deg, #a96165, #2f3364 70%);
-	--satus-layers-text: #f5f5f5;
-	--satus-section-background: rgb(62, 67, 121, .6);
-	--satus-section-border: #313668;
-	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-popup-background: #313668;
-	--satus-popup-foreground: #fff;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-text-field-background: #313668;
-	--satus-text-field-foreground: #f5f5f5;
-	--satus-text-field-border: #313668;
-	--satus-shortcut-key-text: #2f3364;
-}
-
-.satus-base[theme=desert] {
-	--satus-bubble-foreground: rgba(255, 255, 255, .75);
-	--satus-bubble-background: linear-gradient(145deg, #7ea5f1 46%, #5a8bed);
-	--satus-bubble-shadow-raised: 0 2px 1px 1px #3571e9, 0 4px 4px rgb(82, 0, 14, .32);
-	--satus-bubble-shadow-unelevated: 0 1px 1px 0 #3571e9, 0 1px 2px rgb(82, 0, 14, .32);
-	--it-appearance-shadow-color: #dfdfdf;
-	--satus-light: 0, 0, 0;
-	--satus-primary: #73a1fc;
-	--satus-base-background: #fde49b;
-	--satus-base-foreground: #444;
-	--satus-header-background: #73a1fc;
-	--satus-header-foreground: #fff;
-	--satus-header-shadow: 0 2px 2px #5288f4;
-	--satus-layers-background: #fde49b;
-	--satus-layers-text: #242424;
-	--satus-section-background: #fcda73;
-	--satus-section-foreground: #444;
-	--satus-section-border: #fcd55f;
-	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-popup-background: #73a1fc;
-	--satus-popup-foreground: #fff;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-text-field-background: #73a1fc;
-	--satus-text-field-foreground: #f5f5f5;
-	--satus-text-field-border: #73a1fc;
-	--satus-shortcut-key-text: #73a1fc;
-}
-
-.satus-base[theme=plain] {
-	--satus-bubble-foreground: rgba(255, 255, 255, .75);
-	--satus-bubble-background: linear-gradient(145deg, #4c946b 46%, #4c946b);
-	--satus-bubble-shadow-raised: 0 2px 1px 1px #4c946b, 0 4px 4px rgb(82, 0, 14, .32);
-	--satus-bubble-shadow-unelevated: 0 1px 1px 0 #4c946b, 0 1px 2px rgb(82, 0, 14, .32);
-	--it-appearance-shadow-color: #dfdfdf;
-	--satus-light: 0, 0, 0;
-/*	--satus-primary: #fff; */ --satus-primary: #fc4;
-	--satus-base-background: #8db9a0;
-	--satus-base-foreground: #fff;
-	--satus-header-background: #57a87a;
-	--satus-header-foreground: #fff;
-	--satus-header-shadow: 0 2px 2px #4c946b;
-	--satus-layers-background: #8db9a0;
-	--satus-layers-text: #242424;
-	--satus-section-background: #4c946b;
-	--satus-section-foreground: #fff;
-	--satus-section-border: #458762;
-	--satus-switch-track: rgb(255, 255, 255, .24);
-	--satus-popup-background: #57a87a;
-	--satus-popup-foreground: #fff;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-text-field-background: #57a87a;
-	--satus-text-field-foreground: #f5f5f5;
-	--satus-text-field-border: #4c946b;
-	--satus-shortcut-key-text: #57a87a;
-}
-
-.satus-base[theme=black] {
-	--it-appearance-shadow-color: #333;
-	--satus-light: 255, 255, 255;
-	--satus-base-background: #000;
-	--satus-base-foreground: #e0e0e0;
-	--satus-header-background: #111;
-	--satus-header-text: #e0e0e0;
-	--satus-header-shadow: 0 1px 0 #222;
-	--satus-layers-background: #000;
-	--satus-layers-text: #b8b8b8;
-	--satus-section-background: #131316;
-	--satus-section-border: #26272c;
-	--satus-switch-track: #292929;
-	--satus-popup-background: #1d1e20;
-	--satus-popup-foreground: #e0e0e0;
-	--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
-	--satus-tabs-background: #1c1d21;
-	--satus-tabs-foreground: #33343d;
-	--satus-text-field-background: #1e1e1e;
-	--satus-text-field-border: #333;
-	--satus-text-field-foreground: #e0e0e0;
-	--satus-shortcut-key-text: #000;
+	&[theme=dark] {
+		--satus-light: 255, 255, 255;
+		--satus-primary: #3691bf;
+		--satus-alert-background--error: #501616;
+		--satus-alert-border--error: 1px solid #6f1f1f;
+		--satus-alert-foreground--error: #d77070;
+		--satus-alert-background--success: #143648;
+		--satus-alert-border--success: 1px solid #1d4f67;
+		--satus-alert-foreground--success: #50a4ce;
+		--satus-base-background: #131316;
+		--satus-base-foreground: #e0e0e0;
+		--satus-header-background: #26262c;
+		--satus-header-text: #e0e0e0;
+		--satus-header-shadow: 0 1px 0 #000;
+		--satus-layers-background: #131316;
+		--satus-layers-text: #e0e0e0;
+		--satus-section-background: #1c1d21;
+		--satus-section-border: #212121;
+		--satus-switch-track: #52527a;
+		--satus-popup-background: #2a2b32;
+		--satus-popup-foreground: #e0e0e0;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-tabs-background: #1c1d21;
+		--satus-tabs-foreground: #33343d;
+		--satus-text-field-background: #1e1e1e;
+		--satus-text-field-foreground: #e0e0e0;
+		--satus-shortcut-key-text: #131316;
+	}
+	&[theme=black] {
+		--satus-light: 255, 255, 255;
+		--satus-base-background: #000;
+		--satus-base-foreground: #e0e0e0;
+		--satus-header-background: #111;
+		--satus-header-text: #e0e0e0;
+		--satus-header-shadow: 0 1px 0 #222;
+		--satus-layers-background: #000;
+		--satus-layers-text: #b8b8b8;
+		--satus-section-background: #131316;
+		--satus-section-border: #26272c;
+		--satus-switch-track: #292929;
+		--satus-popup-background: #1d1e20;
+		--satus-popup-foreground: #e0e0e0;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-tabs-background: #1c1d21;
+		--satus-tabs-foreground: #33343d;
+		--satus-text-field-background: #1e1e1e;
+		--satus-text-field-border: #333;
+		--satus-text-field-foreground: #e0e0e0;
+		--satus-shortcut-key-text: #000;
+		--it-appearance-shadow-color: #333;
+	}
+	&[theme=plain] {
+		--satus-light: 0, 0, 0;
+		--satus-primary: #fc4;
+		--satus-base-background: #8db9a0;
+		--satus-base-foreground: #fff;
+		--satus-header-background: #57a87a;
+		--satus-header-foreground: #fff;
+		--satus-header-shadow: 0 2px 2px #4c946b;
+		--satus-layers-background: #8db9a0;
+		--satus-layers-text: #242424;
+		--satus-section-background: #4c946b;
+		--satus-section-foreground: #fff;
+		--satus-section-border: #458762;
+		--satus-switch-track: rgb(255, 255, 255, .24);
+		--satus-popup-background: #57a87a;
+		--satus-popup-foreground: #fff;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-text-field-background: #57a87a;
+		--satus-text-field-foreground: #f5f5f5;
+		--satus-text-field-border: #4c946b;
+		--satus-shortcut-key-text: #57a87a;
+		--satus-bubble-foreground: rgba(255, 255, 255, .75);
+		--satus-bubble-background: linear-gradient(145deg, #4c946b 46%, #4c946b);
+		--satus-bubble-shadow-raised: 0 2px 1px 1px #4c946b, 0 4px 4px rgb(82, 0, 14, .32);
+		--satus-bubble-shadow-unelevated: 0 1px 1px 0 #4c946b, 0 1px 2px rgb(82, 0, 14, .32);
+		--it-appearance-shadow-color: #dfdfdf;
+	}
+	&[theme=sunset] {
+		--satus-light: 255, 255, 255;
+		--satus-primary: #fc4;
+		--satus-base-background: linear-gradient(345deg, #a96165, #2f3364 70%);
+		--satus-base-foreground: #f5f5f5;
+		--satus-header-background: #313668;
+		--satus-header-text: #fff;
+		--satus-header-shadow: 0 2px 2px #262a54;
+		--satus-layers-background: linear-gradient(345deg, #a96165, #2f3364 70%);
+		--satus-layers-text: #f5f5f5;
+		--satus-section-background: rgb(62, 67, 121, .6);
+		--satus-section-border: #313668;
+		--satus-switch-track: rgb(255, 255, 255, .24);
+		--satus-popup-background: #313668;
+		--satus-popup-foreground: #fff;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-text-field-background: #313668;
+		--satus-text-field-foreground: #f5f5f5;
+		--satus-text-field-border: #313668;
+		--satus-shortcut-key-text: #2f3364;
+		--satus-bubble-foreground: rgba(255, 255, 255, .75);
+		--satus-bubble-background: linear-gradient(145deg, #ef4d5a 46%, #fa7965);
+		--satus-bubble-shadow-raised: 0 2px 1px 1px #e14749, 0 4px 4px rgb(82, 0, 14, .32);
+		--satus-bubble-shadow-unelevated: 0 1px 1px 0 #e14749, 0 1px 2px rgb(82, 0, 14, .32);
+		--it-appearance-shadow-color: #dfdfdf;
+	}
+	&[theme=night] {
+		--satus-light: 255, 255, 255;
+		--satus-primary: #fc4;
+		--satus-base-background: #191f4d;
+		--satus-base-foreground: #f5f5f5;
+		--satus-header-background: #3a48b4;
+		--satus-header-text: #f5f5f5;
+		--satus-header-shadow: 0 1px 0 #000;
+		--satus-layers-background: #191f4d;
+		--satus-layers-text: #f5f5f5;
+		--satus-section-background: #28327b;
+		--satus-section-border: #2f3b92;
+		--satus-switch-track: #e1e4ea;
+		--satus-popup-background: #3a48b4;
+		--satus-popup-foreground: #f5f5f5;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-text-field-background: #3a48b4;
+		--satus-text-field-foreground: #f5f5f5;
+		--satus-text-field-border: #5d6acb;
+		--satus-shortcut-key-text: #191f4d;
+		--satus-bubble-foreground: rgba(255, 255, 255, .75);
+		--satus-bubble-background: linear-gradient(135deg, #3a48b4, #5663c8);
+		--satus-bubble-shadow-raised: 0 2px 1px 1px #2f3b92, 0 4px 4px rgb(82, 0, 14, .32);
+		--satus-bubble-shadow-unelevated: 0 1px 1px 0 #2f3b92, 0 1px 2px rgb(82, 0, 14, .32);
+		--it-appearance-shadow-color: #dfdfdf;
+	}
+	&[theme=dawn] {
+		--satus-light: 255, 255, 255;
+		--satus-primary: #fc4;
+		--satus-base-background: linear-gradient(345deg, #ffa77a, #de357c 70%);
+		--satus-base-foreground: #f5f5f5;
+		--satus-header-background: #e45892;
+		--satus-header-text: #fff;
+		--satus-header-shadow: 0 2px 2px #db2470;
+		--satus-layers-background: linear-gradient(345deg, #ffa77a, #de357c 70%);
+		--satus-layers-text: #f5f5f5;
+		--satus-section-background: rgb(221, 75, 136, .6);
+		--satus-section-border: rgb(224, 92, 147, .8);
+		--satus-switch-track: rgb(255, 255, 255, .24);
+		--satus-popup-background: #e45892;
+		--satus-popup-foreground: #fff;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-text-field-background: #ed74a9;
+		--satus-text-field-foreground: #f5f5f5;
+		--satus-text-field-border: #e53883;
+		--satus-shortcut-key-text: #de357c;
+		--satus-bubble-foreground: rgba(255, 255, 255, .75);
+		--satus-bubble-background: linear-gradient(145deg, #ed5a97 46%, #ffa77a);
+		--satus-bubble-shadow-raised: 0 2px 1px 1px #de357c, 0 4px 4px rgb(82, 0, 14, .32);
+		--satus-bubble-shadow-unelevated: 0 1px 1px 0 #de357c, 0 1px 2px rgb(82, 0, 14, .32);
+		--it-appearance-shadow-color: #dfdfdf;
+	}
+	&[theme=desert] {
+		--satus-light: 0, 0, 0;
+		--satus-base-background: #fde49b;
+		--satus-base-foreground: #444;
+		--satus-header-background: #73a1fc;
+		--satus-header-foreground: #fff;
+		--satus-header-shadow: 0 2px 2px #5288f4;
+		--satus-layers-background: #fde49b;
+		--satus-layers-text: #242424;
+		--satus-section-background: #fcda73;
+		--satus-section-foreground: #444;
+		--satus-section-border: #fcd55f;
+		--satus-switch-track: rgb(255, 255, 255, .24);
+		--satus-popup-background: #73a1fc;
+		--satus-popup-foreground: #fff;
+		--satus-popup-shadow: 0 1px 5px 3px rgba(0, 0, 0, .24);
+		--satus-text-field-background: #73a1fc;
+		--satus-text-field-foreground: #f5f5f5;
+		--satus-text-field-border: #73a1fc;
+		--satus-shortcut-key-text: #73a1fc;
+		--satus-bubble-foreground: rgba(255, 255, 255, .75);
+		--satus-bubble-background: linear-gradient(145deg, #7ea5f1 46%, #5a8bed);
+		--satus-bubble-shadow-raised: 0 2px 1px 1px #3571e9, 0 4px 4px rgb(82, 0, 14, .32);
+		--satus-bubble-shadow-unelevated: 0 1px 1px 0 #3571e9, 0 1px 2px rgb(82, 0, 14, .32);
+		--it-appearance-shadow-color: #dfdfdf;
+	}
 }
 
 .satus-radio[class$='-theme'] {
@@ -206,7 +244,6 @@
 
 	cursor: pointer;
 
-	color: #fff;
 	border: 1px solid rgba(var(--satus-light), .1);
 	border-radius: 8px;
 	text-shadow: 0 1px 3px #000;
@@ -215,47 +252,43 @@
 	align-items: center;
 }
 
-.satus-label--custom-theme {
-	background: linear-gradient(to left, #e52d27, #b31217);
-}
-
-.satus-label--default-theme {
+.satus-radio--default-theme {
 	background: #f0f0f0;
 	height: 48px !important;
 }
 
-.satus-label--dark-theme {
+.satus-radio--dark-theme {
 	position: relative;
-    height: 48px !important; margin-top: -5px !important;
+	height: 48px !important; margin-top: -5px !important;
 	overflow: hidden;
 
 	background: linear-gradient(#0d1216, #353d46) !important;
+
+	&::before {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+
+		content: '';
+		animation-name: satus-radio--dark-theme;
+		animation-duration: 4s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		pointer-events: none;
+
+		background: radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%), radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%), radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%), radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%) !important;
+		background-repeat: no-repeat !important;
+		background-position: -10px 40px, 200px 0, -30px -20px, 130px 30px !important;
+		background-size: 50px 50px, 50px 50px, 100px 100px, 75px 75px !important;
+
+		filter: blur(8px);
+	}
 }
 
-.satus-label--dark-theme::before {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	width: 100%;
-	height: 100%;
-
-	content: '';
-	animation-name: satus-label--dark-theme;
-	animation-duration: 4s;
-	animation-timing-function: ease-in-out;
-	animation-iteration-count: infinite;
-	pointer-events: none;
-
-	background: radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%), radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%), radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%), radial-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2), transparent 60%) !important;
-	background-repeat: no-repeat !important;
-	background-position: -10px 40px, 200px 0, -30px -20px, 130px 30px !important;
-	background-size: 50px 50px, 50px 50px, 100px 100px, 75px 75px !important;
-
-	filter: blur(8px);
-}
-
-@keyframes satus-label--dark-theme {
+@keyframes satus-radio--dark-theme {
 	0% {
 		background-position: -10px 40px, 200px 0, -30px -20px, 130px 30px;
 	}
@@ -269,12 +302,77 @@
 	}
 }
 
-.satus-label--night-theme {
+.satus-radio--custom-theme {
+	background: linear-gradient(to left, #e52d27, #b31217);
+}
+
+.satus-radio--black-theme {
+	background: #000 !important;
+	height: 72px !important;
+}
+
+.satus-radio--plain-theme {
 	position: relative;
 
 	overflow: hidden;
 
-	animation-name: satus-label--night-theme;
+	background-image: radial-gradient(#dea975 50%, transparent 50%), radial-gradient(#e8b887 50%, transparent 50%), radial-gradient(#f1cc9f 50%, transparent 50%), radial-gradient(#f3ddb8 50%, transparent 50%), linear-gradient(#abceb8, #e7ede1) !important;
+	background-repeat: no-repeat !important;
+	background-position: -50px 50px, -370px 40px, 0 36px, -360px 26px, 0 !important;
+	background-size: 240%, 240%, 240%, 240%, 100% !important;
+
+	&::before {
+		position: absolute;
+		top: -70%;
+		left: 10%;
+
+		width: 7rem;
+		height: 7rem;
+
+		content: '';
+		animation-name: satus-radio--plain-theme;
+		animation-duration: .75s;
+		animation-delay: .2s;
+		animation-iteration-count: infinite;
+		pointer-events: none;
+
+		border-radius: 50%;
+		background: radial-gradient(#fff 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%) !important;
+	}
+}
+
+.satus-radio--sunset-theme {
+	position: relative;
+
+	overflow: hidden;
+
+	background: linear-gradient(#2f3364, #a96165) !important;
+
+	&::before {
+		position: absolute;
+		top: -1rem;
+		left: 50%;
+
+		overflow: hidden;
+
+		width: 8rem;
+		height: 8rem;
+
+		content: '';
+		transform: translate(-50%, 0%);
+		pointer-events: none;
+
+		border-radius: 50%;
+		background: linear-gradient(#fa7965, #f56264, transparent) !important;
+	}
+}
+
+.satus-radio--night-theme {
+	position: relative;
+
+	overflow: hidden;
+
+	animation-name: satus-radio--night-theme;
 	animation-duration: .75s;
 	animation-iteration-count: infinite;
 
@@ -284,7 +382,7 @@
 	background-size: 3px 3px, 3px 3px, 3px 3px, 3px 3px, 3px 3px, 3px 3px, auto !important;
 }
 
-@keyframes satus-label--night-theme {
+@keyframes satus-radio--night-theme {
 	0% {
 		background-image: radial-gradient(rgba(255, 255, 255, .5) 50%, transparent 50%), radial-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%), radial-gradient(rgba(255, 255, 255, .8) 50%, transparent 50%), radial-gradient(rgba(255, 255, 255, .6) 50%, transparent 50%), radial-gradient(rgba(255, 255, 255, .4) 50%, transparent 50%), radial-gradient(rgba(255, 255, 255, .5) 50%, transparent 50%), linear-gradient(#3a48b4, #61a7f5);
 	}
@@ -306,33 +404,33 @@
 	}
 }
 
-.satus-label--dawn-theme {
+.satus-radio--dawn-theme {
 	position: relative;
 
 	overflow: hidden;
 
 	background: linear-gradient(#ed74a9, #ffba99) !important;
+
+	&::before {
+		position: absolute;
+		right: 1rem;
+		bottom: -5rem;
+
+		width: 10rem;
+		height: 10rem;
+
+		content: '';
+		animation-name: satus-radio--dawn-theme;
+		animation-duration: .75s;
+		animation-iteration-count: infinite;
+		pointer-events: none;
+
+		border-radius: 50%;
+		background: radial-gradient(rgba(255, 255, 231, .85) 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%) !important;
+	}
 }
 
-.satus-slabel-dawn-theme::before {
-	position: absolute;
-	right: 1rem;
-	bottom: -5rem;
-
-	width: 10rem;
-	height: 10rem;
-
-	content: '';
-	animation-name: satus-label--dawn-theme;
-	animation-duration: .75s;
-	animation-iteration-count: infinite;
-	pointer-events: none;
-
-	border-radius: 50%;
-	background: radial-gradient(rgba(255, 255, 231, .85) 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%) !important;
-}
-
-@keyframes satus-label--dawn-theme {
+@keyframes satus-radio--dawn-theme {
 	0% {
 		background: radial-gradient(rgba(255, 255, 231, .85) 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%);
 	}
@@ -346,33 +444,7 @@
 	}
 }
 
-.satus-label--sunset-theme {
-	position: relative;
-
-	overflow: hidden;
-
-	background: linear-gradient(#2f3364, #a96165) !important;
-}
-
-.satus-label--sunset-theme::before {
-	position: absolute;
-	top: -1rem;
-	left: 50%;
-
-	overflow: hidden;
-
-	width: 8rem;
-	height: 8rem;
-
-	content: '';
-	transform: translate(-50%, 0%);
-	pointer-events: none;
-
-	border-radius: 50%;
-	background: linear-gradient(#fa7965, #f56264, transparent) !important;
-}
-
-.satus-label--desert-theme {
+.satus-radio--desert-theme {
 	position: relative;
 
 	overflow: hidden;
@@ -381,28 +453,28 @@
 	background-repeat: no-repeat !important;
 	background-position: -120px 36px, 0 !important;
 	background-size: 240%, 100% !important;
+
+	&::before {
+		position: absolute;
+		top: -100%;
+		left: 40%;
+
+		width: 10rem;
+		height: 10rem;
+
+		content: '';
+		animation-name: satus-radio--desert-theme;
+		animation-duration: .75s;
+		animation-delay: .5s;
+		animation-iteration-count: infinite;
+		pointer-events: none;
+
+		border-radius: 50%;
+		background: radial-gradient(#fefefe 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%) !important;
+	}
 }
 
-.satus-label--desert-theme::before {
-	position: absolute;
-	top: -100%;
-	left: 40%;
-
-	width: 10rem;
-	height: 10rem;
-
-	content: '';
-	animation-name: satus-label--desert-theme;
-	animation-duration: .75s;
-	animation-delay: .5s;
-	animation-iteration-count: infinite;
-	pointer-events: none;
-
-	border-radius: 50%;
-	background: radial-gradient(#fefefe 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%) !important;
-}
-
-@keyframes satus-label--desert-theme {
+@keyframes satus-radio--desert-theme {
 	0% {
 		background: radial-gradient(#fefefe 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%);
 	}
@@ -414,39 +486,4 @@
 	100% {
 		background: radial-gradient(#fefefe 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%);
 	}
-}
-
-.satus-label--plain-theme {
-	position: relative;
-
-	overflow: hidden;
-
-	background-image: radial-gradient(#dea975 50%, transparent 50%), radial-gradient(#e8b887 50%, transparent 50%), radial-gradient(#f1cc9f 50%, transparent 50%), radial-gradient(#f3ddb8 50%, transparent 50%), linear-gradient(#abceb8, #e7ede1) !important;
-	background-repeat: no-repeat !important;
-	background-position: -50px 50px, -370px 40px, 0 36px, -360px 26px, 0 !important;
-	background-size: 240%, 240%, 240%, 240%, 100% !important;
-}
-
-.satus-label--plain-theme::before {
-	position: absolute;
-	top: -70%;
-	left: 10%;
-
-	width: 7rem;
-	height: 7rem;
-
-	content: '';
-	animation-name: satus-label--plain-theme;
-	animation-duration: .75s;
-	animation-delay: .2s;
-	animation-iteration-count: infinite;
-	pointer-events: none;
-
-	border-radius: 50%;
-	background: radial-gradient(#fff 20%, rgba(255, 255, 231, .25) 20%, rgba(255, 255, 231, .25) 35%, rgba(255, 255, 231, .15) 35%, rgba(255, 255, 231, .15) 55%, rgba(255, 255, 231, .05) 55%, rgba(255, 255, 231, .05) 75%, transparent 75%) !important;
-}
-
-.satus-label--black-theme {
-	background: #000 !important;
-	height: 72px !important;
 }
