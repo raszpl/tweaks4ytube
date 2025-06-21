@@ -10,13 +10,13 @@ extension.skeleton.main.layers.section.appearance = {
 	component: 'button',
 	variant: 'appearance',
 	category: true,
+
 	on: {
 		click: {
 			component: 'section',
 			variant: 'appearance'
 		}
 	},
-
 	icon: {
 		component: 'span',
 
@@ -39,15 +39,14 @@ extension.skeleton.main.layers.section.appearance = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'appearance'
+		component: 'span'
 	}
 };
 /*--- HEADER -------------------------------------------------*/
 extension.skeleton.main.layers.section.appearance.on.click.header = {
 	component: 'button',
 	variant: 'header',
-	text: 'header',
+
 	on: {
 		click: {
 			component: 'section',
@@ -96,8 +95,7 @@ extension.skeleton.main.layers.section.appearance.on.click.header = {
 				text: 'transparentBackground'
 			},
 			header_transparent_alternative: {
-				component: 'switch',
-				text: 'header_transparent_alternative'
+				component: 'switch'
 			},
 			header_hide_country_code: {
 				component: 'switch',
@@ -115,7 +113,7 @@ extension.skeleton.main.layers.section.appearance.on.click.header = {
 extension.skeleton.main.layers.section.appearance.on.click.player = {
 	component: 'button',
 	variant: 'player',
-	text: 'player',
+
 	on: {
 		click: {
 			component: 'section',
@@ -176,15 +174,16 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 
 				custom_player_size_width: {
 					component: 'text-field',
-					value: 1280
+					placeholder: "1280",
+					value: "1280"
 				},
 				x: {
-					component: 'span',
-					text: 'x'
+					component: 'span'
 				},
 				custom_player_size_height: {
 					component: 'text-field',
-					value: 720
+					placeholder: "720",
+					value: "720"
 				}
 			},
 			player_hide_annotations: {
@@ -388,7 +387,7 @@ extension.skeleton.main.layers.section.appearance.on.click.player = {
 extension.skeleton.main.layers.section.appearance.on.click.details = {
 	component: 'button',
 	variant: 'details',
-	text: 'details',
+
 	on: {
 		click: {
 			component: 'section',
@@ -441,7 +440,7 @@ extension.skeleton.main.layers.section.appearance.on.click.details = {
 extension.skeleton.main.layers.section.appearance.on.click.description = {
 	component: 'select',
 	variant: 'description',
-	text: 'description',
+
 	options: [{
 		text: 'normal',
 		value: 'normal'
@@ -458,14 +457,15 @@ extension.skeleton.main.layers.section.appearance.on.click.description = {
 	tags: 'hide,remove'
 };
 
-extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = {
+extension.skeleton.main.layers.section.appearance.on.click.buttons = {
 	component: 'button',
-	text: 'Buttons',
-	variant: 'detailButton',
+	variant: 'buttons',
+
 	on: {
 		click: {
 			component: 'section',
 			variant: 'card',
+
 			extraButtons: {
 				component: 'section',
 				variant: 'card',
@@ -490,6 +490,7 @@ extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = 
 			youtubeDetailButtons: {
 				component: 'select',
 				text: 'youTubeButtons',
+
 				options: [{
 					text: 'normal',
 					value: 'normal'
@@ -517,9 +518,9 @@ extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = 
 			detailButtons: {
 				component: 'section',
 				variant: 'card',
+
 				purchase: {
 					component: 'select',
-					text: 'purchase',
 					options: [{
 						text: 'normal',
 						value: 'normal'
@@ -534,22 +535,13 @@ extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = 
 				},
 				join: {
 					component: 'select',
-					text: 'join',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'removeName',
-						value: 'remove_label'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.purchase.options;
+					},
 					tags: 'hide,remove,join-button'
 				},
 				subscribe: {
 					component: 'select',
-					text: 'subscribe',
 					options: [{
 						text: 'normal',
 						value: 'normal'
@@ -586,16 +578,9 @@ extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = 
 				hide_dislike_button: {
 					component: 'select',
 					text: 'dislike',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'iconsOnly',
-						value: 'icons_only'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.likes.options;
+					},
 					tags: 'hide,remove'
 				},
 				red_dislike_button: {
@@ -605,76 +590,41 @@ extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = 
 				hide_share_button: {
 					component: 'select',
 					text: 'share',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'iconsOnly',
-						value: 'icons_only'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.likes.options;
+					},
 					tags: 'hide,remove'
 				},
 				hide_download_button: {
 					component: 'select',
 					text: 'Download',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'iconsOnly',
-						value: 'icons_only'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.likes.options;
+					},
 					tags: 'hide,remove'
 				},
 				hide_thanks_button: {
 					component: 'select',
 					text: 'thanks',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'iconsOnly',
-						value: 'icons_only'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.likes.options;
+					},
 					tags: 'hide,remove'
 				},
 				hide_clip_button: {
 					component: 'select',
 					text: 'clip',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'iconsOnly',
-						value: 'icons_only'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.likes.options;
+					},
 					tags: 'hide,remove'
 				},
 				hide_save_button: {
 					component: 'select',
 					text: 'save',
-					options: [{
-						text: 'normal',
-						value: 'normal'
-					}, {
-						text: 'iconsOnly',
-						value: 'icons_only'
-					}, {
-						text: 'hidden',
-						value: 'hidden'
-					}],
+					options: function () {
+						return extension.skeleton.main.layers.section.appearance.on.click.buttons.on.click.detailButtons.likes.options;
+					},
 					tags: 'hide,remove'
 				},
 				hide_report_button: {
@@ -695,7 +645,7 @@ extension.skeleton.main.layers.section.appearance.on.click.hide_detail_button = 
 extension.skeleton.main.layers.section.appearance.on.click.comments = {
 	component: 'button',
 	variant: 'comments',
-	text: 'comments',
+
 	on: {
 		click: {
 			component: 'section',
@@ -703,7 +653,6 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 
 			comments: {
 				component: 'select',
-				text: 'comments',
 				options: [{
 					text: 'normal',
 					value: 'normal'
@@ -729,7 +678,6 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 			},
 			columns: {
 				component: 'switch',
-				text: 'columns',
 				value: true
 			},
 			squared_user_images: {
@@ -738,8 +686,7 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 				tags: 'avatar'
 			},
 			hide_author_avatars: {
-				component: 'switch',
-				text: 'hide_author_avatars'
+				component: 'switch'
 			},
 			hide_comments_count: {
 				component: 'switch',
@@ -750,17 +697,16 @@ extension.skeleton.main.layers.section.appearance.on.click.comments = {
 	}
 };
 /*--- POPUP AD -----------------------------------------------*/
-extension.skeleton.main.layers.section.appearance.on.click.popup_ad = {
+extension.skeleton.main.layers.section.appearance.on.click.popupAd = {
 	component: 'switch',
 	variant: 'popupAd',
-	text: 'popupAd',
 	tags: 'bottom'
 };
 /*--- SIDEBAR ------------------------------------------------*/
 extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 	component: 'button',
 	variant: 'sidebar',
-	text: 'sidebar',
+
 	on: {
 		click: {
 			component: 'section',
@@ -806,12 +752,10 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 				text: 'hideThumbnails'
 			},
 			sidebar_thumb_title_max: {
-				component: 'switch',
-				text: 'sidebar_thumb_title_max'
+				component: 'switch'
 			},
 			transcript: {
 				component: 'switch',
-				text: 'Transcript',
 				value: false,
 				on: {
 					click: function () {
@@ -826,8 +770,7 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 				}
 			},
 			compact_spacing: {
-				component: 'switch',
-				text: 'compact_spacing'
+				component: 'switch'
 			},
 			no_page_margin: {
 				component: 'switch',
@@ -846,8 +789,7 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 				}
 			},
 			chapters: {
-				component: 'switch',
-				text: 'chapters'
+				component: 'switch'
 			},
 			hide_shorts_remixing: {
 				component: 'switch',
@@ -856,25 +798,16 @@ extension.skeleton.main.layers.section.appearance.on.click.sidebar = {
 			livechat: {
 				component: 'select',
 				text: 'liveChat',
-
-				options: [{
-					text: 'normal',
-					value: 'normal'
-				}, {
-					text: 'collapsed',
-					value: 'collapsed'
-				}, {
-					text: 'hidden',
-					value: 'hidden'
-				}],
+				options: function () {
+					return extension.skeleton.main.layers.section.appearance.on.click.comments.on.click.comments.options;
+				},
 			},
 			hide_playlist: {
 				component: 'switch',
 				text: 'hidePlaylist'
 			},
 			hide_sidebar: {
-				component: 'switch',
-				text: 'Hide_sidebar'
+				component: 'switch'
 			}
 		}
 	}
