@@ -9,12 +9,15 @@ extension.skeleton.header.searchBar = {
 	attr: {
 		'hidden': false
 	},
+
 	on: {
 		render: function () {
 			this.input.focus();
 			if (this.dataset.search) {
 				this.value = this.dataset.search;
 				this.dispatchEvent(new CustomEvent('input'));
+			} else {
+				this.title = '* ' + satus.locale.get('showAll');
 			}
 		},
 		blur: function () {
@@ -42,39 +45,62 @@ extension.skeleton.header.searchBar = {
 					// prepare search results
 					for (const [key, result] of Object.entries(results)) {
 						let parent = result,
-							category,
-							subcategory,
-							text;
+							category = '';
+							blah = [],
+							skeletonPath = [...result.skeletonPath];
 
-						while (parent.parentObject && !parent.parentObject.category) {
+						// traverse skeleton all the way back to category
+						while (parent.parentObject && !parent.category) {
 							parent = parent.parentObject;
-							subcategory = '';
 
-							if (parent.component == 'button') {
-								subcategory = satus.locale.get(parent.text);
-							} else if (parent.title) {
-								subcategory = satus.locale.get(parent.title);
+							if (parent.text || parent.title || parent.label?.text) {
+								category = (parent.text || parent.title || parent.label?.text) + '_' + category;
+								blah.push({
+									component: 'p',
+									variant: 'redirect',
+									text: parent.text || parent.title || parent.label?.text,
+									skeletonPath: [...skeletonPath],
+									on: {
+										click: function () {
+											let skeleton = extension.skeleton,
+												skeletonPath = this.skeleton.skeletonPath;
+
+											// skeletonPath points at skeleton element we want to display
+											while (skeletonPath.length) {
+												skeleton = skeleton[skeletonPath.shift()];
+											}
+
+											// dont display buttons, display what they trigger
+											if (skeleton.component === 'button') {
+												skeleton = skeleton.on.click;
+											}
+
+											this.baseProvider.layers[0].open(skeleton);
+										}
+									},
+								});
 							}
-							text = !subcategory ? text : (!text ? subcategory : subcategory + ' > ' + text);
-							category = !category ? subcategory : (!subcategory ? category : subcategory + category);
+							skeletonPath.pop();
 						}
 
-						if (parent.parentObject?.label?.text) {
-							subcategory = satus.locale.get(parent.parentObject.label.text);
-							text = subcategory + (!text ? '' : ' > ' + text);
-							category = (!category ? subcategory : subcategory + category).replace(/[^a-zA-Z]/g, '');
-						}
+						category = !category ? '_' : parent.label.text + '_' + category;
 
 						skeleton[category + '_label'] = {
-							component: 'span',
-							class: 'satus-section--label',
-							text: text
+							component: 'section',
+							variant: 'label',
+							blabla: category
+						};
+
+						while (blah.last) {
+							const blaa = blah.pop();
+							skeleton[category + '_label'][blaa.text] = blaa;
 						}
 
 						if (!skeleton[category]) {
 							skeleton[category] = {
 								component: 'section',
-								variant: 'card'
+								variant: 'card',
+								blabla1: category
 							}
 						}
 
@@ -110,10 +136,12 @@ extension.skeleton.header.searchBar = {
 
 							// close Search results on 'button' or clicking outside
 							search_results.addEventListener('click', (event) => {
-								// buttons call component.open and load new sections
+								// button call component.open and load new sections
 								if (event.target.closest('button')
-									// or click outside of Search results window
-									|| event.target.componentName === "popup__scrim") {
+									// p are only present in redirects
+									|| event.target.closest('p')
+									// popup__scrim is the void outside of Search results window
+									|| event.target.componentName === 'popup__scrim') {
 									// just click Close Search button, its going to take care of the rest
 									searchbar.skeleton.close.rendered.click();
 								}
@@ -139,11 +167,11 @@ extension.skeleton.header.searchBar = {
 					search_results.close();
 
 					searchbar.removeAttribute('results');
+					searchbar.title = '';
 				}
 			}
 		}
 	},
-
 	close: {
 		component: 'button',
 		variant: 'icon',
