@@ -3,10 +3,10 @@ extension.skeleton.main.layers.section.themes = {
 	component: 'button',
 	variant: 'themes',
 	category: true,
+
 	on: {
 		click: {}
 	},
-
 	icon: {
 		component: 'span',
 
@@ -29,20 +29,19 @@ extension.skeleton.main.layers.section.themes = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'themes'
+		component: 'span'
 	}
 };
 /*--- SECTION ------------------------------------------------*/
-extension.skeleton.main.layers.section.themes.on.click.section = {
+extension.skeleton.main.layers.section.themes.on.click.theme = {
 	component: 'section',
-	class: 'satus-section--transparent-card',
-	value: satus.storage.get('theme') == 'dark' ? 'dark' : 'light',
+	variant: 'transparent-card',
+	value: 'light',
 
 	default: function () {
 		return {
 			component: 'radio',
-			class: 'satus-label--' + (satus.storage.get('theme') == 'dark' ? 'dark-theme' : 'default-theme'),
+			variant: satus.storage.get('theme') == 'dark' ? 'dark-theme' : 'default-theme',
 			text: satus.storage.get('theme') == 'dark' ? 'youtubesDark' : 'youtubesLight',
 			storage: 'theme',
 			value: satus.storage.get('theme') == 'dark' ? 'dark' : 'light',
@@ -52,7 +51,7 @@ extension.skeleton.main.layers.section.themes.on.click.section = {
 	opposite: function () {
 		return {
 			component: 'radio',
-			class: 'satus-label--' + (satus.storage.get('theme') == 'dark' ? 'default-theme' : 'dark-theme'),
+			variant: satus.storage.get('theme') == 'dark' ? 'default-theme' : 'dark-theme',
 			text: satus.storage.get('theme') == 'dark' ? 'youtubesLight' : 'youtubesDark',
 			storage: 'theme',
 			value: satus.storage.get('theme') == 'dark' ? 'light' : 'dark',
@@ -61,8 +60,7 @@ extension.skeleton.main.layers.section.themes.on.click.section = {
 	},
 	custom: {
 		component: 'radio',
-		class: 'satus-label--custom-theme',
-		text: 'custom',
+		variant: 'custom-theme',
 		storage: 'theme',
 		value: 'custom',
 		on: {
@@ -88,43 +86,37 @@ extension.skeleton.main.layers.section.themes.on.click.section = {
 	},
 	black: {
 		component: 'radio',
-		class: 'satus-label--black-theme',
-		text: 'black',
+		variant: 'black-theme',
 		storage: 'theme',
 		value: 'black'
 	},
 	plain: {
 		component: 'radio',
-		class: 'satus-label--plain-theme',
-		text: 'plain',
+		variant: 'plain-theme',
 		storage: 'theme',
 		value: 'plain'
 	},
 	sunset: {
 		component: 'radio',
-		class: 'satus-label--sunset-theme',
-		text: 'sunset',
+		variant: 'sunset-theme',
 		storage: 'theme',
 		value: 'sunset'
 	},
 	night: {
 		component: 'radio',
-		class: 'satus-label--night-theme',
-		text: 'night',
+		variant: 'night-theme',
 		storage: 'theme',
 		value: 'night'
 	},
 	dawn: {
 		component: 'radio',
-		class: 'satus-label--dawn-theme',
-		text: 'dawn',
+		variant: 'dawn-theme',
 		storage: 'theme',
 		value: 'dawn'
 	},
 	desert: {
 		component: 'radio',
-		class: 'satus-label--desert-theme',
-		text: 'desert',
+		variant: 'desert-theme',
 		storage: 'theme',
 		value: 'desert'
 	}
