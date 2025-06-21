@@ -247,7 +247,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	appearance: none;
 }
 .satus-text-field--search .satus-text-field__input {
-	padding-left: 0px;
+	padding-left: 0;
 }
 .satus-text-field__display {
 	position: absolute;
@@ -881,7 +881,7 @@ As our Syntax markup isnt read for <textarea>, is it?
 	border-radius: 5px;
 	background-color: #f00;
 
-	&:before {
+	&::before {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -986,7 +986,6 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	&:hover {
 		cursor: pointer;
-
 		background-color: rgba(var(--satus-light), .06);
 	}
 	&:focus {
