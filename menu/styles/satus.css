@@ -1,6 +1,9 @@
 .satus-section--card, .satus-select, .satus-switch, .satus-switch__content {transition: background-color 0.8s ease-out !important;}
 .satus-section--card:hover, .satus-select:hover, .satus-switch:hover, .satus-switch__content:hover {transition: background-color 0.08s ease-out !important;}
 
+/*--- DEFAULTS--------------------------------------------------
+# two CSS rules below can be used to mark currently Active settings
+--------------------------------------------------------------*/
 *[data-value][data-value=false] {
 	margin-bottom: 0;
 	margin-top: 0;
@@ -11,40 +14,6 @@
 	margin-top: -3.5px;
 	transition: margin 0.2s linear !important;
 }
-
-.satus-button--general, .satus-button--appearance, .satus-button--player {
-	margin-left: 9px !important;
-	margin-right: -18px !important;
-	max-width: 272px !important;
-}
-div:not([improvedtube-home=list]) .satus-button--themes, div:not([improvedtube-home=list]) .satus-button--playlist,div:not([improvedtube-home=list]) .satus-button--channel, div:not([improvedtube-home=list]) .satus-button--shortcuts {
-	transform: scale(0.91);
-/*	margin-top: -10px !important;
-	margin-left: -5px !important;
-	margin-right: -28px !important;*/
-}
-div:not([improvedtube-home=list]) .satus-button--blocklist, div:not([improvedtube-home=list]) .satus-button--analyzer {
-	transform: scale(0.78);
-/*	margin-top: -22px !important;
-	margin-left: 110px !important;
-	margin-right: -150px !important;*/
-}
-
-div[improvedtube-home=list] .satus-button--themes, div[improvedtube-home=list] .satus-button--playlist,div[improvedtube-home=list] .satus-button--channel, div[improvedtube-home=list] .satus-button--shortcuts {
-	transform: scale(0.92);
-	margin-bottom: -17px !important;
-	margin-left: 3px !important;
-	max-width: 197px !important;
-	margin-top: 2px !important;
-}
-div[improvedtube-home=list] .satus-button--blocklist, div[improvedtube-home=list] .satus-button--analyzer {
-	transform: scale(0.75);
-	margin-left: 165px !important;
-	max-width: 141px !important;
-	margin-top: -72px !important;
-}
-div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !important;}
-
 
 /*--- SCROLLBAR ----------------------------------------------*/
 :where([class^=satus])::-webkit-scrollbar {width: 10px;}
@@ -59,71 +28,6 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 @keyframes fadeOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(4%)}}
 @keyframes zoomIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes zoomOut{from{transform:scale(1);opacity:1}to{transform:scale(.8);opacity:0}}
-/*--- THEMES -------------------------------------------------*/
-.satus-base {
-	--satus-light: 0, 20, 82;
-	--satus-primary: #ff4148;
-	--satus-alert-background--error: #501616;
-	--satus-alert-border--error: 1px solid #6f1f1f;
-	--satus-alert-foreground--error: #d77070;
-	--satus-alert-background--success: rgb(246, 180, 101, .32);
-	--satus-alert-border--success: 1px solid rgb(246, 180, 101, .6);
-	--satus-alert-foreground--success: rgb(184, 115, 30);
-	--satus-base-background: #F4F3F2;
-	--satus-base-foreground: #565e76;
-	--satus-checkbox-background: #f3f4f6;
-	--satus-checkbox-border: #dcdfe5;
-	--satus-checkbox-foreground: rgb(255, 255, 255, .96);
-	--satus-divider: rgba(var(--satus-light), .1);
-	--satus-header-background: #fff;
-	--satus-header-foreground: inherit;
-	--satus-header-shadow: 0 1px 0 #dcdee5;
-	--satus-layers-background: var(--satus-base-background);
-	--satus-layers-foreground: inherit;
-	--satus-section-background: #FEfEfE;
-	--satus-section-border: #dcdee5;
-	--satus-section-foreground: inherit;
-	--satus-sidebar-background: #fff;
-	--satus-sidebar-foreground: inherit;
-	--satus-sidebar-shadow: #dcdee5;
-	--satus-popup-foreground: inherit;
-	--satus-popup-background: #fff;
-	--satus-popup-shadow: 0 1px 4px #7d86a1;
-	--satus-tabs-background: rgba(var(--satus-light), .04);
-	--satus-tabs-foreground: #fff;
-	--satus-text-field-background: #edf0f2;
-	--satus-text-field-border: #dcdee5;
-	--satus-text-field-color: #7d8ba1;
-	--satus-text-field-selection: rgb(149, 166, 178, .35);
-	--satus-text-field-cursor: #fa0;
-	--satus-switch-track: #d0d3d9;
-	--satus-switch-track--checked: var(--satus-primary);
-	--satus-switch-thumb: #fff;
-	--satus-input-text-background: #e8e8e3;
-	--satus-input-text-border: #d6d6cd;
-	--satus-input-text-text: #848471;
-	--satus-shortcut-key-text: #000;
-}
-
-.satus-base[theme=dark] {
-	--satus-light: 255, 255, 255;
-	--satus-primary: #3691bf;
-	--satus-alert-background--error: #501616;
-	--satus-alert-border--error: 1px solid #6f1f1f;
-	--satus-alert-foreground--error: #d77070;
-	--satus-alert-background--success: #143648;
-	--satus-alert-border--success: 1px solid #1d4f67;
-	--satus-alert-foreground--success: #50a4ce;
-	--satus-base-background: #151528;
-	--satus-base-foreground: #fafafa;
-	--satus-header-background: #313172;
-	--satus-header-shadow: transparent;
-	--satus-section-background: #232343;
-	--satus-section-border: #232343;
-	--satus-popup-background: #313172;
-	--satus-popup-shadow: 0 1px 4px #22222f;
-	--satus-switch-track: #52527a;
-}
 /*--- NORMALIZE ----------------------------------------------*/
 :where([class^=satus]) {box-sizing: border-box;}
 :where([class^=satus])[hidden]:not([hidden=false]) {display: none;}
@@ -198,67 +102,68 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 
 .satus-section--actions {
 	justify-content: flex-end;
-}
-.satus-section--actions > *:not(:first-child) {
-	margin-left: 8px;
+
+	&> *:not(:first-child) {
+		margin-left: 8px;
+	}
 }
 
 /*--- VARIANTS -----------------------------------------------*/
 /*--- VERTICAL MENU ------------------------------------------*/
-.satus-popup--vertical-menu .satus-popup__surface {
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	left: auto;
-	min-width: 180px;
-	max-width: 180px;
-	margin: 0;
-	padding: 8px 0;
-	transform-origin: right top;
+.satus-popup--vertical-menu {
+	.satus-popup__surface {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		left: auto;
+		min-width: 180px;
+		max-width: 180px;
+		margin: 0;
+		padding: 8px 0;
+		transform-origin: right top;
+
+		&>[class^=satus]:where(:not(.satus-divider)) {
+			height: 36px;
+			padding: 0 16px;
+			border-radius: 0;
+		}
+		&>.satus-span {
+			font-size: 13px;
+			font-weight: 500;
+			margin: 6px 0;
+			padding: 0 12px;
+			height: auto;
+		}
+		&>.satus-tabs {
+			margin: 0 12px;
+			border-radius: 3px;
+			height: 26px;
+			padding: 0;
+		}
+	}
+	.satus-select svg,
+	.satus-button svg {
+		margin: 0 14px 0 0;
+		opacity: .64;
+		flex: 0 0 18px;
+		stroke: var(--satus-primary);
+	}
+	.satus-button .satus-span {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.satus-switch {
+		&:hover {
+			cursor: pointer;
+			background-color: rgba(var(--satus-light), .06);
+		}
+		&:focus {
+			background-color: rgba(var(--satus-light), .08);
+		}
+	}
 }
 
-.satus-popup--vertical-menu .satus-popup__surface>[class^=satus]:where(:not(.satus-divider)) {
-	height: 36px;
-	padding: 0 16px;
-	border-radius: 0;
-}
-
-.satus-popup--vertical-menu .satus-popup__surface>.satus-span {
-	font-size: 13px;
-	font-weight: 500;
-	margin: 6px 0;
-	padding: 0 12px;
-	height: auto;
-}
-
-.satus-popup--vertical-menu .satus-popup__surface>.satus-tabs {
-	margin: 0 12px;
-	border-radius: 3px;
-	height: 26px;
-	padding: 0;
-}
-
-.satus-popup--vertical-menu .satus-select svg,
-.satus-popup--vertical-menu .satus-button svg {
-	margin: 0 14px 0 0;
-	opacity: .64;
-	flex: 0 0 18px;
-}
-
-.satus-popup--vertical-menu .satus-button .satus-span {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.satus-popup--vertical-menu .satus-switch:hover {
-	cursor: pointer;
-	background-color: rgba(var(--satus-light), .06);
-}
-
-.satus-popup--vertical-menu .satus-switch:focus {
-	background-color: rgba(var(--satus-light), .08);
-}
 /*--- GRID ---------------------------------------------------*/
 .satus-grid {
 	display: flex;
@@ -268,11 +173,11 @@ div[improvedtube-home=list] .satus-button--analyzer {margin-top: -16px !importan
 }
 /*--- TEXT FIELD -----------------------------------------------
 # Parts
-  # Container
-  # Input
-  #
+	# Container
+	# Input
+	#
 # Syntax highlighting
-  # Regular expression
+	# Regular expression
 --------------------------------------------------------------*/
 .satus-text-field {
 	display: flex;
@@ -357,18 +262,18 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 .satus-text-field__line-numbers {
 	padding: 0 12px 0 0;
-  z-index: 10;
+	z-index: 10;
 	opacity: .5;
-}
 
-.satus-text-field__line-numbers>span {
-	font-size: inherit;
+	&>span {
+		font-size: inherit;
 
-	display: block;
+		display: block;
 
-	width: 100%;
+		width: 100%;
 
-	text-align: right;
+		text-align: right;
+	}
 }
 
 .satus-text-field__pre {
@@ -445,44 +350,42 @@ As our Syntax markup isnt read for <textarea>, is it?
 }
 
 /*--- MULTILINE: FALSE ---------------------------------------*/
-.satus-text-field[multiline=false] .satus-text-field__pre {
-	align-items: center;
-}
-
-.satus-text-field[multiline=false] .satus-text-field__cursor {
-	top: calc(50% - 9px);
+.satus-text-field[multiline=false] {
+	.satus-text-field__pre {
+		align-items: center;
+	}
+	.satus-text-field__cursor {
+		top: calc(50% - 9px);
+	}
 }
 
 /*--- SYNTAX HIGHLIGHTING ------------------------------------*/
 /*--- REGULAR EXPRESSION -------------------------------------*/
-.satus-text-field__pre>.group {
-	color: #47ff47;
-	background-color: rgb(71, 255, 71, .16);
-}
-
-.satus-text-field__pre>.character-class {
-	color: #ffc247;
-	background-color: rgb(255, 170, 0, .16);
-}
-
-.satus-text-field__pre>.quantifier {
-	color: #47c2ff;
-	background-color: rgb(71, 194, 255, .16);
-}
-
-.satus-text-field__pre>.anchor {
-	color: #47c2ff;
-	background-color: rgb(71, 194, 255, .16);
-}
-
-.satus-text-field__pre>.metasequence {
-	color: #47ff47;
-	background-color: rgb(71, 255, 71, .16);
-}
-
-.satus-text-field__pre>.text {
-	color: #c4c4d4;
-	background-color: rgb(196, 196, 212, .16);
+.satus-text-field__pre {
+	&>.group {
+		color: #47ff47;
+		background-color: rgb(71, 255, 71, .16);
+	}
+	&>.character-class {
+		color: #ffc247;
+		background-color: rgb(255, 170, 0, .16);
+	}
+	&>.quantifier {
+		color: #47c2ff;
+		background-color: rgb(71, 194, 255, .16);
+	}
+	&>.anchor {
+		color: #47c2ff;
+		background-color: rgb(71, 194, 255, .16);
+	}
+	&>.metasequence {
+		color: #47ff47;
+		background-color: rgb(71, 255, 71, .16);
+	}
+	&>.text {
+		color: #c4c4d4;
+		background-color: rgb(196, 196, 212, .16);
+	}
 }
 /*--- CHART --------------------------------------------------*/
 .satus-chart {
@@ -518,12 +421,11 @@ As our Syntax markup isnt read for <textarea>, is it?
 	padding: 4px;
 
 	flex: 1;
-}
 
-.satus-chart__section:not(:last-child) {
-	border-right: 1px dashed rgba(var(--satus-light), .2);
+	&:not(:last-child) {
+		border-right: 1px dashed rgba(var(--satus-light), .2);
+	}
 }
-
 
 .satus-chart__bars {
 	position: absolute;
@@ -552,12 +454,13 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 .satus-chart__piece {
 	width: 100%;
+
+	&:first-child {
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+	}
 }
 
-.satus-chart__piece:first-child {
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-}
 /*--- SELECT -------------------------------------------------*/
 .satus-select {
 	position: relative;
@@ -568,10 +471,58 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	align-items: center;
 	justify-content: space-between;
-}
 
-.satus-select:hover {
-	background-color: var(--satus-hover);
+	svg {
+		width: 20px;
+		height: 18px;
+		margin: 0 14px 0 0;
+
+		opacity: .64;
+	}
+	&:hover {
+		background-color: rgba(var(--satus-light), .06);
+	}
+	&:focus {
+		background-color: rgba(var(--satus-light), .08);
+	}
+	select {
+		font: inherit;
+
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: inherit;
+
+		cursor: inherit;
+
+		opacity: 0;
+		border: none;
+		outline: none;
+
+		appearance: none;
+
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+		&::-webkit-scrollbar:hover {
+			width: 8px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: rgba(0, 0, 0, .2);
+		}
+		&::-webkit-scrollbar-thumb:hover {
+			background: rgba(0, 0, 0, .3);
+		}
+	}
+	option {
+		color: var(--satus-section-foreground);
+		background: var(--satus-section-background);
+	}
 }
 
 .satus-select__content {
@@ -581,20 +532,12 @@ As our Syntax markup isnt read for <textarea>, is it?
 	overflow: hidden;
 
 	align-items: center;
-}
 
-.satus-select svg {
-	width: 20px;
-	height: 18px;
-	margin: 0 14px 0 0;
+	.satus-span {
+		overflow: hidden;
 
-	opacity: .64;
-}
-
-.satus-select__content .satus-span {
-	overflow: hidden;
-
-	text-overflow: ellipsis;
+		text-overflow: ellipsis;
+	}
 }
 
 .satus-select__value {
@@ -610,58 +553,6 @@ As our Syntax markup isnt read for <textarea>, is it?
 	opacity: .64;
 }
 
-.satus-select select {
-	font: inherit;
-
-	position: absolute;
-	z-index: 1;
-	top: 0;
-	left: 0;
-
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: inherit;
-
-	cursor: inherit;
-
-	opacity: 0;
-	border: none;
-	outline: none;
-
-	appearance: none;
-}
-
-.satus-select:hover {
-	cursor: pointer;
-
-	background-color: rgba(var(--satus-light), .06);
-}
-
-.satus-select:focus {
-	background-color: rgba(var(--satus-light), .08);
-}
-
-.satus-select select::-webkit-scrollbar {
-	width: 4px;
-}
-
-.satus-select select::-webkit-scrollbar:hover {
-	width: 8px;
-}
-
-.satus-select select::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 0, .2);
-}
-
-.satus-select select::-webkit-scrollbar-thumb:hover {
-	background: rgba(0, 0, 0, .3);
-}
-
-.satus-select option {
-	color: var(--satus-select-text);
-	background: var(--satus-select-background);
-}
 /*--- DIVIDER ------------------------------------------------*/
 .satus-divider {
 	height: 1px;
@@ -680,31 +571,27 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	flex-wrap: wrap;
 }
-
 /*--- ALIGN START --------------------------------------------*/
 .satus-section--align-start {
 	align-items: center;
-}
 
-.satus-section--align-start>*:not(:last-child) {
-	margin-right: 8px;
+	&>*:not(:last-child) {
+		margin-right: 8px;
+	}
 }
-
 /*--- ALIGN END ----------------------------------------------*/
 .satus-section--align-end {
 	align-items: center;
 	justify-content: flex-end;
-}
 
-.satus-section--align-end>*:not(:first-child) {
-	margin-left: 8px;
+	&>*:not(:first-child) {
+		margin-left: 8px;
+	}
 }
-
 /*--- CARD ---------------------------------------------------*/
 .satus-section--card {
 	flex-direction: column;
 
-	max-width: 900px;
 	margin: 12px;
 	padding: 8px 0;
 
@@ -712,10 +599,52 @@ As our Syntax markup isnt read for <textarea>, is it?
 	border-radius: 3px;
 	background: var(--satus-section-background);
 	color: var(--satus-section-foreground);
+
+	&>[class^=satus]:not(.satus-list):not(.satus-section) {
+		display: flex;
+
+		min-height: 48px;
+		padding: 8px 12px;
+
+		transition: background-color .18s cubic-bezier(.25, .8, .5, 1);
+		text-align: left;
+
+		border-radius: 0;
+
+		align-items: center;
+
+		&:not(.satus-chart) {
+			width: 100%;
+		}
+	}
+	&>[class^=satus]:not(.satus-chart):not(.satus-list):not(.satus-span):hover {
+		background-color: rgba(var(--satus-light), .06);
+	}
+	&>.satus-button {
+		justify-content: flex-start;
+	}
+	&>.satus-button>svg,
+	&>.satus-select>svg {
+		width: 20px;
+		margin: 0 14px 0 0;
+
+		color: var(--satus-primary);
+	}
+	&>.satus-span {
+		display: flex;
+
+		align-items: center;
+	}
+}
+
+.satus-section--label {
+	font-size: 15px;
+	font-weight: 500;
+
+	margin: 8px auto 0 12px;
 }
 
 .satus-section--transparent-card {
-	max-width: 900px;
 	margin: 8px 12px;
 }
 
@@ -742,51 +671,11 @@ As our Syntax markup isnt read for <textarea>, is it?
 	width: 100%;
 }
 
-.satus-section--card>[class^=satus]:not(.satus-list):not(.satus-section) {
-	display: flex;
-
-	min-height: 48px;
-	padding: 8px 12px;
-
-	transition: background-color .18s cubic-bezier(.25, .8, .5, 1);
-	text-align: left;
-
-	border-radius: 0;
-
-	align-items: center;
-}
-
-.satus-section--card>[class^=satus]:not(.satus-list):not(.satus-section):not(.satus-chart) {
-	width: 100%;
-}
-
-.satus-section--card>[class^=satus]:not(.satus-chart):not(.satus-list):not(.satus-span):hover {
-	background-color: rgba(var(--satus-light), .06);
-}
-
-.satus-section--card>.satus-button {
-	justify-content: flex-start;
-}
-
-.satus-section--card>.satus-button>svg,
-.satus-section--card>.satus-select>svg {
-	width: 20px;
-	margin: 0 14px 0 0;
-
-	color: var(--satus-primary);
-}
-
-.satus-section--card>.satus-span {
-	display: flex;
-
-	align-items: center;
-}
-
 .satus-section--transparent {
-  background: unset;
-  border: unset;
-  padding: 0;
-  border-radius: unset;
+	background: unset;
+	border: unset;
+	padding: 0;
+	border-radius: unset;
 }
 
 /*--- MEDIA --------------------------------------------------*/
@@ -879,14 +768,14 @@ As our Syntax markup isnt read for <textarea>, is it?
 }
 /*--- SIDEBAR ------------------------------------------------*/
 .satus-sidebar {
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  width: 56px;
-  padding: 12px 0;
-  color: var(--satus-sidebar-foreground);
-  background: var(--satus-sidebar-background);
-  box-shadow: 1px 0 0 var(--satus-sidebar-shadow)
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	width: 56px;
+	padding: 12px 0;
+	color: var(--satus-sidebar-foreground);
+	background: var(--satus-sidebar-background);
+	box-shadow: 1px 0 0 var(--satus-sidebar-shadow)
 }
 /*--- LAYERS -------------------------------------------------*/
 .satus-layers {
@@ -925,19 +814,19 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	align-items: center;
 	justify-content: space-between;
+
+	&>*:not(:first-child) {
+		margin-left: 8px;
+	}
+	&>*:last-child {
+		font-size: 92%;
+
+		text-align: right;
+
+		opacity: .64;
+	}
 }
 
-.satus-list__item>*:not(:first-child) {
-	margin-left: 8px;
-}
-
-.satus-list__item>*:last-child {
-	font-size: 92%;
-
-	text-align: right;
-
-	opacity: .64;
-}
 /*--- COLOR PICKER: --------------------------------------------
 # Button
 # Popup
@@ -945,126 +834,127 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 /*--- BUTTON -------------------------------------------------*/
 .satus-color-picker {
-  font-size: inherit;
+	font-size: inherit;
 
-  position: relative;
+	position: relative;
 
-  display: flex;
+	display: flex;
 
-  box-sizing: border-box;
-  margin: 0;
+	box-sizing: border-box;
+	margin: 0;
 
-  cursor: pointer;
+	cursor: pointer;
 
-  color: inherit;
-  border: none;
-  outline: none;
-  background-color: var(--satus-theme-button);
+	color: inherit;
+	border: none;
+	outline: none;
+	background-color: var(--satus-theme-button);
 
-  justify-content: space-between;
-  -webkit-tap-highlight-color: transparent;
-  align-items: center;
-  -webkit-appearance: none;
+	justify-content: space-between;
+	-webkit-tap-highlight-color: transparent;
+	align-items: center;
+	-webkit-appearance: none;
 }
 
 .satus-color-picker__value {
-  width: 22px;
-  height: 22px;
+	width: 22px;
+	height: 22px;
 
-  border: 2px solid rgba(0, 0, 0, .16);
-  border-radius: 50%;
+	border: 2px solid rgba(0, 0, 0, .16);
+	border-radius: 50%;
 }
 
 /*--- POPUP --------------------------------------------------*/
 .satus-popup--color-picker .satus-popup__surface {
-  padding: 8px;
+	padding: 8px;
 }
 
 .satus-color-picker__palette {
-  position: relative;
+	position: relative;
 
-  overflow: hidden;
+	overflow: hidden;
 
-  width: 100%;
-  height: 256px;
-  margin: 0 0 4px;
+	width: 100%;
+	height: 256px;
+	margin: 0 0 4px;
 
-  border-radius: 5px;
-  background-color: #f00;
-}
+	border-radius: 5px;
+	background-color: #f00;
 
-.satus-color-picker__palette:before {
-  position: absolute;
-  top: 0;
-  left: 0;
+	&:before {
+		position: absolute;
+		top: 0;
+		left: 0;
 
-  width: 100%;
-  height: 100%;
+		width: 100%;
+		height: 100%;
 
-  content: '';
+		content: '';
 
-  background-image: linear-gradient(0deg, black, transparent), linear-gradient(90deg, white, transparent);
+		background-image: linear-gradient(0deg, black, transparent), linear-gradient(90deg, white, transparent);
+	}
 }
 
 .satus-color-picker__cursor {
-  position: absolute;
+	position: absolute;
 
-  width: 5px;
-  height: 5px;
+	width: 5px;
+	height: 5px;
 
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
 
-  border: 1px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px #000;
+	border: 1px solid #fff;
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px #000;
 }
 
 .satus-popup--color-picker .satus-popup__surface .satus-section--color {
-  margin: 8px 4px;
+	margin: 8px 4px;
 
-  align-items: center;
+	align-items: center;
 }
 
 .satus-color-picker__color {
-  width: 32px;
-  height: 32px;
-  margin: 0 16px 0 0;
+	width: 32px;
+	height: 32px;
+	margin: 0 16px 0 0;
 
-  border: 2px solid rgba(0, 0, 0, .16);
-  border-radius: 50%;
-  background: #f00;
+	border: 2px solid rgba(0, 0, 0, .16);
+	border-radius: 50%;
+	background: #f00;
 }
 
 .satus-slider.satus-color-picker__hue {
-  padding: 0;
+	padding: 0;
 
-  flex: 1;
+	flex: 1;
 }
 
-.satus-color-picker__hue .satus-slider__track-container {
-  height: 16px;
-  margin: 0;
+.satus-color-picker__hue {
+	.satus-slider__track-container {
+		height: 16px;
+		margin: 0;
 
-  border-radius: 4px;
-  background-image: linear-gradient(90deg, #f00, #ff2a00, #f50, #ff7f00, #fa0, #ffd400, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2b, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d4ff, #0af, #007fff, #05f, #002bff, #00f, #2a00ff, #50f, #7f00ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
+		border-radius: 4px;
+		background-image: linear-gradient(90deg, #f00, #ff2a00, #f50, #ff7f00, #fa0, #ffd400, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2b, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d4ff, #0af, #007fff, #05f, #002bff, #00f, #2a00ff, #50f, #7f00ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
+	}
+	.satus-slider__track-container::before {
+		display: none;
+	}
+	.satus-slider__track {
+		background: transparent;
+
+		&::after {
+			width: 16px;
+			height: 16px;
+
+			background: #fff;
+			box-shadow: 0 0 4px rgb(0, 0, 0, .64);
+		}
+	}
 }
 
-.satus-color-picker__hue .satus-slider__track-container::before {
-  display: none;
-}
-
-.satus-color-picker__hue .satus-slider__track {
-  background: transparent;
-}
-
-.satus-color-picker__hue .satus-slider__track::after {
-  width: 16px;
-  height: 16px;
-
-  background: #fff;
-  box-shadow: 0 0 4px rgb(0, 0, 0, .64);
-}
 /*--- BUTTON---------------------------------------------------
 # Base
 # Basic
@@ -1093,23 +983,21 @@ As our Syntax markup isnt read for <textarea>, is it?
 
 	appearance: none;
 	align-items: center;
-}
 
-.satus-button:hover {
-	cursor: pointer;
+	&:hover {
+		cursor: pointer;
 
-	background-color: rgba(var(--satus-light), .06);
-}
-
-.satus-button:focus {
-	background-color: rgba(var(--satus-light), .08);
-}
-
-.satus-button svg {
-	width: 100%;
-	max-width: 24px;
-	height: 100%;
-	max-height: 24px;
+		background-color: rgba(var(--satus-light), .06);
+	}
+	&:focus {
+		background-color: rgba(var(--satus-light), .08);
+	}
+	svg {
+		width: 100%;
+		max-width: 24px;
+		height: 100%;
+		max-height: 24px;
+	}
 }
 
 /*--- BASIC --------------------------------------------------*/
@@ -1120,28 +1008,13 @@ As our Syntax markup isnt read for <textarea>, is it?
 	height: 40px;
 
 	border-radius: 50%;
+
+	& svg {
+		width: 24px;
+		height: 24px;
+	}
 }
 
-.satus-button--icon svg {
-	width: 24px;
-	height: 24px;
-}
-/*--- HEADER -------------------------------------------------*/
-.satus-header {
-	z-index: 1;
-
-	display: flex;
-
-	height: 56px;
-	padding: 0 12px;
-
-	color: var(--satus-header-foreground);
-	background: var(--satus-header-background);
-	box-shadow: var(--satus-header-shadow);
-
-	justify-content: space-between;
-	align-items: center;
-}
 /*--- RADIO --------------------------------------------------*/
 .satus-radio {
 	position: relative;
@@ -1332,21 +1205,21 @@ As our Syntax markup isnt read for <textarea>, is it?
 	border: 2px solid var(--satus-tabs-background);
 	border-radius: 4px;
 	background: var(--satus-tabs-background);
-}
 
-.satus-tabs::before {
-	position: absolute;
-	top: 0;
-	left: calc(calc(100% / var(--satus-tabs-count)) * var(--satus-tabs-current));
+	&::before {
+		position: absolute;
+		top: 0;
+		left: calc(calc(100% / var(--satus-tabs-count)) * var(--satus-tabs-current));
 
-	width: calc(100% / var(--satus-tabs-count));
-	height: 100%;
+		width: calc(100% / var(--satus-tabs-count));
+		height: 100%;
 
-	content: '';
-	transition: left .25s;
+		content: '';
+		transition: left .25s;
 
-	border-radius: 3px;
-	background: var(--satus-tabs-foreground);
+		border-radius: 3px;
+		background: var(--satus-tabs-foreground);
+	}
 }
 
 .satus-tabs__button {
