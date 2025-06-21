@@ -3,6 +3,7 @@ extension.skeleton.main.layers.section.channel = {
 	component: 'button',
 	variant: 'channel',
 	category: true,
+
 	on: {
 		click: {
 			component: 'section',
@@ -69,12 +70,10 @@ extension.skeleton.main.layers.section.channel = {
 				text: 'hideFeaturedContent'
 			},
 			thumb_title_max: {
-				component: 'switch',
-				text: 'thumb_title_max'
+				component: 'switch'
 			}
 		}
 	},
-
 	icon: {
 		component: 'span',
 
@@ -108,7 +107,6 @@ extension.skeleton.main.layers.section.channel = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'channel'
+		component: 'span'
 	}
 };
