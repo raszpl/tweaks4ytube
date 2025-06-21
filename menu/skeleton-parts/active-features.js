@@ -53,8 +53,7 @@ extension.skeleton.header.sectionEnd.menu.on.click.activeFeatures.on.click = {
 						text;
 
 					let default_value = feature.value,
-						value = feature.storage && satus.storage.get(feature.storage) || satus.storage.get(key),
-						parent_object = feature;
+						value = feature.storage && satus.storage.get(feature.storage) || satus.storage.get(key);
 
 					if (!satus.isset(default_value)) {
 						if (feature.component === 'select') {
