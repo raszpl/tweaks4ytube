@@ -39,14 +39,3 @@
 .satus-base[it_version] .satus-span--it_version {
 	display:none;
 }
-
-.satus-popup--vertical-menu {
-	.satus-button svg {
-		stroke: var(--satus-primary);
-	}
-	.satus-button .satus-span {
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
-}
