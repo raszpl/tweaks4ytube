@@ -1,19 +1,19 @@
 /*--- BLOCKLIST ----------------------------------------------*/
-.satus-div--blocklist> :first-child {
-	overflow: hidden;
+.satus-div--blocklist {
+	&> :first-child {
+		overflow: hidden;
 
-	white-space: nowrap;
-	text-overflow: ellipsis;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 
-	flex: 1;
-}
-
-.satus-div--blocklist>button {
-	height: 32px;
-	margin: 0 0 0 12px;
-	padding: 6px;
-}
-
-.satus-div--blocklist:not(:hover)>button {
-	display: none;
+		flex: 1;
+	}
+	&>button {
+		height: 32px;
+		margin: 0 0 0 12px;
+		padding: 6px;
+	}
+	&:not(:hover)>button {
+		display: none;
+	}
 }
