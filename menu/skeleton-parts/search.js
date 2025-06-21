@@ -45,7 +45,7 @@ extension.skeleton.header.searchBar = {
 					// prepare search results
 					for (const [key, result] of Object.entries(results)) {
 						let parent = result,
-							category = '';
+							category = '',
 							blah = [],
 							skeletonPath = [...result.skeletonPath];
 
