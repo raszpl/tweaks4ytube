@@ -8,85 +8,67 @@
 	z-index: 2;
 
 	width: calc(320px - 71px);
-}
 
-.satus-text-field--search:focus {
-	box-shadow: 0 0 0 4px rgba(13, 110, 253, .25);
-}
-
-.search-mode .satus-text-field--search {
-	display: block;
-}
-
-.search-mode--results {
-	border-bottom-right-radius: unset;
-	border-bottom-left-radius: unset;
-}
-
-.satus-text-field--search>.satus-button {
-	position: absolute;
-	right: 0;
-	z-index: 10;
-}
-
-.satus-text-field--search[results] {
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.satus-text-field--search:not([results]) {
-    filter: brightness(85%);
+	&:focus {
+		box-shadow: 0 0 0 4px rgba(13, 110, 253, .25);
+	}
+	&>.satus-button {
+		position: absolute;
+		right: 0;
+		z-index: 10;
+	}
+	&[results] {
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	&:not([results]) {
+		filter: brightness(85%);
+	}
 }
 
 .search-results {
 	top: 56px;
 
 	height: calc(100vh - 56px);
-}
 
-.search-results .satus-popup__surface {
-	position: absolute;
-	top: -10px;
-	left: 12px;
+	.satus-popup__surface {
+		position: absolute;
+		top: -10px;
+		left: 12px;
 
-	width: calc(100% - 26px);
-	min-width: unset;
-	max-width: unset;
-	max-height: calc(100vh - 56px);
-	margin: 0;
-	padding: 0;
+		width: calc(100% - 26px);
+		min-width: unset;
+		max-width: unset;
+		max-height: calc(100vh - 56px);
+		margin: 0;
+		padding: 0;
 
-	transform: none;
-	transform-origin: top;
-	animation: none;
+		transform: none;
+		transform-origin: top;
+		animation: none;
 
-	opacity: 1;
-	border: 1px solid var(--satus-text-field-border);
-	border-top: none;
-	border-radius: 15px;
-	border-top-left-radius: 0;  /* border-top-right-radius: 0; */
-	background-color: var(--satus-text-field-background);
-	box-shadow: none;
-}
+		opacity: 1;
+		border: 1px solid var(--satus-text-field-border);
+		border-top: none;
+		border-radius: 15px;
+		border-top-left-radius: 0;	/* border-top-right-radius: 0; */
+		background-color: var(--satus-text-field-background);
+		box-shadow: none;
+	}
+	.satus-section>hhh {
+		width: 100%;
+		height: 40px;
+		min-height: unset;
+		padding: 0 16px;
+	}
+	.satus-section--label {
+		display: block;
 
-.search-results .satus-section>* {
-	width: 100%;
-	height: 40px;
-	min-height: unset;
-	padding: 0 16px;
-}
+		p {
+			display: contents;
 
-.search-results .satus-select__label {
-	text-align: left;
-}
-
-.search-results .satus-section--label {
-	font-size: 15px;
-	font-weight: 500;
-
-	display: block;
-
-	width: calc(100% - 16px);
-	max-width: 900px;
-	margin: 8px auto 0 12px;
+			&:not(:last-child)::after {
+				content: ' > ';
+			}
+		}
 }
