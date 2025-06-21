@@ -16,18 +16,18 @@ extension.skeleton.header = {
 
 	sectionStart: {
 		component: 'section',
-		class: 'satus-section--align-start',
+		variant: 'align-start',
 
 		back: {
 			component: 'button',
-			class: 'satus-section--icon',
+			variant: 'icon',
 			attr: {
 				'hidden': 'true'
 			},
+
 			on: {
 				click: 'main.layers.back'
 			},
-
 			svg: {
 				component: 'svg',
 				attr: {
@@ -36,7 +36,6 @@ extension.skeleton.header = {
 					'stroke': 'currentColor',
 					'fill': 'none'
 				},
-
 				path: {
 					component: 'path',
 					attr: {
@@ -47,27 +46,29 @@ extension.skeleton.header = {
 		},
 		it_title: {
 			component: 'span',
-			class: 'satus-span--title'
+			variant: 'it_title',
+			text: chrome.runtime.getManifest().short_name
 		},
 		it_version: {
 			component: 'span',
-			class: 'satus-span--version',
+			variant: 'it_version',
 			text: chrome.runtime.getManifest().version
 		}
 	},
 	sectionEnd: {
 		component: 'section',
 		variant: 'align-end',
+
 		search: {
 			component: 'button',
 			variant: 'icon',
+
 			on: {
 				click: function () {
 					document.querySelector('#searchBar').hidden = false;
 					document.querySelector('#searchBar').dispatchEvent(new CustomEvent('render'));
 				}
 			},
-
 			svg: {
 				component: 'svg',
 				attr: {
@@ -78,7 +79,6 @@ extension.skeleton.header = {
 					'stroke-width': '1.25',
 					'fill': 'none'
 				},
-
 				circle: {
 					component: 'circle',
 					attr: {
@@ -98,13 +98,14 @@ extension.skeleton.header = {
 		menu: {
 			component: 'button',
 			variant: 'icon',
+
 			on: {
 				click: {
 					component: 'popup',
-					variant: 'vertical-menu'
+					variant: 'vertical-menu',
+					category: true,
 				}
 			},
-
 			svg: {
 				component: 'svg',
 				attr: {
@@ -113,7 +114,6 @@ extension.skeleton.header = {
 					'stroke': 'currentColor',
 					'fill': 'none'
 				},
-
 				circle1: {
 					component: 'circle',
 					attr: {
@@ -148,34 +148,57 @@ extension.skeleton.main = {
 
 	layers: {
 		component: 'layers',
+
 		on: {
 			open: function () {
 				const skeleton = this.path.last,
 					section = this.baseProvider.skeleton.header.sectionStart;
-				let	title;
+				let	title,
+					parent = skeleton;
 
-				if (skeleton.parentSkeleton) {
-					if (skeleton.parentSkeleton.label) {
-						title = skeleton.parentSkeleton.label.text;
-					} else if (skeleton.parentSkeleton.text) {
-						title = skeleton.parentSkeleton.text;
-					} else {
-						title = chrome.runtime.getManifest().short_name;
+				// update Title element
+				// find label for opened Layer, can be category, button name or section card title
+				const label = function (element) {
+					if (element.category) {
+						if (element.label) {
+							return element.label.text;
+						} else if (element.text) {
+							return element.text;
+						}
+					} else if (element.component === 'button') {
+						return element.text;
+					} else if (element.variant === 'card') {
+						return element.title;
 					}
+				};
+
+				if (skeleton.component === 'layers') {
+					// 'layers' is Home screen
+					title = section.it_title.text;
+				} else if (skeleton.parentSkeleton && skeleton.parentSkeleton.category) {
+					// category
+					title = label(skeleton.parentSkeleton);
+				} else if (skeleton.parentObject) {
+					// skeleton is a section clicked from Search redirect
+
+					// traverse skeleton all the way back to find label/title/text
+					while (parent.parentObject && !parent.category && !label(parent)) {
+						parent = parent.parentObject;
+					}
+					title = label(parent);
 				}
 
-				section.back.rendered.hidden = this.path.length <= 2;
 				section.it_title.rendered.innerText = satus.locale.get(title);
+				section.back.rendered.hidden = this.path.length <= 2;
 				section.it_version.rendered.hidden = this.path.length > 2;
 
 				document.querySelector('.satus-popup--vertical-menu')?.close();
 			}
 		},
-
 		section: {
 			component: 'section',
 			variant: function () {
-				if (satus.storage.get('improvedtube_home') === 'list') {
+				if (satus.storage.get('it_layout') === 'list') {
 					return 'card';
 				}
 
