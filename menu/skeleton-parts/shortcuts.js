@@ -3,6 +3,7 @@ extension.skeleton.main.layers.section.shortcuts = {
 	component: 'button',
 	variant: 'shortcuts',
 	category: true,
+
 	on: {
 		click: {
 			playerSection: {
@@ -13,6 +14,7 @@ extension.skeleton.main.layers.section.shortcuts = {
 				shortcut_quality: {
 					component: 'button',
 					text: 'quality',
+
 					on: {
 						click: {
 							component: 'section',
@@ -67,7 +69,7 @@ extension.skeleton.main.layers.section.shortcuts = {
 				},
 				volume: {
 					component: 'button',
-					text: 'volume',
+
 					on: {
 						click: {
 							section_1: {
@@ -83,7 +85,6 @@ extension.skeleton.main.layers.section.shortcuts = {
 									value: 5
 								}
 							},
-
 							section_2: {
 								component: 'section',
 								variant: 'card',
@@ -117,6 +118,7 @@ extension.skeleton.main.layers.section.shortcuts = {
 				playback_speed: {
 					component: 'button',
 					text: 'playbackSpeed',
+
 					on: {
 						click: {
 							section_step: {
@@ -132,7 +134,6 @@ extension.skeleton.main.layers.section.shortcuts = {
 									value: .05
 								}
 							},
-
 							section: {
 								component: 'section',
 								variant: 'card',
@@ -331,12 +332,10 @@ extension.skeleton.main.layers.section.shortcuts = {
 					}
 				},
 				shortcut_chapters: {
-					component: 'shortcut',
-					text: 'shortcut_chapters'
+					component: 'shortcut'
 				},
 				shortcut_transcript: {
-					component: 'shortcut',
-					text: 'shortcut_transcript'
+					component: 'shortcut'
 				},
 				shortcut_like: {
 					component: 'shortcut',
@@ -361,7 +360,6 @@ extension.skeleton.main.layers.section.shortcuts = {
 			}
 		}
 	},
-
 	icon: {
 		component: 'span',
 
@@ -384,7 +382,6 @@ extension.skeleton.main.layers.section.shortcuts = {
 		}
 	},
 	label: {
-		component: 'span',
-		text: 'shortcuts'
+		component: 'span'
 	}
 };
