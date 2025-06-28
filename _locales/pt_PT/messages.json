@@ -494,9 +494,6 @@
 	"hideFooter": {
 		"message": "Esconder rodapé"
 	},
-	"hideGradientBottom": {
-		"message": "Hide Gradient Bottom"
-	},
 	"hidePlayerControlsBar": {
 		"message": "Ocultar a barra de controles do player"
 	},
@@ -880,12 +877,6 @@
 	},
 	"seekForward10Seconds": {
 		"message": "Andar para frente 10 segundos"
-	},
-	"seekNextChapter": {
-		"message": "seekNextChapter"
-	},
-	"seekPreviousChapter": {
-		"message": "seekPreviousChapter"
 	},
 	"settings": {
 		"message": "Definições"
